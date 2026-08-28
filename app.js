@@ -266,6 +266,10 @@ const itemOffers = [
   {kind:'filter', match:'Atom', supplier:'City Plumbing', priceExVat:127.96, note:'Adey MagnaClean Atom 22mm', checked:PRICE_CHECKED}
 ];
 
+const screwfixBoilerOffers = [
+  // Screwfix is shown only where the exact Williams master-list boiler has been verified.
+];
+
 function selectedSupplierItemPrice(kind, itemName, williamsPriceValue, manufacturer='') {
   const supplier = val('quoteSupplier');
   if (!itemName || itemName === 'None') return {available:true, price:0, supplier};
@@ -316,6 +320,7 @@ function supplierOffers(b) {
     supplier:'Williams', priceExVat:williamsPrice(b), note:`Pricebusters ${val('priceBasis')} price`, checked:'Issue 179 physical catalogue', url:''
   }];
   cityOffers.filter(x => x.manufacturer === b.manufacturer && x.model === b.model).forEach(x => offers.push(x));
+  screwfixBoilerOffers.filter(x => x.manufacturer === b.manufacturer && x.model === b.model).forEach(x => offers.push(x));
   return offers;
 }
 

@@ -18,3 +18,13 @@ label{display:block;font-size:13px;font-weight:700;margin:10px 0}select{width:10
 .item-compare{font-size:11px;color:#64748b;margin-top:4px;line-height:1.35;text-align:right}.item-compare .best{font-weight:800;color:#176b36}.accessory .price{font-size:13px}
 
 .unavailable{color:#b42318!important;font-size:12px!important}.item-compare{font-size:12px;text-align:left;margin:-3px 0 7px 0;color:#66788b}
+
+/* v9: one supplier price only beside each selected item */
+.item-compare{display:none!important}
+.accessory{grid-template-columns:minmax(0,1fr) 105px;align-items:center}
+.accessory .price{font-size:15px!important;line-height:1.2;text-align:right;white-space:normal;color:var(--text)}
+.accessory .price::after{content:"";display:block}
+@media(max-width:760px){
+  .accessory{grid-template-columns:minmax(0,1fr) 92px;gap:8px}
+  .accessory .price{font-size:14px!important}
+}
