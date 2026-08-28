@@ -7,6 +7,36 @@ const PRICE_CHECKED = '28 Aug 2026';
 
 const cityOffers = [
   {
+    manufacturer:'Baxi', model:'Baxi 424 Combi 2.1 24kW Boiler', supplier:'City Plumbing',
+    priceExVat:695.46, note:'Public boiler-only price', checked:PRICE_CHECKED,
+    url:'https://www.cityplumbing.co.uk/p/baxi-424-combi-21-24kw-boiler-7872835/p/152145'
+  },
+  {
+    manufacturer:'Baxi', model:'Baxi 430 Combi 2.1 30kW Boiler', supplier:'City Plumbing',
+    priceExVat:756.77, note:'Public boiler-only price', checked:PRICE_CHECKED,
+    url:'https://www.cityplumbing.co.uk/p/baxi-430-combi-21-30kw-boiler-7872836/p/152146'
+  },
+  {
+    manufacturer:'Baxi', model:'Baxi 436 Combi 2.1 36kW Boiler', supplier:'City Plumbing',
+    priceExVat:847.22, note:'Public boiler-only price', checked:PRICE_CHECKED,
+    url:'https://www.cityplumbing.co.uk/p/baxi-436-combi-21-36kw-boiler-7872837/p/152147'
+  },
+  {
+    manufacturer:'Baxi', model:'Baxi 824 24kW Gas Combi 2 Boiler', supplier:'City Plumbing',
+    priceExVat:1140.00, note:'Public price — boiler with included Adey Micro2 filter', checked:PRICE_CHECKED,
+    url:'https://www.cityplumbing.co.uk/p/baxi-824-combi-2-24kw-boiler-7814304/p/837964'
+  },
+  {
+    manufacturer:'Baxi', model:'Baxi 830 30kW Gas Combi 2 Boiler', supplier:'City Plumbing',
+    priceExVat:1260.00, note:'Public price — boiler with included Adey Micro2 filter', checked:PRICE_CHECKED,
+    url:'https://www.cityplumbing.co.uk/p/baxi-830-combi-2-30kw-boiler-adey-micro2-system-filter-7814305/p/837972'
+  },
+  {
+    manufacturer:'Baxi', model:'Baxi 836 36kW Gas Combi 2 Boiler', supplier:'City Plumbing',
+    priceExVat:1360.00, note:'Public price — boiler with included Adey Micro2 filter', checked:PRICE_CHECKED,
+    url:'https://www.cityplumbing.co.uk/p/baxi-836-combi-2-36kw-boiler-7814306/p/837949'
+  },
+  {
     manufacturer:'Worcester Bosch', model:'Worcester 4000 30kW Combi NG', supplier:'City Plumbing',
     priceExVat:1247.00, note:'Public boiler price', checked:PRICE_CHECKED,
     url:'https://www.cityplumbing.co.uk/p/worcester-bosch-greenstar-4000-combi-boiler-white-30-kw-7733600373/p/550559'
