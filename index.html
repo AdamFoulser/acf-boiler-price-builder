@@ -32,13 +32,25 @@
       <div id="boilerMeta" class="meta"></div>
     </section>
 
+    <section class="card supplier-card">
+      <h2>2. Supplier Comparison <span class="internal-badge">INTERNAL</span></h2>
+      <div id="supplierPrices" class="supplier-prices"></div>
+      <label>Quote using price from<select id="quoteSupplier"></select></label>
+      <label>Actually buy from<select id="buySupplier"></select></label>
+      <div class="marginbox">
+        <span>Extra purchasing margin</span>
+        <strong id="purchaseMargin">£0.00</strong>
+      </div>
+      <p class="hint">Internal only. Supplier and purchasing margin are not included in the customer copy.</p>
+    </section>
+
     <section class="card">
-      <h2>2. Flues & Accessories</h2>
+      <h2>3. Flues & Accessories</h2>
       <div id="accessorySlots"></div>
     </section>
 
     <section class="card">
-      <h2>3. Labour & Materials</h2>
+      <h2>4. Labour & Materials</h2>
       <label>Labour<select id="labour"></select></label>
       <label>Pipework / materials<select id="materials"></select></label>
       <label>Thermostat<select id="thermostat"></select></label>
@@ -47,13 +59,13 @@
     </section>
 
     <section class="card" id="heatOnlyCard">
-      <h2>4. Heat-only extras</h2>
+      <h2>5. Heat-only extras</h2>
       <div id="heatOnlyExtras"></div>
       <p class="hint">Use these only where required on heat-only boiler changes.</p>
     </section>
 
     <section class="card">
-      <h2>5. Letting Agent Commission</h2>
+      <h2>6. Letting Agent Commission</h2>
       <label>Commission<select id="commission">
         <option value="0">0% — Private customer</option>
         <option value="0.1">10% — Letting agent</option>
@@ -62,7 +74,9 @@
 
     <section class="card summary">
       <h2>Quote Summary</h2>
-      <div class="row"><span>Boiler</span><strong id="sumBoiler">£0.00</strong></div>
+      <div class="row"><span>Boiler quote basis</span><strong id="sumBoiler">£0.00</strong></div>
+      <div class="row internal-row"><span>Actual boiler purchase</span><strong id="sumPurchase">£0.00</strong></div>
+      <div class="row internal-row"><span>Extra purchasing margin</span><strong id="sumMargin">£0.00</strong></div>
       <div class="row"><span>Accessories</span><strong id="sumAccessories">£0.00</strong></div>
       <div class="row"><span>Labour / materials / extras</span><strong id="sumExtras">£0.00</strong></div>
       <div class="row"><span>Subtotal before commission</span><strong id="subtotal">£0.00</strong></div>

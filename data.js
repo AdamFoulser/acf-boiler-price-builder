@@ -2926,10 +2926,15 @@ window.ACF_DATA = {
       1500
     ],
     "materialsOptions": [
+      50,
       100,
+      150,
       200,
+      250,
       300,
+      350,
       400,
+      450,
       500
     ],
     "thermostats": [
