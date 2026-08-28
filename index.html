@@ -14,8 +14,8 @@
 <body>
 <header class="topbar">
   <div class="brand">
-    <div class="acf">ACF</div>
-    <div>
+    <img class="brand-logo" src="IMG_9229.jpeg" alt="ACF Services Ltd"/>
+    <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
       <div class="subtitle">Quick boiler quoting</div>
     </div>
@@ -37,17 +37,11 @@
       <div id="supplierPrices" class="supplier-prices"></div>
       <label>Quote using price from<select id="quoteSupplier"></select></label>
       <label>Actually buy from<select id="buySupplier"></select></label>
-      <div class="marginbox">
-        <span>Extra purchasing margin</span>
-        <strong id="purchaseMargin">£0.00</strong>
-      </div>
+      <div class="marginbox"><span>Extra purchasing margin</span><strong id="purchaseMargin">£0.00</strong></div>
       <p class="hint">Internal only. Supplier and purchasing margin are not included in the customer copy.</p>
     </section>
 
-    <section class="card">
-      <h2>3. Flues & Accessories</h2>
-      <div id="accessorySlots"></div>
-    </section>
+    <section class="card"><h2>3. Flues & Accessories</h2><div id="accessorySlots"></div></section>
 
     <section class="card">
       <h2>4. Labour & Materials</h2>
@@ -66,10 +60,7 @@
 
     <section class="card">
       <h2>6. Letting Agent Commission</h2>
-      <label>Commission<select id="commission">
-        <option value="0">0% — Private customer</option>
-        <option value="0.1">10% — Letting agent</option>
-      </select></label>
+      <label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label>
     </section>
 
     <section class="card summary">
@@ -88,7 +79,6 @@
     </section>
   </div>
 </main>
-
 <script src="data.js"></script>
 <script src="app.js"></script>
 </body>
