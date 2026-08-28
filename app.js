@@ -223,6 +223,63 @@ const cityOffers = [
   },
 ];
 
+
+const itemOffers = [
+  {kind:'accessory', manufacturer:'Baxi', match:'Standard Horizontal', supplier:'City Plumbing', priceExVat:105.00, note:'Baxi Multifit standard horizontal flue', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Baxi', match:'Standard Horizontal', supplier:'Screwfix', priceExVat:98.77, note:'Baxi Multifit standard horizontal flue', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Baxi', match:'Telescopic', supplier:'City Plumbing', priceExVat:118.00, note:'Baxi standard telescopic flue', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Baxi', match:'Telescopic', supplier:'Screwfix', priceExVat:110.83, note:'Baxi standard telescopic flue', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Baxi', match:'Vertical', supplier:'City Plumbing', priceExVat:122.88, note:'Baxi vertical flue terminal', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Baxi', match:'Vertical', supplier:'Screwfix', priceExVat:119.16, note:'Baxi vertical flue terminal', checked:PRICE_CHECKED},
+
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'Telescopic', supplier:'City Plumbing', priceExVat:105.65, note:'Worcester 7716191082 telescopic flue', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'Long Telescopic', supplier:'City Plumbing', priceExVat:118.71, note:'Worcester 7716191171 long telescopic flue', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'Vertical Flue', supplier:'City Plumbing', priceExVat:147.20, note:'Worcester 7719002430 vertical flue', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'Vertical Flue', supplier:'Screwfix', priceExVat:136.67, note:'Worcester vertical flue 60/100mm', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'960mm', supplier:'City Plumbing', priceExVat:59.35, note:'Worcester 1m flue extension', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'45', supplier:'City Plumbing', priceExVat:86.65, note:'Worcester 45° bend pair', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'90', supplier:'City Plumbing', priceExVat:47.47, note:'Worcester 90° elbow', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'Plume', supplier:'City Plumbing', priceExVat:91.42, note:'Worcester plume management kit', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'Bracket', supplier:'City Plumbing', priceExVat:24.93, note:'Worcester support bracket kit', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Worcester Bosch', match:'Keyless', supplier:'City Plumbing', priceExVat:30.84, note:'Worcester keyless filling link', checked:PRICE_CHECKED},
+
+  {kind:'accessory', manufacturer:'Vaillant', match:'Horizontal', supplier:'City Plumbing', priceExVat:119.72, note:'Vaillant 60/100 horizontal terminal', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Vaillant', match:'Vertical', supplier:'City Plumbing', priceExVat:146.66, note:'Vaillant vertical flue kit', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Vaillant', match:'970', supplier:'City Plumbing', priceExVat:56.97, note:'Vaillant 970mm flue extension', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Vaillant', match:'90', supplier:'City Plumbing', priceExVat:55.99, note:'Vaillant 90° flue elbow', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Vaillant', match:'45', supplier:'City Plumbing', priceExVat:86.54, note:'Vaillant 45° flue elbows', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Vaillant', match:'Plume', supplier:'City Plumbing', priceExVat:87.86, note:'Vaillant plume management kit', checked:PRICE_CHECKED},
+
+  {kind:'accessory', manufacturer:'Ideal', match:'Horizontal Flue', supplier:'City Plumbing', priceExVat:98.30, note:'Ideal horizontal flue kit 208171', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Ideal', match:'Vertical', supplier:'City Plumbing', priceExVat:157.04, note:'Ideal vertical flue roof kit', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Ideal', match:'1m', supplier:'City Plumbing', priceExVat:59.00, note:'Ideal 1m flue extension', checked:PRICE_CHECKED},
+
+  {kind:'accessory', manufacturer:'Glow-worm', match:'Horizontal', supplier:'City Plumbing', priceExVat:99.72, note:'Glow-worm standard horizontal flue', checked:PRICE_CHECKED},
+  {kind:'accessory', manufacturer:'Glow-worm', match:'1000', supplier:'City Plumbing', priceExVat:52.22, note:'Glow-worm 1m extension', checked:PRICE_CHECKED},
+
+  {kind:'thermostat', match:'T3R Wireless', supplier:'City Plumbing', priceExVat:64.98, note:'Honeywell Home Y3H710RF0053', checked:PRICE_CHECKED},
+  {kind:'thermostat', match:'T3R Wireless', supplier:'Screwfix', priceExVat:66.66, note:'Honeywell Home Y3H710RF0053', checked:PRICE_CHECKED},
+  {kind:'thermostat', match:'T3R Wired', supplier:'City Plumbing', priceExVat:47.00, note:'Honeywell Home T3 wired T3H110A0066', checked:PRICE_CHECKED},
+
+  {kind:'filter', match:'Micro2 22mm', supplier:'City Plumbing', priceExVat:144.29, note:'Adey MagnaClean Micro2 FL1-03-01274', checked:PRICE_CHECKED},
+  {kind:'filter', match:'Professional 2 22mm', supplier:'City Plumbing', priceExVat:162.75, note:'Adey MagnaClean Pro2 22mm', checked:PRICE_CHECKED},
+  {kind:'filter', match:'Atom', supplier:'City Plumbing', priceExVat:127.96, note:'Adey MagnaClean Atom 22mm', checked:PRICE_CHECKED}
+];
+
+function merchantOffers(kind, itemName, williamsPriceValue, manufacturer='') {
+  if (!itemName || itemName === 'None') return [];
+  const offers=[{supplier:'Williams',priceExVat:Number(williamsPriceValue||0),note:'Issue 179 catalogue'}];
+  itemOffers.filter(o => o.kind===kind && (!o.manufacturer || o.manufacturer===manufacturer) &&
+    itemName.toLowerCase().includes(o.match.toLowerCase())).forEach(o=>offers.push(o));
+  return offers;
+}
+function bestOffer(offers) { return offers.length ? [...offers].sort((a,b)=>a.priceExVat-b.priceExVat)[0] : null; }
+function comparisonText(offers) {
+  if (offers.length < 2) return '';
+  const best=bestOffer(offers);
+  return '<div class="item-compare">'+offers.map(o=>`<span class="${o===best?'best':''}">${o.supplier}: ${gbp(o.priceExVat)}</span>`).join(' · ')+'</div>';
+}
+
 function fill(sel, items, map = x => ({text:x, value:x})) {
   sel.innerHTML = '';
   items.forEach(x => {
@@ -341,7 +398,7 @@ function calc() {
   const buyOffer = offerBySupplier(b, val('buySupplier'));
   const boilerPrice = Number(quoteOffer.priceExVat || 0);
   const purchasePrice = Number(buyOffer.priceExVat || 0);
-  const purchaseMargin = boilerPrice - purchasePrice;
+  let purchaseMargin = boilerPrice - purchasePrice;
 
   el('boilerMeta').innerHTML =
     `<b>${b.type}</b>${b.output ? ' · '+b.output+'kW' : ''}<br>` +
@@ -357,12 +414,27 @@ function calc() {
     const a = D.accessories.find(x => x.manufacturer === b.manufacturer && x.description === s.value);
     const p = a ? Number(a.price || 0) : 0;
     accessoriesTotal += p;
-    priceEls[i].textContent = gbp(p);
+    const offers = a ? merchantOffers('accessory', a.description, p, b.manufacturer) : [];
+    const best = bestOffer(offers);
+    priceEls[i].innerHTML = gbp(p) + (offers.length > 1 ? comparisonText(offers) : '');
+    if (best && best.supplier !== 'Williams') priceEls[i].title = `Cheapest: ${best.supplier} ${gbp(best.priceExVat)}`;
   });
 
   const thermostat = Number(D.settings.thermostats.find(x => x.name === val('thermostat'))?.price || 0);
   const limescale = Number(D.settings.limescaleReducers.find(x => x.name === val('limescale'))?.price || 0);
   const filter = Number(D.settings.magneticFilters.find(x => x.name === val('filter'))?.price || 0);
+
+  const tOffers = merchantOffers('thermostat', val('thermostat'), thermostat);
+  const fOffers = merchantOffers('filter', val('filter'), filter);
+  let merchantSaving = 0;
+  document.querySelectorAll('.accSel').forEach(s => {
+    const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===s.value);
+    if (a) { const offers=merchantOffers('accessory',a.description,Number(a.price||0),b.manufacturer); const best=bestOffer(offers); if(best) merchantSaving += Math.max(0, Number(a.price||0)-best.priceExVat); }
+  });
+  [tOffers,fOffers].forEach(offers=>{ const best=bestOffer(offers); if(best && offers[0]) merchantSaving += Math.max(0,offers[0].priceExVat-best.priceExVat); });
+  const basketBox=el('basketSaving'); if(basketBox) basketBox.textContent=gbp(merchantSaving);
+  const tBox = el('thermostatCompare'); if (tBox) tBox.innerHTML = comparisonText(tOffers);
+  const fBox = el('filterCompare'); if (fBox) fBox.innerHTML = comparisonText(fOffers);
 
   let heatExtras = 0;
   if (isHeatOnly) document.querySelectorAll('.heatCheck:checked').forEach(x => heatExtras += Number(x.dataset.price || 0));
