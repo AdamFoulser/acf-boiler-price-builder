@@ -266,6 +266,17 @@ const itemOffers = [
   {kind:'filter', match:'Atom', supplier:'City Plumbing', priceExVat:127.96, note:'Adey MagnaClean Atom 22mm', checked:PRICE_CHECKED}
 ];
 
+function selectedSupplierItemPrice(kind, itemName, williamsPriceValue, manufacturer='') {
+  const supplier = val('quoteSupplier');
+  if (!itemName || itemName === 'None') return {available:true, price:0, supplier};
+  if (supplier === 'Williams') return {available:true, price:Number(williamsPriceValue||0), supplier};
+  const match = itemOffers.find(o => o.kind===kind && o.supplier===supplier &&
+    (!o.manufacturer || o.manufacturer===manufacturer) &&
+    itemName.toLowerCase().includes(o.match.toLowerCase()));
+  return match ? {available:true, price:Number(match.priceExVat||0), supplier, note:match.note} :
+                 {available:false, price:0, supplier};
+}
+
 function merchantOffers(kind, itemName, williamsPriceValue, manufacturer='') {
   if (!itemName || itemName === 'None') return [];
   const offers=[{supplier:'Williams',priceExVat:Number(williamsPriceValue||0),note:'Issue 179 catalogue'}];
@@ -412,29 +423,23 @@ function calc() {
   const priceEls = document.querySelectorAll('.accPrice');
   document.querySelectorAll('.accSel').forEach((s,i) => {
     const a = D.accessories.find(x => x.manufacturer === b.manufacturer && x.description === s.value);
-    const p = a ? Number(a.price || 0) : 0;
+    const wp = a ? Number(a.price || 0) : 0;
+    const chosen = a ? selectedSupplierItemPrice('accessory', a.description, wp, b.manufacturer) : {available:true,price:0,supplier:val('quoteSupplier')};
+    const p = chosen.available ? chosen.price : 0;
     accessoriesTotal += p;
-    const offers = a ? merchantOffers('accessory', a.description, p, b.manufacturer) : [];
-    const best = bestOffer(offers);
-    priceEls[i].innerHTML = gbp(p) + (offers.length > 1 ? comparisonText(offers) : '');
-    if (best && best.supplier !== 'Williams') priceEls[i].title = `Cheapest: ${best.supplier} ${gbp(best.priceExVat)}`;
+    priceEls[i].textContent = !a ? gbp(0) : (chosen.available ? gbp(p) : 'Not available');
+    priceEls[i].classList.toggle('unavailable', !!a && !chosen.available);
   });
 
-  const thermostat = Number(D.settings.thermostats.find(x => x.name === val('thermostat'))?.price || 0);
+  const thermostatWilliams = Number(D.settings.thermostats.find(x => x.name === val('thermostat'))?.price || 0);
   const limescale = Number(D.settings.limescaleReducers.find(x => x.name === val('limescale'))?.price || 0);
-  const filter = Number(D.settings.magneticFilters.find(x => x.name === val('filter'))?.price || 0);
-
-  const tOffers = merchantOffers('thermostat', val('thermostat'), thermostat);
-  const fOffers = merchantOffers('filter', val('filter'), filter);
-  let merchantSaving = 0;
-  document.querySelectorAll('.accSel').forEach(s => {
-    const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===s.value);
-    if (a) { const offers=merchantOffers('accessory',a.description,Number(a.price||0),b.manufacturer); const best=bestOffer(offers); if(best) merchantSaving += Math.max(0, Number(a.price||0)-best.priceExVat); }
-  });
-  [tOffers,fOffers].forEach(offers=>{ const best=bestOffer(offers); if(best && offers[0]) merchantSaving += Math.max(0,offers[0].priceExVat-best.priceExVat); });
-  const basketBox=el('basketSaving'); if(basketBox) basketBox.textContent=gbp(merchantSaving);
-  const tBox = el('thermostatCompare'); if (tBox) tBox.innerHTML = comparisonText(tOffers);
-  const fBox = el('filterCompare'); if (fBox) fBox.innerHTML = comparisonText(fOffers);
+  const filterWilliams = Number(D.settings.magneticFilters.find(x => x.name === val('filter'))?.price || 0);
+  const thermostatChoice = selectedSupplierItemPrice('thermostat', val('thermostat'), thermostatWilliams);
+  const filterChoice = selectedSupplierItemPrice('filter', val('filter'), filterWilliams);
+  const thermostat = thermostatChoice.available ? thermostatChoice.price : 0;
+  const filter = filterChoice.available ? filterChoice.price : 0;
+  const tBox = el('thermostatCompare'); if (tBox) tBox.textContent = val('thermostat')==='None' ? '' : (thermostatChoice.available ? `${thermostatChoice.supplier}: ${gbp(thermostat)}` : `Not available from ${thermostatChoice.supplier}`);
+  const fBox = el('filterCompare'); if (fBox) fBox.textContent = val('filter')==='None' ? '' : (filterChoice.available ? `${filterChoice.supplier}: ${gbp(filter)}` : `Not available from ${filterChoice.supplier}`);
 
   let heatExtras = 0;
   if (isHeatOnly) document.querySelectorAll('.heatCheck:checked').forEach(x => heatExtras += Number(x.dataset.price || 0));
