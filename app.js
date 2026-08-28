@@ -8,19 +8,189 @@ const PRICE_CHECKED = '28 Aug 2026';
 const cityOffers = [
   {
     manufacturer:'Worcester Bosch', model:'Worcester 4000 30kW Combi NG', supplier:'City Plumbing',
-    priceExVat:1247.00, note:'Public boiler-only price', checked:PRICE_CHECKED,
+    priceExVat:1247.00, note:'Public boiler price', checked:PRICE_CHECKED,
     url:'https://www.cityplumbing.co.uk/p/worcester-bosch-greenstar-4000-combi-boiler-white-30-kw-7733600373/p/550559'
   },
   {
     manufacturer:'Worcester Bosch', model:'Worcester 4000 25kW Combi NG', supplier:'City Plumbing',
-    priceExVat:1107.00, note:'Public boiler-only price', checked:PRICE_CHECKED,
+    priceExVat:1107.00, note:'Public boiler price', checked:PRICE_CHECKED,
     url:'https://www.cityplumbing.co.uk/p/worcester-bosch-greenstar-4000-combi-boiler-white-25-kw/p/550572'
   },
   {
     manufacturer:'Worcester Bosch', model:'Worcester 1000 30kW Combi NG', supplier:'City Plumbing',
-    priceExVat:670.00, note:'Public boiler-only price', checked:PRICE_CHECKED,
+    priceExVat:670.00, note:'Public boiler price', checked:PRICE_CHECKED,
     url:'https://www.cityplumbing.co.uk/p/worcester-bosch-greenstar-1000-30kw-combi-7736902179/p/668700'
-  }
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 2000 Combi 30kW NG', supplier:'City Plumbing',
+    priceExVat:929.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 36CDi Compact Combi NG', supplier:'City Plumbing',
+    priceExVat:1571.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 4000 12kW System NG', supplier:'City Plumbing',
+    priceExVat:1136.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 4000 15kW System NG', supplier:'City Plumbing',
+    priceExVat:1196.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 4000 18kW System NG', supplier:'City Plumbing',
+    priceExVat:1249.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 4000 21kW System NG', supplier:'City Plumbing',
+    priceExVat:1318.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 4000 24kW System NG', supplier:'City Plumbing',
+    priceExVat:1360.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 8000+ 30kW System NG', supplier:'City Plumbing',
+    priceExVat:1653.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 8000+ 35kW System NG', supplier:'City Plumbing',
+    priceExVat:1828.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 27i Compact System NG', supplier:'City Plumbing',
+    priceExVat:1416.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Worcester Bosch', model:'Worcester 12Ri Heat Only NG', supplier:'City Plumbing',
+    priceExVat:996.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Vaillant', model:'Vaillant ecoTEC Pro 24kW Combi Boiler', supplier:'City Plumbing',
+    priceExVat:1008.02, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Vaillant', model:'Vaillant ecoTEC Pro 30kW Combi Boiler ErP', supplier:'City Plumbing',
+    priceExVat:1127.61, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Vaillant', model:'Vaillant 2023 ecoTEC Plus 832 32kW Combi Boiler', supplier:'City Plumbing',
+    priceExVat:1651.22, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:'https://www.cityplumbing.co.uk/p/vaillant-ecotec-plus-832-32kw-combi-boiler-0010036016/p/839283'
+  },
+  {
+    manufacturer:'Vaillant', model:'Vaillant ecoFIT Pure 618 18kW System Boiler', supplier:'City Plumbing',
+    priceExVat:1305.50, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Vaillant', model:'Vaillant ecoFIT Pure 625 25kW System Boiler', supplier:'City Plumbing',
+    priceExVat:1481.37, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Vaillant', model:'Vaillant 2023 ecoTEC Plus 620 20kW System Boiler', supplier:'City Plumbing',
+    priceExVat:1447.20, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Ideal', model:'Ideal Logic+ 24kW Combi2 Boiler', supplier:'City Plumbing',
+    priceExVat:926.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Ideal', model:'Ideal Logic MAX 24kW Combi2 Boiler', supplier:'City Plumbing',
+    priceExVat:1091.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Ideal', model:'Ideal Logic MAX 30kW Combi2 Boiler', supplier:'City Plumbing',
+    priceExVat:1200.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:'https://www.cityplumbing.co.uk/p/ideal-heating-ideal-logic-max-c30-30kw-combi-boiler-228335/p/635747'
+  },
+  {
+    manufacturer:'Ideal', model:'Ideal Logic MAX 35kW Combi2 Boiler', supplier:'City Plumbing',
+    priceExVat:1370.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Ideal', model:'Ideal Vogue MAX 26kW Combi Boiler', supplier:'City Plumbing',
+    priceExVat:1360.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Ideal', model:'Ideal Vogue MAX 40kW Combi Boiler', supplier:'City Plumbing',
+    priceExVat:1635.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Ideal', model:'Ideal Logic MAX 24kW System2 Boiler', supplier:'City Plumbing',
+    priceExVat:1220.00, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 25kW Combi ErP Boiler', supplier:'City Plumbing',
+    priceExVat:896.46, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 30kW Combi ErP Boiler', supplier:'City Plumbing',
+    priceExVat:974.85, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 18kW System ErP Boiler', supplier:'City Plumbing',
+    priceExVat:1043.19, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 25kW System ErP Boiler', supplier:'City Plumbing',
+    priceExVat:1113.54, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 30kW System ErP Boiler', supplier:'City Plumbing',
+    priceExVat:1163.79, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 12kW Heat Only ErP Boiler', supplier:'City Plumbing',
+    priceExVat:937.67, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 15kW Heat Only ErP Boiler', supplier:'City Plumbing',
+    priceExVat:983.90, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 18kW Heat Only ErP Boiler', supplier:'City Plumbing',
+    priceExVat:1037.16, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 25kW Heat Only ErP Boiler', supplier:'City Plumbing',
+    priceExVat:1079.37, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
+  {
+    manufacturer:'Glow-worm', model:'Glow-worm Energy 30kW Heat Only ErP Boiler', supplier:'City Plumbing',
+    priceExVat:1127.61, note:'Public boiler price', checked:PRICE_CHECKED,
+    url:''
+  },
 ];
 
 function fill(sel, items, map = x => ({text:x, value:x})) {
