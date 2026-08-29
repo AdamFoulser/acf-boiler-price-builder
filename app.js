@@ -602,6 +602,8 @@ function calc() {
   el('sumBoiler').textContent=gbp(boilerPrice);
   el('sumAccessories').textContent=gbp(accessoriesTotal);
   el('sumExtras').textContent=gbp(extras);
+  if(el('sumRooferRow')) el('sumRooferRow').style.display=roofer ? 'flex' : 'none';
+  if(el('sumRoofer')) el('sumRoofer').textContent=roofer ? `${gbp(roofer)} + VAT` : '';
   el('subtotal').textContent=gbp(subtotal);
   el('sumCommission').textContent=gbp(commission);
   el('exvat').textContent=gbp(exVat);
