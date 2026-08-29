@@ -69,3 +69,19 @@ body{padding-bottom:78px}
   .using-label{padding-top:3px}
   .accessory{grid-template-columns:minmax(0,1fr) 92px}
 }
+
+/* v11 Williams-first flow */
+.williams-primary{border:1px solid #cddcf0}
+.williams-basis-box{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.williams-basis-box>div{border:1px solid #d7e2ec;border-radius:14px;padding:13px;background:#f8fbfe}
+.williams-basis-box span{display:block;font-size:11px;color:var(--muted);margin-bottom:3px}
+.williams-basis-box strong{font-size:17px;color:var(--navy)}
+.warranty-rule{font-size:12px;color:#8a5b00;margin:-4px 0 10px}
+.warranty-rule:not(:empty){background:#fff8df;border:1px solid #f0d481;border-radius:10px;padding:9px 10px}
+.comparison-summary{margin-bottom:18px}
+.comparison-card{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid #d8e2eb;border-radius:14px;padding:13px 14px;margin-top:10px;background:#fff}
+.comparison-card.baseline{border:2px solid #244f7a;background:#f6f9fc}
+.comparison-card span{font-weight:800;color:var(--navy)}
+.comparison-card small{display:block;color:var(--muted);font-size:10px;margin-top:2px}
+.comparison-card strong{font-size:18px;color:var(--navy);white-space:nowrap}
+.missing-items{font-size:11px;color:#9a4f30;margin:5px 4px 0;line-height:1.35}

@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="ACF Boilers"/>
   <title>ACF Boiler Price Builder</title>
   <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="stylesheet" href="styles.css?v=10"/>
+  <link rel="stylesheet" href="styles.css?v=11"/>
 </head>
 <body>
 <header class="topbar">
@@ -26,25 +26,28 @@
   <div class="grid">
     <section class="card">
       <h2>1. Boiler</h2>
+      <label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label>
       <label>Manufacturer<select id="manufacturer"></select></label>
       <label>Boiler model<select id="boilerModel"></select></label>
+      <label>Warranty<select id="warranty"></select></label>
+      <div id="warrantyRule" class="warranty-rule"></div>
       <label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label>
       <div id="boilerMeta" class="meta"></div>
     </section>
 
-    <section class="card supplier-card">
-      <div class="section-title-row"><h2>2. Supplier Comparison</h2><span class="internal-badge">INTERNAL</span></div>
-      <div id="supplierPrices" class="supplier-prices supplier-grid"></div>
-      <label class="supplier-select-label">Quote whole job using prices from<select id="quoteSupplier"></select></label><p class="supplier-help">This sets the prices for boiler, flues, thermostat and magnetic filter. If an exact match is unavailable it will show as “Not available”.</p>
-      <label class="supplier-select-label">Actually buy boiler from <span class="optional">(optional)</span><select id="buySupplier"></select></label>
-      <div class="marginbox"><div><span>Extra purchasing margin</span><small>Not shown on customer quote</small></div><strong id="purchaseMargin">£0.00</strong></div>
-      <p class="hint">Internal only. Supplier and purchasing margin are not included in the customer copy.</p>
-    </section>
+    <section class="card supplier-card williams-primary">
+  <div class="section-title-row"><h2>2. Williams Price Basis</h2><span class="internal-badge">DEFAULT</span></div>
+  <p class="supplier-help">Build the job using Williams prices. City Plumbing and Wolseley are compared automatically at the end against the selected equipment.</p>
+  <div class="williams-basis-box">
+    <div><span>Boiler cost basis</span><strong id="williamsBoilerBasis">£0.00</strong></div>
+    <div><span>Equipment supplier</span><strong>Williams</strong></div>
+  </div>
+</section>
 
-    <section class="card"><div class="section-title-row"><h2>3. Flues & Accessories</h2><div class="using-label">Using: <strong id="accessorySupplierLabel">Williams</strong></div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
+    <section class="card"><div class="section-title-row"><h2>3. Flues & Accessories</h2><div class="using-label">Williams pricing</div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
 
     <section class="card">
-      <div class="section-title-row"><h2>4. Controls, Filters & Installation</h2><div class="using-label">Using: <strong id="controlSupplierLabel">Williams</strong></div></div>
+      <div class="section-title-row"><h2>4. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div>
       <label>Labour<select id="labour"></select></label>
       <label>Pipework / materials<select id="materials"></select></label>
       <label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div>
@@ -66,8 +69,6 @@
     <section class="card summary">
       <h2>Quote Summary</h2>
       <div class="row"><span>Boiler quote basis</span><strong id="sumBoiler">£0.00</strong></div>
-      <div class="row internal-row"><span>Actual boiler purchase</span><strong id="sumPurchase">£0.00</strong></div>
-      <div class="row internal-row"><span>Extra purchasing margin</span><strong id="sumMargin">£0.00</strong></div>
       <div class="row"><span>Accessories</span><strong id="sumAccessories">£0.00</strong></div>
       <div class="row"><span>Labour / materials / extras</span><strong id="sumExtras">£0.00</strong></div>
       <div class="row"><span>Subtotal before commission</span><strong id="subtotal">£0.00</strong></div>
@@ -78,6 +79,16 @@
       <button id="copyQuote" class="primary">Copy quote summary</button>
     </section>
   </div>
+
+<section class="card comparison-summary">
+  <div class="section-title-row"><h2>Supplier Comparison</h2><span class="internal-badge">INTERNAL</span></div>
+  <p class="supplier-help">Customer quote stays based on Williams. These figures compare the same selected equipment for purchasing only.</p>
+  <div class="comparison-card baseline"><div><span>Williams</span><small>Complete selected basket</small></div><strong id="compareWilliams">£0.00</strong></div>
+  <div class="comparison-card"><div><span>City Plumbing</span><small id="cityCompareStatus">Waiting for selected equipment</small></div><strong id="compareCity">—</strong></div>
+  <div id="cityMissing" class="missing-items"></div>
+  <div class="comparison-card"><div><span>Wolseley</span><small id="wolseleyCompareStatus">Prices not populated yet</small></div><strong id="compareWolseley">—</strong></div>
+  <div id="wolseleyMissing" class="missing-items"></div>
+</section>
 </main>
 <nav class="bottom-nav">
   <div>🔥<span>Boilers</span></div>
@@ -85,7 +96,7 @@
   <div>📄<span>Summary</span></div>
   <div>ⓘ<span>Info</span></div>
 </nav>
-<script src="data.js?v=10"></script>
-<script src="app.js?v=10"></script>
+<script src="data.js?v=11"></script>
+<script src="app.js?v=11"></script>
 </body>
 </html>

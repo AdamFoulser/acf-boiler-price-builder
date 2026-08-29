@@ -226,16 +226,12 @@ const cityOffers = [
 
 const itemOffers = [
   {kind:'accessory', manufacturer:'Baxi', match:'Standard Horizontal', supplier:'City Plumbing', priceExVat:105.00, note:'Baxi Multifit standard horizontal flue', checked:PRICE_CHECKED},
-  {kind:'accessory', manufacturer:'Baxi', match:'Standard Horizontal', supplier:'Screwfix', priceExVat:98.77, note:'Baxi Multifit standard horizontal flue', checked:PRICE_CHECKED},
   {kind:'accessory', manufacturer:'Baxi', match:'Telescopic', supplier:'City Plumbing', priceExVat:118.00, note:'Baxi standard telescopic flue', checked:PRICE_CHECKED},
-  {kind:'accessory', manufacturer:'Baxi', match:'Telescopic', supplier:'Screwfix', priceExVat:110.83, note:'Baxi standard telescopic flue', checked:PRICE_CHECKED},
   {kind:'accessory', manufacturer:'Baxi', match:'Vertical', supplier:'City Plumbing', priceExVat:122.88, note:'Baxi vertical flue terminal', checked:PRICE_CHECKED},
-  {kind:'accessory', manufacturer:'Baxi', match:'Vertical', supplier:'Screwfix', priceExVat:119.16, note:'Baxi vertical flue terminal', checked:PRICE_CHECKED},
 
   {kind:'accessory', manufacturer:'Worcester Bosch', match:'Telescopic', supplier:'City Plumbing', priceExVat:105.65, note:'Worcester 7716191082 telescopic flue', checked:PRICE_CHECKED},
   {kind:'accessory', manufacturer:'Worcester Bosch', match:'Long Telescopic', supplier:'City Plumbing', priceExVat:118.71, note:'Worcester 7716191171 long telescopic flue', checked:PRICE_CHECKED},
   {kind:'accessory', manufacturer:'Worcester Bosch', match:'Vertical Flue', supplier:'City Plumbing', priceExVat:147.20, note:'Worcester 7719002430 vertical flue', checked:PRICE_CHECKED},
-  {kind:'accessory', manufacturer:'Worcester Bosch', match:'Vertical Flue', supplier:'Screwfix', priceExVat:136.67, note:'Worcester vertical flue 60/100mm', checked:PRICE_CHECKED},
   {kind:'accessory', manufacturer:'Worcester Bosch', match:'960mm', supplier:'City Plumbing', priceExVat:59.35, note:'Worcester 1m flue extension', checked:PRICE_CHECKED},
   {kind:'accessory', manufacturer:'Worcester Bosch', match:'45', supplier:'City Plumbing', priceExVat:86.65, note:'Worcester 45° bend pair', checked:PRICE_CHECKED},
   {kind:'accessory', manufacturer:'Worcester Bosch', match:'90', supplier:'City Plumbing', priceExVat:47.47, note:'Worcester 90° elbow', checked:PRICE_CHECKED},
@@ -258,7 +254,6 @@ const itemOffers = [
   {kind:'accessory', manufacturer:'Glow-worm', match:'1000', supplier:'City Plumbing', priceExVat:52.22, note:'Glow-worm 1m extension', checked:PRICE_CHECKED},
 
   {kind:'thermostat', match:'T3R Wireless', supplier:'City Plumbing', priceExVat:64.98, note:'Honeywell Home Y3H710RF0053', checked:PRICE_CHECKED},
-  {kind:'thermostat', match:'T3R Wireless', supplier:'Screwfix', priceExVat:66.66, note:'Honeywell Home Y3H710RF0053', checked:PRICE_CHECKED},
   {kind:'thermostat', match:'T3R Wired', supplier:'City Plumbing', priceExVat:47.00, note:'Honeywell Home T3 wired T3H110A0066', checked:PRICE_CHECKED},
 
   {kind:'filter', match:'Micro2 22mm', supplier:'City Plumbing', priceExVat:144.29, note:'Adey MagnaClean Micro2 FL1-03-01274', checked:PRICE_CHECKED},
@@ -359,12 +354,21 @@ function refreshSuppliers() {
   el('supplierPrices').innerHTML = tiles.join('');
 }
 
+function refreshManufacturers() {
+  const type = val('boilerType');
+  const brands = [...new Set(D.boilers.filter(x => normalizeBoilerType(x.type) === type).map(x => x.manufacturer))];
+  const old = el('manufacturer').value;
+  fill(el('manufacturer'), brands);
+  if (brands.includes(old)) el('manufacturer').value = old;
+}
+
 function refreshModels() {
   const brand = val('manufacturer');
-  const models = D.boilers.filter(x => x.manufacturer === brand);
+  const type = val('boilerType');
+  const models = D.boilers.filter(x => x.manufacturer === brand && normalizeBoilerType(x.type) === type);
   fill(el('boilerModel'), models, x => ({text:x.model, value:x.model}));
   refreshAccessories();
-  refreshSuppliers();
+  updateWarrantyOptions();
   calc();
 }
 
@@ -378,7 +382,7 @@ function refreshAccessories() {
 }
 
 function makeSelectOptions() {
-  fill(el('manufacturer'), manufacturers);
+  refreshManufacturers();
   fill(el('labour'), D.settings.labourOptions, x => ({text:gbp(x), value:x}));
   fill(el('materials'), D.settings.materialsOptions, x => ({text:gbp(x), value:x}));
   fill(el('thermostat'), D.settings.thermostats, x => ({text:`${x.name}${x.price ? ' — '+gbp(x.price) : ''}`, value:x.name}));
@@ -411,110 +415,176 @@ function buildHeat() {
   document.querySelectorAll('.heatCheck').forEach(x => x.onchange = calc);
 }
 
-function calc() {
-  const b = currentBoiler();
-  if (!b) return;
-  const quoteOffer = offerBySupplier(b, val('quoteSupplier'));
-  const buyOffer = offerBySupplier(b, val('buySupplier'));
-  const boilerPrice = Number(quoteOffer.priceExVat || 0);
-  const purchasePrice = Number(buyOffer.priceExVat || 0);
-  let purchaseMargin = boilerPrice - purchasePrice;
+const wolseleyBoilerOffers = [];
+const wolseleyItemOffers = [];
 
-  el('boilerMeta').innerHTML =
-    `<b>${b.type}</b>${b.output ? ' · '+b.output+'kW' : ''}<br>` +
-    `Part code: ${b.partCode || '—'}<br>` +
-    `Williams ${val('priceBasis')} price: <b>${gbp(williamsPrice(b))}</b>`;
+const warrantyRules = {
+  "Baxi":[{label:"Manufacturer warranty",restriction:"Warranty length/rules to be populated by range"}],
+  "Baxi Main":[{label:"Manufacturer warranty",restriction:"Warranty length/rules to be populated by range"}],
+  "Worcester Bosch":[
+    {label:"Standard warranty",restriction:"Any compatible filter"},
+    {label:"Extended warranty",restriction:"Worcester-approved filter / pack required where applicable"}
+  ],
+  "Vaillant":[
+    {label:"Standard warranty",restriction:"Any compatible filter"},
+    {label:"Extended warranty",restriction:"Vaillant-approved filter / controls required where applicable"}
+  ],
+  "Ideal":[{label:"Manufacturer warranty",restriction:"Warranty length/rules to be populated by range"}],
+  "Glow-worm":[{label:"Manufacturer warranty",restriction:"Warranty length/rules to be populated by range"}]
+};
 
-  const isHeatOnly = String(b.type || '').toLowerCase().includes('heat');
-  el('heatOnlyCard').style.display = isHeatOnly ? 'block' : 'none';
-
-  let accessoriesTotal = 0;
-  const priceEls = document.querySelectorAll('.accPrice');
-  document.querySelectorAll('.accSel').forEach((s,i) => {
-    const a = D.accessories.find(x => x.manufacturer === b.manufacturer && x.description === s.value);
-    const wp = a ? Number(a.price || 0) : 0;
-    const chosen = a ? selectedSupplierItemPrice('accessory', a.description, wp, b.manufacturer) : {available:true,price:0,supplier:val('quoteSupplier')};
-    const p = chosen.available ? chosen.price : 0;
-    accessoriesTotal += p;
-    priceEls[i].textContent = !a ? gbp(0) : (chosen.available ? gbp(p) : 'Not available');
-    priceEls[i].classList.toggle('unavailable', !!a && !chosen.available);
-  });
-
-  const selectedAccs=[...document.querySelectorAll('.accSel')].map(s=>s.value).filter(v=>v && v!=='None');
-  const missingAccs=selectedAccs.filter(name=>{
-    const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===name);
-    if(!a) return false;
-    return !selectedSupplierItemPrice('accessory',a.description,Number(a.price||0),b.manufacturer).available;
-  });
-  const matchNote=el('accessoryMatchNote');
-  if(matchNote){
-    if(selectedAccs.length===0) matchNote.textContent='';
-    else if(missingAccs.length===0) matchNote.innerHTML=`✓ ${selectedQuoteSupplier} has exact matches for selected items.`;
-    else matchNote.innerHTML=`⚠ ${missingAccs.length} selected item${missingAccs.length>1?'s are':' is'} not available as an exact match from ${selectedQuoteSupplier}.`;
-  }
-
-  const thermostatWilliams = Number(D.settings.thermostats.find(x => x.name === val('thermostat'))?.price || 0);
-  const limescale = Number(D.settings.limescaleReducers.find(x => x.name === val('limescale'))?.price || 0);
-  const filterWilliams = Number(D.settings.magneticFilters.find(x => x.name === val('filter'))?.price || 0);
-  const thermostatChoice = selectedSupplierItemPrice('thermostat', val('thermostat'), thermostatWilliams);
-  const filterChoice = selectedSupplierItemPrice('filter', val('filter'), filterWilliams);
-  const thermostat = thermostatChoice.available ? thermostatChoice.price : 0;
-  const filter = filterChoice.available ? filterChoice.price : 0;
-  const tBox = el('thermostatCompare'); if (tBox) tBox.textContent = val('thermostat')==='None' ? '' : (thermostatChoice.available ? `${thermostatChoice.supplier}: ${gbp(thermostat)}` : `Not available from ${thermostatChoice.supplier}`);
-  const fBox = el('filterCompare'); if (fBox) fBox.textContent = val('filter')==='None' ? '' : (filterChoice.available ? `${filterChoice.supplier}: ${gbp(filter)}` : `Not available from ${filterChoice.supplier}`);
-
-  let heatExtras = 0;
-  if (isHeatOnly) document.querySelectorAll('.heatCheck:checked').forEach(x => heatExtras += Number(x.dataset.price || 0));
-
-  const extras = Number(val('labour')) + Number(val('materials')) + thermostat + limescale + filter + heatExtras;
-  const subtotal = boilerPrice + accessoriesTotal + extras;
-  const commission = subtotal * Number(val('commission'));
-  const rawExVat = subtotal + commission;
-  const roundTo = Number(D.settings.roundUpTo || 5);
-  const exVat = Math.ceil(rawExVat / roundTo) * roundTo;
-  const vat = exVat * Number(D.settings.vat || 0.2);
-  const incVat = exVat + vat;
-
-  el('purchaseMargin').textContent = gbp(purchaseMargin);
-  el('sumBoiler').textContent = gbp(boilerPrice);
-  el('sumPurchase').textContent = gbp(purchasePrice);
-  el('sumMargin').textContent = gbp(purchaseMargin);
-  el('sumAccessories').textContent = gbp(accessoriesTotal);
-  el('sumExtras').textContent = gbp(extras);
-  el('subtotal').textContent = gbp(subtotal);
-  el('sumCommission').textContent = gbp(commission);
-  el('exvat').textContent = gbp(exVat);
-  el('vat').textContent = gbp(vat);
-  el('incvat').textContent = gbp(incVat);
+function normalizeBoilerType(t){
+  const s=String(t||'').toLowerCase();
+  if(s.includes('combi')) return 'Combi';
+  if(s.includes('system')) return 'System';
+  return 'Heat Only';
 }
 
-function refreshSupplierAndCalc() { refreshSuppliers(); calc(); }
+function updateWarrantyOptions(){
+  const b=currentBoiler();
+  const s=el('warranty');
+  if(!b || !s) return;
+  const old=s.value;
+  const rules=warrantyRules[b.manufacturer] || [{label:'Manufacturer warranty',restriction:''}];
+  s.innerHTML=rules.map((r,i)=>`<option value="${i}">${r.label}</option>`).join('');
+  if([...s.options].some(o=>o.value===old)) s.value=old;
+  updateWarrantyRule();
+}
+function updateWarrantyRule(){
+  const b=currentBoiler(), box=el('warrantyRule');
+  if(!b || !box) return;
+  const rules=warrantyRules[b.manufacturer] || [];
+  box.textContent=rules[Number(val('warranty')||0)]?.restriction || '';
+}
+
+function selectedWilliamsBasket(){
+  const b=currentBoiler();
+  if(!b) return {items:[],total:0};
+  const items=[{kind:'boiler',manufacturer:b.manufacturer,model:b.model,name:b.model,williams:williamsPrice(b)}];
+  document.querySelectorAll('.accSel').forEach(s=>{
+    if(!s.value || s.value==='None') return;
+    const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===s.value);
+    if(a) items.push({kind:'accessory',manufacturer:b.manufacturer,name:a.description,williams:Number(a.price||0)});
+  });
+  const t=val('thermostat');
+  if(t && t!=='None'){
+    const x=D.settings.thermostats.find(x=>x.name===t);
+    if(x) items.push({kind:'thermostat',manufacturer:'',name:x.name,williams:Number(x.price||0)});
+  }
+  const f=val('filter');
+  if(f && f!=='None'){
+    const x=D.settings.magneticFilters.find(x=>x.name===f);
+    if(x) items.push({kind:'filter',manufacturer:'',name:x.name,williams:Number(x.price||0)});
+  }
+  return {items,total:items.reduce((s,x)=>s+x.williams,0)};
+}
+
+function merchantBasketComparison(merchant){
+  const basket=selectedWilliamsBasket();
+  let total=0; const missing=[];
+  basket.items.forEach(item=>{
+    let match=null;
+    if(merchant==='City Plumbing'){
+      if(item.kind==='boiler') match=cityOffers.find(x=>x.manufacturer===item.manufacturer && x.model===item.model);
+      else match=itemOffers.find(x=>x.supplier==='City Plumbing' && x.kind===item.kind && (item.kind==='accessory' ? x.manufacturer===item.manufacturer && item.name.toLowerCase().includes(x.match.toLowerCase()) : item.name.toLowerCase().includes(x.match.toLowerCase())));
+    } else {
+      if(item.kind==='boiler') match=wolseleyBoilerOffers.find(x=>x.manufacturer===item.manufacturer && x.model===item.model);
+      else match=wolseleyItemOffers.find(x=>x.kind===item.kind && (item.kind==='accessory' ? x.manufacturer===item.manufacturer && item.name.toLowerCase().includes(x.match.toLowerCase()) : item.name.toLowerCase().includes(x.match.toLowerCase())));
+    }
+    if(match) total+=Number(match.priceExVat||0); else missing.push(item.name);
+  });
+  return {total,missing,count:basket.items.length};
+}
+function updateSupplierComparison(){
+  const basket=selectedWilliamsBasket();
+  if(el('compareWilliams')) el('compareWilliams').textContent=gbp(basket.total);
+  [['City Plumbing','compareCity','cityCompareStatus','cityMissing'],['Wolseley','compareWolseley','wolseleyCompareStatus','wolseleyMissing']].forEach(([merchant,pid,sid,mid])=>{
+    const r=merchantBasketComparison(merchant), p=el(pid), s=el(sid), miss=el(mid);
+    if(!p||!s||!miss) return;
+    if(r.count && r.missing.length===0){
+      p.textContent=gbp(r.total);
+      const diff=r.total-basket.total;
+      s.textContent=Math.abs(diff)<0.01?'Same price as Williams':diff<0?`${gbp(-diff)} cheaper than Williams`:`${gbp(diff)} more expensive than Williams`;
+      miss.textContent='';
+    } else {
+      p.textContent=r.total?gbp(r.total):'Not available';
+      s.textContent=r.count?`${r.count-r.missing.length} of ${r.count} items matched`:'No equipment selected';
+      miss.textContent=r.missing.length?`Missing: ${r.missing.join(', ')}`:'';
+    }
+  });
+}
+
+function calc() {
+  const b=currentBoiler();
+  if(!b) return;
+  const boilerPrice=williamsPrice(b);
+  if(el('williamsBoilerBasis')) el('williamsBoilerBasis').textContent=gbp(boilerPrice);
+  updateWarrantyRule();
+
+  el('boilerMeta').innerHTML = `<b>${b.type}</b>${b.output ? ' · '+b.output+'kW' : ''}<br>Part code: ${b.partCode || '—'}<br>Williams ${val('priceBasis')} price: <b>${gbp(boilerPrice)}</b>`;
+  const isHeatOnly=normalizeBoilerType(b.type)==='Heat Only';
+  el('heatOnlyCard').style.display=isHeatOnly?'block':'none';
+
+  let accessoriesTotal=0;
+  const priceEls=document.querySelectorAll('.accPrice');
+  document.querySelectorAll('.accSel').forEach((s,i)=>{
+    const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===s.value);
+    const p=a?Number(a.price||0):0;
+    accessoriesTotal+=p;
+    priceEls[i].textContent=gbp(p);
+    priceEls[i].classList.remove('unavailable');
+  });
+  const matchNote=el('accessoryMatchNote'); if(matchNote) matchNote.textContent='';
+
+  const thermostat=Number(D.settings.thermostats.find(x=>x.name===val('thermostat'))?.price||0);
+  const limescale=Number(D.settings.limescaleReducers.find(x=>x.name===val('limescale'))?.price||0);
+  const filter=Number(D.settings.magneticFilters.find(x=>x.name===val('filter'))?.price||0);
+  if(el('thermostatCompare')) el('thermostatCompare').textContent=val('thermostat')==='None'?'':`Williams: ${gbp(thermostat)}`;
+  if(el('filterCompare')) el('filterCompare').textContent=val('filter')==='None'?'':`Williams: ${gbp(filter)}`;
+
+  let heatExtras=0;
+  if(isHeatOnly) document.querySelectorAll('.heatCheck:checked').forEach(x=>heatExtras+=Number(x.dataset.price||0));
+  const extras=Number(val('labour'))+Number(val('materials'))+thermostat+limescale+filter+heatExtras;
+  const subtotal=boilerPrice+accessoriesTotal+extras;
+  const commission=subtotal*Number(val('commission'));
+  const rawExVat=subtotal+commission;
+  const roundTo=Number(D.settings.roundUpTo||5);
+  const exVat=Math.ceil(rawExVat/roundTo)*roundTo;
+  const vat=exVat*Number(D.settings.vat||0.2);
+  const incVat=exVat+vat;
+
+  el('sumBoiler').textContent=gbp(boilerPrice);
+  el('sumAccessories').textContent=gbp(accessoriesTotal);
+  el('sumExtras').textContent=gbp(extras);
+  el('subtotal').textContent=gbp(subtotal);
+  el('sumCommission').textContent=gbp(commission);
+  el('exvat').textContent=gbp(exVat);
+  el('vat').textContent=gbp(vat);
+  el('incvat').textContent=gbp(incVat);
+  updateSupplierComparison();
+}
+
+function refreshSupplierAndCalc() { calc(); }
 
 function init() {
-  makeSelectOptions();
   buildAccessories();
   buildHeat();
+  makeSelectOptions();
   refreshModels();
 
-  ['labour','materials','thermostat','limescale','filter','commission','quoteSupplier','buySupplier'].forEach(id => el(id).onchange = calc);
-  el('priceBasis').onchange = refreshSupplierAndCalc;
-  el('manufacturer').onchange = refreshModels;
-  el('boilerModel').onchange = refreshSupplierAndCalc;
+  el('boilerType').onchange=()=>{ refreshManufacturers(); refreshModels(); };
+  el('manufacturer').onchange=refreshModels;
+  el('boilerModel').onchange=()=>{ refreshAccessories(); updateWarrantyOptions(); calc(); };
+  el('priceBasis').onchange=calc;
+  el('warranty').onchange=()=>{ updateWarrantyRule(); calc(); };
+  ['labour','materials','thermostat','limescale','filter','commission'].forEach(id=>el(id).onchange=calc);
 
-  el('copyQuote').onclick = async () => {
-    const b = currentBoiler();
-    const text =
-      `ACF Boiler Quote\n` +
-      `${b?.manufacturer || ''} ${b?.model || ''}\n` +
-      `Price ex VAT: ${el('exvat').textContent}\n` +
-      `VAT: ${el('vat').textContent}\n` +
-      `Total inc VAT: ${el('incvat').textContent}`;
-    try {
-      await navigator.clipboard.writeText(text);
-      el('copyQuote').textContent = 'Copied ✓';
-      setTimeout(() => el('copyQuote').textContent = 'Copy quote summary', 1200);
-    } catch { alert(text); }
+  el('copyQuote').onclick=async()=>{
+    const b=currentBoiler(); if(!b) return;
+    const text=`ACF Boiler Quote\n${b.model}\nCustomer price ex VAT: ${el('exvat').textContent}\nVAT: ${el('vat').textContent}\nTotal inc VAT: ${el('incvat').textContent}`;
+    try{ await navigator.clipboard.writeText(text); el('copyQuote').textContent='Copied'; setTimeout(()=>el('copyQuote').textContent='Copy quote summary',1200); }catch(e){}
   };
+  calc();
 }
 
 init();
