@@ -1,5 +1,6 @@
 const D = window.ACF_DATA;
 const gbp = n => new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(Number(n || 0));
+const gbpQuote = n => { const v=Number(n||0); return new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP',minimumFractionDigits:Number.isInteger(v)?0:2,maximumFractionDigits:2}).format(v); };
 const el = id => document.getElementById(id);
 const val = id => el(id).value;
 const manufacturers = [...new Set(D.boilers.map(x => x.manufacturer))];
@@ -269,34 +270,7 @@ const itemOffers = [
   {kind:'filter', match:'Atom', supplier:'City Plumbing', priceExVat:127.96, note:'Adey MagnaClean Atom 22mm', checked:PRICE_CHECKED}
 ];
 
-const screwfixBoilerOffers = [
-  // Screwfix is shown only where the exact Williams master-list boiler has been verified.
-];
 
-function selectedSupplierItemPrice(kind, itemName, williamsPriceValue, manufacturer='') {
-  const supplier = val('quoteSupplier');
-  if (!itemName || itemName === 'None') return {available:true, price:0, supplier};
-  if (supplier === 'Williams') return {available:true, price:Number(williamsPriceValue||0), supplier};
-  const match = itemOffers.find(o => o.kind===kind && o.supplier===supplier &&
-    (!o.manufacturer || o.manufacturer===manufacturer) &&
-    itemName.toLowerCase().includes(o.match.toLowerCase()));
-  return match ? {available:true, price:Number(match.priceExVat||0), supplier, note:match.note} :
-                 {available:false, price:0, supplier};
-}
-
-function merchantOffers(kind, itemName, williamsPriceValue, manufacturer='') {
-  if (!itemName || itemName === 'None') return [];
-  const offers=[{supplier:'Williams',priceExVat:Number(williamsPriceValue||0),note:'Issue 179 catalogue'}];
-  itemOffers.filter(o => o.kind===kind && (!o.manufacturer || o.manufacturer===manufacturer) &&
-    itemName.toLowerCase().includes(o.match.toLowerCase())).forEach(o=>offers.push(o));
-  return offers;
-}
-function bestOffer(offers) { return offers.length ? [...offers].sort((a,b)=>a.priceExVat-b.priceExVat)[0] : null; }
-function comparisonText(offers) {
-  if (offers.length < 2) return '';
-  const best=bestOffer(offers);
-  return '<div class="item-compare">'+offers.map(o=>`<span class="${o===best?'best':''}">${o.supplier}: ${gbp(o.priceExVat)}</span>`).join(' · ')+'</div>';
-}
 
 function fill(sel, items, map = x => ({text:x, value:x})) {
   sel.innerHTML = '';
@@ -318,49 +292,6 @@ function williamsPrice(b) {
   return val('priceBasis') === 'Flexi-Pack' ? Number(b.flexiPrice || b.standardPrice) : Number(b.standardPrice || 0);
 }
 
-function supplierOffers(b) {
-  const offers = [{
-    supplier:'Williams', priceExVat:williamsPrice(b), note:`Pricebusters ${val('priceBasis')} price`, checked:'Issue 179 physical catalogue', url:''
-  }];
-  cityOffers.filter(x => x.manufacturer === b.manufacturer && x.model === b.model).forEach(x => offers.push(x));
-  screwfixBoilerOffers.filter(x => x.manufacturer === b.manufacturer && x.model === b.model).forEach(x => offers.push(x));
-  return offers;
-}
-
-function offerBySupplier(b, supplier) {
-  return supplierOffers(b).find(x => x.supplier === supplier) || supplierOffers(b)[0];
-}
-
-function refreshSuppliers() {
-  const b = currentBoiler();
-  if (!b) return;
-  const offers = supplierOffers(b);
-  const oldQuote = el('quoteSupplier').value;
-  const oldBuy = el('buySupplier').value;
-  fill(el('quoteSupplier'), offers, x => ({text:`${x.supplier} — ${gbp(x.priceExVat)} ex VAT`, value:x.supplier}));
-  fill(el('buySupplier'), offers, x => ({text:`${x.supplier} — ${gbp(x.priceExVat)} ex VAT`, value:x.supplier}));
-
-  const highest = [...offers].sort((a,b) => b.priceExVat-a.priceExVat)[0];
-  const cheapest = [...offers].sort((a,b) => a.priceExVat-b.priceExVat)[0];
-  el('quoteSupplier').value = offers.some(x=>x.supplier===oldQuote) ? oldQuote : highest.supplier;
-  el('buySupplier').value = offers.some(x=>x.supplier===oldBuy) ? oldBuy : cheapest.supplier;
-
-  const tiles = offers.map(o => {
-    const isCheapest = o.supplier === cheapest.supplier && offers.length > 1;
-    const isHighest = o.supplier === highest.supplier && offers.length > 1;
-    const link = o.url ? `<a class="supplier-link" href="${o.url}" target="_blank" rel="noopener">View price</a>` : '';
-    return `<div class="supplier-tile ${isCheapest?'cheapest':''} ${isHighest?'highest':''}">
-      <div class="supplier-name">${o.supplier}</div>
-      <strong>${gbp(o.priceExVat)}</strong>
-      <div class="tile-sub">ex VAT</div>
-      ${isHighest?'<span class="tile-badge high">Highest quote basis</span>':''}
-      ${isCheapest?'<span class="tile-badge">Cheapest</span>':''}
-      ${link}
-    </div>`;
-  });
-  tiles.push(`<div class="supplier-tile best-tile"><div class="supplier-name">Best Price</div><strong>${gbp(cheapest.priceExVat)}</strong><div class="tile-sub">${cheapest.supplier}</div></div>`);
-  el('supplierPrices').innerHTML = tiles.join('');
-}
 
 function refreshManufacturers() {
   const type = val('boilerType');
@@ -663,7 +594,42 @@ function calc() {
   updateSupplierComparison();
 }
 
-function refreshSupplierAndCalc() { calc(); }
+
+function quoteModelName(b){
+  let name=String(b?.model||'').trim();
+  name=name.replace(/\s+Gas\s+/gi,' ')
+           .replace(/\s+NG\b/gi,'')
+           .replace(/\s+ErP\b/gi,'')
+           .replace(/\s+Boiler\b/gi,'')
+           .replace(/\s{2,}/g,' ')
+           .trim();
+  return name;
+}
+
+function warrantyQuoteText(b,w){
+  if(!w?.years) return 'warranty to be confirmed';
+  const make=String(b?.manufacturer||'');
+  const years=`${w.years}-year`;
+  if(make==='Worcester Bosch'){
+    if(w.filterRule==='worcester') return `${years} guarantee with Worcester Greenstar system filter`;
+    return `${years} guarantee`;
+  }
+  if(make==='Vaillant'){
+    if(w.filterRule==='vaillant') return `${years} guarantee with Vaillant Boiler Protection Kit`;
+    return `${years} guarantee`;
+  }
+  if(make==='Glow-worm'){
+    if(w.filterRule==='glowworm') return `${years} guarantee with Glow-worm Power System Filter`;
+    return `${years} guarantee`;
+  }
+  if(make==='Ideal'){
+    if(/MAX Accredited Installer/i.test(w.label||'')) return `${years} parts & labour warranty — MAX Accredited Installer`;
+    return `${years} parts & labour warranty`;
+  }
+  if(make==='Baxi' || make==='Baxi Main') return `${years} parts & labour warranty`;
+  return `${years} warranty`;
+}
+
 
 function init() {
   buildAccessories();
@@ -681,8 +647,9 @@ function init() {
   el('copyQuote').onclick=async()=>{
     const b=currentBoiler(); if(!b) return;
     const w=selectedWarranty();
-    const text=`ACF Boiler Quote\n${b.model}\nWarranty: ${w.years ? w.years+' years' : 'Check manufacturer'}\nCustomer price ex VAT: ${el('exvat').textContent}\nVAT: ${el('vat').textContent}\nTotal inc VAT: ${el('incvat').textContent}`;
-    try{ await navigator.clipboard.writeText(text); el('copyQuote').textContent='Copied'; setTimeout(()=>el('copyQuote').textContent='Copy quote summary',1200); }catch(e){}
+    const exVatValue=Number(String(el('exvat').textContent).replace(/[^0-9.]/g,''));
+    const text=`${quoteModelName(b)} ${gbpQuote(exVatValue)} + VAT (${warrantyQuoteText(b,w)})`;
+    try{ await navigator.clipboard.writeText(text); el('copyQuote').textContent='Copied'; setTimeout(()=>el('copyQuote').textContent='Copy quote line',1200); }catch(e){}
   };
   calc();
 }
