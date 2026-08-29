@@ -342,17 +342,21 @@ function refreshSuppliers() {
   el('quoteSupplier').value = offers.some(x=>x.supplier===oldQuote) ? oldQuote : highest.supplier;
   el('buySupplier').value = offers.some(x=>x.supplier===oldBuy) ? oldBuy : cheapest.supplier;
 
-  el('supplierPrices').innerHTML = offers.map(o => {
+  const tiles = offers.map(o => {
     const isCheapest = o.supplier === cheapest.supplier && offers.length > 1;
     const isHighest = o.supplier === highest.supplier && offers.length > 1;
-    const link = o.url ? `<a class="supplier-link" href="${o.url}" target="_blank" rel="noopener">View public price</a>` : '';
-    return `<div class="supplier-price ${isCheapest?'cheapest':''}">`+
-      `<div><div class="supplier-name">${o.supplier}`+
-      `${isCheapest?'<span class="badge">Cheapest</span>':''}`+
-      `${isHighest?'<span class="badge high">Highest quote basis</span>':''}</div>`+
-      `<div class="supplier-note">${o.note} · checked ${o.checked}</div>${link}</div>`+
-      `<strong>${gbp(o.priceExVat)}</strong></div>`;
-  }).join('');
+    const link = o.url ? `<a class="supplier-link" href="${o.url}" target="_blank" rel="noopener">View price</a>` : '';
+    return `<div class="supplier-tile ${isCheapest?'cheapest':''} ${isHighest?'highest':''}">
+      <div class="supplier-name">${o.supplier}</div>
+      <strong>${gbp(o.priceExVat)}</strong>
+      <div class="tile-sub">ex VAT</div>
+      ${isHighest?'<span class="tile-badge high">Highest quote basis</span>':''}
+      ${isCheapest?'<span class="tile-badge">Cheapest</span>':''}
+      ${link}
+    </div>`;
+  });
+  tiles.push(`<div class="supplier-tile best-tile"><div class="supplier-name">Best Price</div><strong>${gbp(cheapest.priceExVat)}</strong><div class="tile-sub">${cheapest.supplier}</div></div>`);
+  el('supplierPrices').innerHTML = tiles.join('');
 }
 
 function refreshModels() {
@@ -435,6 +439,19 @@ function calc() {
     priceEls[i].textContent = !a ? gbp(0) : (chosen.available ? gbp(p) : 'Not available');
     priceEls[i].classList.toggle('unavailable', !!a && !chosen.available);
   });
+
+  const selectedAccs=[...document.querySelectorAll('.accSel')].map(s=>s.value).filter(v=>v && v!=='None');
+  const missingAccs=selectedAccs.filter(name=>{
+    const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===name);
+    if(!a) return false;
+    return !selectedSupplierItemPrice('accessory',a.description,Number(a.price||0),b.manufacturer).available;
+  });
+  const matchNote=el('accessoryMatchNote');
+  if(matchNote){
+    if(selectedAccs.length===0) matchNote.textContent='';
+    else if(missingAccs.length===0) matchNote.innerHTML=`✓ ${selectedQuoteSupplier} has exact matches for selected items.`;
+    else matchNote.innerHTML=`⚠ ${missingAccs.length} selected item${missingAccs.length>1?'s are':' is'} not available as an exact match from ${selectedQuoteSupplier}.`;
+  }
 
   const thermostatWilliams = Number(D.settings.thermostats.find(x => x.name === val('thermostat'))?.price || 0);
   const limescale = Number(D.settings.limescaleReducers.find(x => x.name === val('limescale'))?.price || 0);

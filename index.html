@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="ACF Boilers"/>
   <title>ACF Boiler Price Builder</title>
   <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="stylesheet" href="styles.css?v=9"/>
+  <link rel="stylesheet" href="styles.css?v=10"/>
 </head>
 <body>
 <header class="topbar">
@@ -33,18 +33,18 @@
     </section>
 
     <section class="card supplier-card">
-      <h2>2. Supplier Comparison <span class="internal-badge">INTERNAL</span></h2>
-      <div id="supplierPrices" class="supplier-prices"></div>
-      <label>Quote whole job using prices from<select id="quoteSupplier"></select></label>
-      <label>Actually buy boiler from<select id="buySupplier"></select></label>
-      <div class="marginbox"><span>Extra purchasing margin</span><strong id="purchaseMargin">£0.00</strong></div>
+      <div class="section-title-row"><h2>2. Supplier Comparison</h2><span class="internal-badge">INTERNAL</span></div>
+      <div id="supplierPrices" class="supplier-prices supplier-grid"></div>
+      <label class="supplier-select-label">Quote whole job using prices from<select id="quoteSupplier"></select></label><p class="supplier-help">This sets the prices for boiler, flues, thermostat and magnetic filter. If an exact match is unavailable it will show as “Not available”.</p>
+      <label class="supplier-select-label">Actually buy boiler from <span class="optional">(optional)</span><select id="buySupplier"></select></label>
+      <div class="marginbox"><div><span>Extra purchasing margin</span><small>Not shown on customer quote</small></div><strong id="purchaseMargin">£0.00</strong></div>
       <p class="hint">Internal only. Supplier and purchasing margin are not included in the customer copy.</p>
     </section>
 
-    <section class="card"><h2>3. Flues & Accessories</h2><div id="accessorySlots"></div></section>
+    <section class="card"><div class="section-title-row"><h2>3. Flues & Accessories</h2><div class="using-label">Using: <strong id="accessorySupplierLabel">Williams</strong></div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
 
     <section class="card">
-      <h2>4. Labour & Materials</h2>
+      <div class="section-title-row"><h2>4. Controls, Filters & Installation</h2><div class="using-label">Using: <strong id="controlSupplierLabel">Williams</strong></div></div>
       <label>Labour<select id="labour"></select></label>
       <label>Pipework / materials<select id="materials"></select></label>
       <label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div>
@@ -79,7 +79,13 @@
     </section>
   </div>
 </main>
-<script src="data.js?v=9"></script>
-<script src="app.js?v=9"></script>
+<nav class="bottom-nav">
+  <div>🔥<span>Boilers</span></div>
+  <div class="active">▣<span>Quote</span></div>
+  <div>📄<span>Summary</span></div>
+  <div>ⓘ<span>Info</span></div>
+</nav>
+<script src="data.js?v=10"></script>
+<script src="app.js?v=10"></script>
 </body>
 </html>
