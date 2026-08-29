@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
+  <meta name="theme-color" content="#0b2f5b"/>
+  <meta name="apple-mobile-web-app-capable" content="yes"/>
+  <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
+  <meta name="apple-mobile-web-app-title" content="ACF Boilers"/>
+  <title>ACF Boiler Price Builder</title>
+  <link rel="manifest" href="manifest.webmanifest"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png"/>
+  <link rel="stylesheet" href="styles.css?v=27"/>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
+    <div class="brand-copy">
+      <div class="title">ACF Boiler Price Builder</div>
+      <div class="subtitle">ACF engineer tools · v27</div>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+<section id="page-home" class="app-page active-page">
+  <section class="home-hero">
+    <h1>What do you need?</h1>
+    <p>Select a tool below. You can switch between sections at any time using the bottom menu.</p>
+  </section>
+  <div class="home-tools">
+    <button type="button" class="home-tool" data-open-page="quote"><span class="home-icon">▣</span><strong>Boiler Quote</strong><small>Build a complete boiler price</small></button>
+    <button type="button" class="home-tool" data-open-page="boilers"><span class="home-icon">🔥</span><strong>Radiator Sizing</strong><small>Calculate room heat requirement</small></button>
+  </div>
+</section>
+
+<section id="page-boilers" class="app-page">
+  <section class="card radiator-card">
+    <h2>Radiator Sizing Calculator</h2>
+    <p class="supplier-help">Enter the room details to get an estimated heat requirement and suitable standard radiator sizes.</p>
+    <div class="rad-grid">
+      <label>Room name<input id="radRoomName" type="text" placeholder="e.g. Living room"></label>
+      <label>Room type<select id="radRoom"><option value="21">Living room</option><option value="18">Bedroom</option><option value="22">Bathroom</option><option value="20">Kitchen</option><option value="20">Hall / landing</option></select></label>
+      <label>Length (m)<input id="radLength" type="number" inputmode="decimal" min="1" step="0.1" placeholder="e.g. 4.2"></label>
+      <label>Width (m)<input id="radWidth" type="number" inputmode="decimal" min="1" step="0.1" placeholder="e.g. 3.5"></label>
+      <label>Height (m)<input id="radHeight" type="number" inputmode="decimal" min="1" step="0.1" value="2.4"></label>
+      <label>External walls<select id="radWalls"><option value="1">1 external wall</option><option value="1.12">2 external walls</option><option value="1.22">3+ external walls</option></select></label>
+      <label>Windows<select id="radWindows"><option value="0.95">Double / triple glazed</option><option value="1.12">Older double glazed</option><option value="1.25">Single glazed</option></select></label>
+      <label>Insulation<select id="radInsulation"><option value="0.9">Good / modern</option><option value="1" selected>Average</option><option value="1.2">Poor / older property</option></select></label>
+    </div>
+    <button id="calcRadiator" class="primary">Calculate radiator size</button>
+    <div id="radResult" class="rad-result"><strong>Enter the room size above.</strong></div>
+    <p class="hint">Sizing is an estimate for quoting. Recommendations use the current Williams K-Rad Kompact catalogue prices and ΔT50 outputs supplied to ACF.</p>
+  </section>
+  <section class="card radiator-quote-card">
+    <div class="section-title-row"><h2>Radiator Quote</h2><button id="clearRadQuote" type="button" class="small-action">Clear</button></div>
+    <div id="radQuoteEmpty" class="meta">Select a radiator above to start building the quote.</div>
+    <div id="radQuoteItems"></div>
+    <div id="radQuoteTotals" class="rad-quote-totals" style="display:none">
+      <div class="row"><span>Radiators ex VAT</span><strong id="radQuoteExVat">£0.00</strong></div>
+      <div class="row"><span>VAT @ 20%</span><strong id="radQuoteVat">£0.00</strong></div>
+      <div class="row grand"><span>Total inc VAT</span><strong id="radQuoteIncVat">£0.00</strong></div>
+    </div>
+  </section>
+</section>
+
+<section id="page-quote" class="app-page">
+  <div class="grid">
+    <section class="card"><h2>Step 1. Boiler</h2><label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label><label>Manufacturer<select id="manufacturer"></select></label><label>Boiler model<select id="boilerModel"></select></label><label>Warranty<select id="warranty"></select></label><div id="warrantyRule" class="warranty-rule"></div><label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label><div id="boilerMeta" class="meta"></div></section>
+
+    <section class="card"><div class="section-title-row"><h2>Step 2. Flues & Accessories</h2><div class="using-label">Williams pricing</div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
+    <section class="card"><div class="section-title-row"><h2>Step 3. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div><label>Labour<select id="labour"></select></label><label>Pipework / materials<select id="materials"></select></label><label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div><label>Limescale reducer<select id="limescale"></select></label><label>Shock arrestor<select id="shockArrestor"><option value="0">None</option><option value="20">Shock arrestor — £20.00</option></select></label><label>Magnetic filter<select id="filter"></select></label><div id="filterCompare"></div></section>
+    <section class="card"><h2>Step 4. TRVs & Powerflush</h2><label>Number of TRVs<select id="trvQty"></select></label><label>TRV brand / type<select id="trvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="trvBreakdown" class="meta"></div><label>Full powerflush<select id="powerflush"><option value="0">None</option><option value="1">Full heating system powerflush</option></select></label><label id="powerflushRadLabel" style="display:none">Number of radiators<select id="powerflushRads"></select></label><div id="powerflushBreakdown" class="meta" style="display:none"></div></section>
+    <section class="card" id="heatOnlyCard"><h2>Step 5. Heat-only extras</h2><div id="heatOnlyExtras"></div><p class="hint">Use these only where required on heat-only boiler changes.</p></section>
+    <section class="card"><h2>Step 6. Letting Agent Commission</h2><label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label></section>
+  </div>
+  <section class="card summary"><h2>Quote Summary</h2><div class="row"><span>Boiler quote basis</span><strong id="sumBoiler">£0.00</strong></div><div class="row"><span>Boiler warranty</span><strong id="sumWarranty">—</strong></div><div class="row"><span>Accessories</span><strong id="sumAccessories">£0.00</strong></div><div class="row"><span>Labour / materials / extras</span><strong id="sumExtras">£0.00</strong></div><div class="row"><span>Subtotal before commission</span><strong id="subtotal">£0.00</strong></div><div class="row"><span>Letting agent commission</span><strong id="sumCommission">£0.00</strong></div><div class="row total"><span>Customer price ex VAT</span><strong id="exvat">£0.00</strong></div><div class="row"><span>VAT @ 20%</span><strong id="vat">£0.00</strong></div><div class="row grand"><span>Total inc VAT</span><strong id="incvat">£0.00</strong></div><button id="copyQuote" class="primary">Copy quote line</button></section>
+</section>
+
+<section id="page-info" class="app-page"></section>
+</main>
+<nav class="bottom-nav" aria-label="App navigation">
+  <button type="button" data-page="home" class="active">⌂<span>Home</span></button>
+  <button type="button" data-page="quote">🔥<span>Boilers</span></button>
+  <button type="button" data-page="boilers"><svg aria-hidden="true" viewBox="0 0 32 32" width="22" height="22" style="display:block;margin:0 auto 2px" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="7" width="22" height="17" rx="2"/><line x1="10" y1="8" x2="10" y2="23"/><line x1="15" y1="8" x2="15" y2="23"/><line x1="20" y1="8" x2="20" y2="23"/><line x1="25" y1="8" x2="25" y2="23"/><line x1="3" y1="11" x2="5" y2="11"/><line x1="27" y1="20" x2="29" y2="20"/><line x1="8" y1="24" x2="8" y2="27"/><line x1="24" y1="24" x2="24" y2="27"/></svg><span>Radiators</span></button>
+  <button type="button" data-page="info">ⓘ<span>Info</span></button>
+</nav>
+<script src="data.js?v=27"></script>
+<script src="app.js?v=27"></script>
+</body>
+</html>
