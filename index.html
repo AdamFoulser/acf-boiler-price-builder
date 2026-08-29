@@ -17,7 +17,7 @@
     <img class="brand-logo" src="IMG_9229.jpeg" alt="ACF Services Ltd"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v21</div>
+      <div class="subtitle">ACF engineer tools · v23</div>
     </div>
   </div>
 </header>
@@ -39,6 +39,7 @@
     <h2>Radiator Sizing Calculator</h2>
     <p class="supplier-help">Enter the room details to get an estimated heat requirement and suitable standard radiator sizes.</p>
     <div class="rad-grid">
+      <label>Room name<input id="radRoomName" type="text" placeholder="e.g. Living room"></label>
       <label>Room type<select id="radRoom"><option value="21">Living room</option><option value="18">Bedroom</option><option value="22">Bathroom</option><option value="20">Kitchen</option><option value="20">Hall / landing</option></select></label>
       <label>Length (m)<input id="radLength" type="number" inputmode="decimal" min="1" step="0.1" placeholder="e.g. 4.2"></label>
       <label>Width (m)<input id="radWidth" type="number" inputmode="decimal" min="1" step="0.1" placeholder="e.g. 3.5"></label>
@@ -49,7 +50,17 @@
     </div>
     <button id="calcRadiator" class="primary">Calculate radiator size</button>
     <div id="radResult" class="rad-result"><strong>Enter the room size above.</strong></div>
-    <p class="hint">Sizing is an estimate for quoting. Williams radiator catalogue matching will be added next so the app can recommend exact products and prices.</p>
+    <p class="hint">Sizing is an estimate for quoting. Recommendations use the current Williams K-Rad Kompact catalogue prices and ΔT50 outputs supplied to ACF.</p>
+  </section>
+  <section class="card radiator-quote-card">
+    <div class="section-title-row"><h2>Radiator Quote</h2><button id="clearRadQuote" type="button" class="small-action">Clear</button></div>
+    <div id="radQuoteEmpty" class="meta">Select a radiator above to start building the quote.</div>
+    <div id="radQuoteItems"></div>
+    <div id="radQuoteTotals" class="rad-quote-totals" style="display:none">
+      <div class="row"><span>Radiators ex VAT</span><strong id="radQuoteExVat">£0.00</strong></div>
+      <div class="row"><span>VAT @ 20%</span><strong id="radQuoteVat">£0.00</strong></div>
+      <div class="row grand"><span>Total inc VAT</span><strong id="radQuoteIncVat">£0.00</strong></div>
+    </div>
   </section>
 </section>
 
