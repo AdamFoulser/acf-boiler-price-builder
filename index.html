@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="ACF Boilers"/>
   <title>ACF Boiler Price Builder</title>
   <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="stylesheet" href="styles.css?v=17"/>
+  <link rel="stylesheet" href="styles.css?v=18"/>
 </head>
 <body>
 <header class="topbar">
@@ -17,87 +17,58 @@
     <img class="brand-logo" src="IMG_9229.jpeg" alt="ACF Services Ltd"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">Quick boiler quoting · v17</div>
+      <div class="subtitle">Boiler quoting & radiator sizing · v18</div>
     </div>
   </div>
 </header>
 
 <main class="shell">
-  <div class="grid">
-    <section class="card">
-      <h2>Step 1. Boiler</h2>
-      <label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label>
-      <label>Manufacturer<select id="manufacturer"></select></label>
-      <label>Boiler model<select id="boilerModel"></select></label>
-      <label>Warranty<select id="warranty"></select></label>
-      <div id="warrantyRule" class="warranty-rule"></div>
-      <label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label>
-      <div id="boilerMeta" class="meta"></div>
-    </section>
+<section id="page-boilers" class="app-page">
+  <section class="card radiator-card">
+    <h2>Radiator Sizing Calculator</h2>
+    <p class="supplier-help">Enter the room details to get an estimated heat requirement and suitable standard radiator sizes.</p>
+    <div class="rad-grid">
+      <label>Room type<select id="radRoom"><option value="21">Living room</option><option value="18">Bedroom</option><option value="22">Bathroom</option><option value="20">Kitchen</option><option value="20">Hall / landing</option></select></label>
+      <label>Length (m)<input id="radLength" type="number" inputmode="decimal" min="1" step="0.1" placeholder="e.g. 4.2"></label>
+      <label>Width (m)<input id="radWidth" type="number" inputmode="decimal" min="1" step="0.1" placeholder="e.g. 3.5"></label>
+      <label>Height (m)<input id="radHeight" type="number" inputmode="decimal" min="1" step="0.1" value="2.4"></label>
+      <label>External walls<select id="radWalls"><option value="1">1 external wall</option><option value="1.12">2 external walls</option><option value="1.22">3+ external walls</option></select></label>
+      <label>Windows<select id="radWindows"><option value="0.95">Double / triple glazed</option><option value="1.12">Older double glazed</option><option value="1.25">Single glazed</option></select></label>
+      <label>Insulation<select id="radInsulation"><option value="0.9">Good / modern</option><option value="1" selected>Average</option><option value="1.2">Poor / older property</option></select></label>
+    </div>
+    <button id="calcRadiator" class="primary">Calculate radiator size</button>
+    <div id="radResult" class="rad-result"><strong>Enter the room size above.</strong></div>
+    <p class="hint">Sizing is an estimate for quoting. Williams radiator catalogue matching will be added next so the app can recommend exact products and prices.</p>
+  </section>
+</section>
 
-    <section class="card supplier-card williams-primary">
-  <div class="section-title-row"><h2>Step 2. Williams Price Basis</h2><span class="internal-badge">DEFAULT</span></div>
-  <p class="supplier-help">Build the job using Williams prices. City Plumbing and Wolseley are compared automatically at the end against the selected equipment.</p>
-  <div class="williams-basis-box">
-    <div><span>Boiler cost basis</span><strong id="williamsBoilerBasis">£0.00</strong></div>
-    <div><span>Equipment supplier</span><strong>Williams</strong></div>
+<section id="page-quote" class="app-page active-page">
+  <div class="grid">
+    <section class="card"><h2>Step 1. Boiler</h2><label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label><label>Manufacturer<select id="manufacturer"></select></label><label>Boiler model<select id="boilerModel"></select></label><label>Warranty<select id="warranty"></select></label><div id="warrantyRule" class="warranty-rule"></div><label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label><div id="boilerMeta" class="meta"></div></section>
+    <section class="card supplier-card williams-primary"><div class="section-title-row"><h2>Step 2. Williams Price Basis</h2><span class="internal-badge">DEFAULT</span></div><p class="supplier-help">Build the job using Williams prices. City Plumbing and Wolseley are compared automatically at the end against the selected equipment.</p><div class="williams-basis-box"><div><span>Boiler cost basis</span><strong id="williamsBoilerBasis">£0.00</strong></div><div><span>Equipment supplier</span><strong>Williams</strong></div></div></section>
+    <section class="card"><div class="section-title-row"><h2>Step 3. Flues & Accessories</h2><div class="using-label">Williams pricing</div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
+    <section class="card"><div class="section-title-row"><h2>Step 4. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div><label>Labour<select id="labour"></select></label><label>Pipework / materials<select id="materials"></select></label><label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div><label>Limescale reducer<select id="limescale"></select></label><label>Magnetic filter<select id="filter"></select></label><div id="filterCompare"></div></section>
+    <section class="card" id="heatOnlyCard"><h2>Step 5. Heat-only extras</h2><div id="heatOnlyExtras"></div><p class="hint">Use these only where required on heat-only boiler changes.</p></section>
+    <section class="card"><h2>Step 6. Letting Agent Commission</h2><label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label></section>
   </div>
 </section>
 
-    <section class="card"><div class="section-title-row"><h2>Step 3. Flues & Accessories</h2><div class="using-label">Williams pricing</div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
+<section id="page-summary" class="app-page">
+  <section class="card summary"><h2>Quote Summary</h2><div class="row"><span>Boiler quote basis</span><strong id="sumBoiler">£0.00</strong></div><div class="row"><span>Boiler warranty</span><strong id="sumWarranty">—</strong></div><div class="row"><span>Accessories</span><strong id="sumAccessories">£0.00</strong></div><div class="row"><span>Labour / materials / extras</span><strong id="sumExtras">£0.00</strong></div><div class="row"><span>Subtotal before commission</span><strong id="subtotal">£0.00</strong></div><div class="row"><span>Letting agent commission</span><strong id="sumCommission">£0.00</strong></div><div class="row total"><span>Customer price ex VAT</span><strong id="exvat">£0.00</strong></div><div class="row"><span>VAT @ 20%</span><strong id="vat">£0.00</strong></div><div class="row grand"><span>Total inc VAT</span><strong id="incvat">£0.00</strong></div><button id="copyQuote" class="primary">Copy quote line</button></section>
+  <section class="card comparison-summary"><div class="section-title-row"><h2>Supplier Comparison</h2><span class="internal-badge">INTERNAL</span></div><p class="supplier-help">Customer quote stays based on Williams. These figures compare the same selected equipment for purchasing only.</p><div class="comparison-card baseline"><div><span>Williams</span><small>Complete selected basket</small></div><strong id="compareWilliams">£0.00</strong></div><div class="comparison-card"><div><span>City Plumbing</span><small id="cityCompareStatus">Waiting for selected equipment</small></div><strong id="compareCity">—</strong></div><div id="cityMissing" class="missing-items"></div><div class="comparison-card"><div><span>Wolseley</span><small id="wolseleyCompareStatus">Prices not populated yet</small></div><strong id="compareWolseley">—</strong></div><div id="wolseleyMissing" class="missing-items"></div></section>
+</section>
 
-    <section class="card">
-      <div class="section-title-row"><h2>Step 4. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div>
-      <label>Labour<select id="labour"></select></label>
-      <label>Pipework / materials<select id="materials"></select></label>
-      <label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div>
-      <label>Limescale reducer<select id="limescale"></select></label>
-      <label>Magnetic filter<select id="filter"></select></label><div id="filterCompare"></div>
-    </section>
-
-    <section class="card" id="heatOnlyCard">
-      <h2>Step 5. Heat-only extras</h2>
-      <div id="heatOnlyExtras"></div>
-      <p class="hint">Use these only where required on heat-only boiler changes.</p>
-    </section>
-
-    <section class="card">
-      <h2>Step 6. Letting Agent Commission</h2>
-      <label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label>
-    </section>
-
-    <section class="card summary">
-      <h2>Quote Summary</h2>
-      <div class="row"><span>Boiler quote basis</span><strong id="sumBoiler">£0.00</strong></div>
-      <div class="row"><span>Boiler warranty</span><strong id="sumWarranty">—</strong></div>
-      <div class="row"><span>Accessories</span><strong id="sumAccessories">£0.00</strong></div>
-      <div class="row"><span>Labour / materials / extras</span><strong id="sumExtras">£0.00</strong></div>
-      <div class="row"><span>Subtotal before commission</span><strong id="subtotal">£0.00</strong></div>
-      <div class="row"><span>Letting agent commission</span><strong id="sumCommission">£0.00</strong></div>
-      <div class="row total"><span>Customer price ex VAT</span><strong id="exvat">£0.00</strong></div>
-      <div class="row"><span>VAT @ 20%</span><strong id="vat">£0.00</strong></div>
-      <div class="row grand"><span>Total inc VAT</span><strong id="incvat">£0.00</strong></div>
-      <button id="copyQuote" class="primary">Copy quote line</button>
-    </section>
-  </div>
-
-<section class="card comparison-summary">
-  <div class="section-title-row"><h2>Supplier Comparison</h2><span class="internal-badge">INTERNAL</span></div>
-  <p class="supplier-help">Customer quote stays based on Williams. These figures compare the same selected equipment for purchasing only.</p>
-  <div class="comparison-card baseline"><div><span>Williams</span><small>Complete selected basket</small></div><strong id="compareWilliams">£0.00</strong></div>
-  <div class="comparison-card"><div><span>City Plumbing</span><small id="cityCompareStatus">Waiting for selected equipment</small></div><strong id="compareCity">—</strong></div>
-  <div id="cityMissing" class="missing-items"></div>
-  <div class="comparison-card"><div><span>Wolseley</span><small id="wolseleyCompareStatus">Prices not populated yet</small></div><strong id="compareWolseley">—</strong></div>
-  <div id="wolseleyMissing" class="missing-items"></div>
+<section id="page-info" class="app-page">
+  <section class="card"><h2>ACF Engineer Info</h2><div class="info-block"><strong>Standard boiler quote</strong><span>£1,350 + boiler/equipment, then add 10% where applicable.</span></div><div class="info-block"><strong>Pack boilers</strong><span>Glow-worm Energy / Compact packs use the £1,200 base where the flue and filter are included.</span></div><div class="info-block"><strong>Filters</strong><span>Standard allowance is £100. Add any manufacturer-specific filter cost above this before commission.</span></div><p class="hint">We can expand this page with warranty rules, engineer notes and quick-reference information.</p></section>
 </section>
 </main>
-<nav class="bottom-nav">
-  <div>🔥<span>Boilers</span></div>
-  <div class="active">▣<span>Quote</span></div>
-  <div>📄<span>Summary</span></div>
-  <div>ⓘ<span>Info</span></div>
+<nav class="bottom-nav" aria-label="App navigation">
+  <button type="button" data-page="boilers">🔥<span>Radiators</span></button>
+  <button type="button" data-page="quote" class="active">▣<span>Quote</span></button>
+  <button type="button" data-page="summary">📄<span>Summary</span></button>
+  <button type="button" data-page="info">ⓘ<span>Info</span></button>
 </nav>
-<script src="data.js?v=17"></script>
-<script src="app.js?v=17"></script>
+<script src="data.js?v=18"></script>
+<script src="app.js?v=18"></script>
 </body>
 </html>

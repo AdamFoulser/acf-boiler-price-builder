@@ -654,6 +654,36 @@ function resetFreshQuote() {
   calc();
 }
 
+
+function setupPages(){
+  const buttons=[...document.querySelectorAll('.bottom-nav button[data-page]')];
+  const show=page=>{
+    document.querySelectorAll('.app-page').forEach(x=>x.classList.toggle('active-page',x.id===`page-${page}`));
+    buttons.forEach(x=>x.classList.toggle('active',x.dataset.page===page));
+    window.scrollTo({top:0,behavior:'instant'});
+  };
+  buttons.forEach(b=>b.addEventListener('click',()=>show(b.dataset.page)));
+}
+
+function setupRadiatorCalculator(){
+  const btn=el('calcRadiator'); if(!btn) return;
+  btn.onclick=()=>{
+    const L=Number(el('radLength').value), W=Number(el('radWidth').value), H=Number(el('radHeight').value);
+    if(!L||!W||!H){ el('radResult').innerHTML='<strong>Please enter the room length, width and height.</strong>'; return; }
+    const target=Number(el('radRoom').value), walls=Number(el('radWalls').value), windows=Number(el('radWindows').value), insulation=Number(el('radInsulation').value);
+    const volume=L*W*H;
+    const watts=Math.ceil((volume*2.1*(target+3)*walls*windows*insulation)/50)*50;
+    const btu=Math.ceil(watts*3.412/50)*50;
+    const catalogue=[
+      {size:'600 × 600',type:'Type 11',w:610},{size:'600 × 800',type:'Type 11',w:810},{size:'600 × 1000',type:'Type 11',w:1010},{size:'600 × 1200',type:'Type 11',w:1210},
+      {size:'600 × 600',type:'Type 21',w:930},{size:'600 × 800',type:'Type 21',w:1240},{size:'600 × 1000',type:'Type 21',w:1550},{size:'600 × 1200',type:'Type 21',w:1860},
+      {size:'600 × 600',type:'Type 22',w:1080},{size:'600 × 800',type:'Type 22',w:1440},{size:'600 × 1000',type:'Type 22',w:1800},{size:'600 × 1200',type:'Type 22',w:2160},{size:'600 × 1400',type:'Type 22',w:2520},{size:'600 × 1600',type:'Type 22',w:2880}
+    ];
+    const suitable=catalogue.filter(r=>r.w>=watts).sort((a,b)=>a.w-b.w).slice(0,3);
+    el('radResult').innerHTML=`<div>Estimated heat requirement</div><div class="heat-number">${watts.toLocaleString()} W</div><strong>${btu.toLocaleString()} BTU/h</strong>${suitable.length?'<div style="margin-top:12px;font-weight:800">Suitable radiator examples</div>'+suitable.map(r=>`<div class="rad-option"><strong>${r.size} ${r.type}</strong><br><small>Approx. ${r.w.toLocaleString()} W output</small></div>`).join(''):'<p>Requirement is above the current example range — use multiple radiators or a larger output model.</p>'}<p class="hint">Example outputs only until the Williams catalogue is linked.</p>`;
+  };
+}
+
 function init() {
   buildAccessories();
   buildHeat();
@@ -676,6 +706,8 @@ function init() {
     try{ await navigator.clipboard.writeText(text); el('copyQuote').textContent='Copied'; setTimeout(()=>el('copyQuote').textContent='Copy quote line',1200); }catch(e){}
   };
   calc();
+  setupPages();
+  setupRadiatorCalculator();
 }
 
 init();
