@@ -1,10 +1,18 @@
 {
   "name": "ACF Boiler Price Builder",
   "short_name": "ACF Boilers",
-  "start_url": "./index.html",
+  "start_url": "./index.html?v=25",
   "scope": "./",
   "display": "standalone",
   "background_color": "#eef3f8",
   "theme_color": "#0b2f5b",
-  "description": "ACF boiler quoting app"
+  "description": "ACF boiler quoting app",
+  "icons": [
+    {
+      "src": "IMG_9229.jpeg",
+      "sizes": "352x352",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
 }
