@@ -323,12 +323,14 @@ function refreshAccessories() {
 function makeSelectOptions() {
   refreshManufacturers();
   fill(el('labour'), [0, ...D.settings.labourOptions.filter(x=>Number(x)!==0)], x => ({text:Number(x)===0?'None — £0.00':gbp(x), value:x}));
-  fill(el('materials'), [0, ...D.settings.materialsOptions.filter(x=>Number(x)!==0)], x => ({text:Number(x)===0?'None — £0.00':gbp(x), value:x}));
+  fill(el('materials'), Array.from({length:51},(_,i)=>i*10), x => ({text:Number(x)===0?'None — £0.00':gbp(x), value:x}));
   fill(el('thermostat'), D.settings.thermostats, x => ({text:`${x.name}${x.price ? ' — '+gbp(x.price) : ''}`, value:x.name}));
   fill(el('limescale'), D.settings.limescaleReducers, x => ({text:`${x.name}${x.price ? ' — '+gbp(x.price) : ''}`, value:x.name}));
   fill(el('filter'), D.settings.magneticFilters, x => ({text:`${x.name}${x.price ? ' — '+gbp(x.price) : ''}`, value:x.name}));
   el('labour').value = '0';
   el('materials').value = '0';
+  if(el('terminalGuard')) el('terminalGuard').value='0';
+  if(el('roofer')) el('roofer').value='0';
 }
 
 function buildAccessories() {
@@ -586,7 +588,9 @@ function calc() {
 
   let heatExtras=0;
   if(isHeatOnly) document.querySelectorAll('.heatCheck:checked').forEach(x=>heatExtras+=Number(x.dataset.price||0));
-  const extras=Number(val('labour'))+Number(val('materials'))+thermostat+limescale+shockArrestor+filter+trvTotal+powerflushTotal+heatExtras;
+  const terminalGuard=Number(val('terminalGuard')||0);
+  const roofer=Number(val('roofer')||0);
+  const extras=Number(val('labour'))+Number(val('materials'))+thermostat+limescale+shockArrestor+terminalGuard+roofer+filter+trvTotal+powerflushTotal+heatExtras;
   const subtotal=boilerPrice+accessoriesTotal+extras;
   const commission=subtotal*Number(val('commission'));
   const rawExVat=subtotal+commission;
@@ -655,6 +659,8 @@ function resetFreshQuote() {
   el('warranty').value = '0';
   el('labour').value = '0';
   el('materials').value = '0';
+  if(el('terminalGuard')) el('terminalGuard').value='0';
+  if(el('roofer')) el('roofer').value='0';
   el('thermostat').selectedIndex = 0;
   el('limescale').selectedIndex = 0;
   el('shockArrestor').value = '0';
@@ -759,6 +765,24 @@ function setupRadiatorCalculator(){
   };
 }
 
+
+function setupWarrantyRegistration(){
+  const $=id=>el(id); if(!$('saveWarranty')) return;
+  const DB='acf-warranty-v1', STORE='records'; let boilerBlob=null, filterBlob=null;
+  const openDB=()=>new Promise((resolve,reject)=>{const r=indexedDB.open(DB,1);r.onupgradeneeded=()=>{if(!r.result.objectStoreNames.contains(STORE))r.result.createObjectStore(STORE,{keyPath:'id'});};r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
+  const all=async()=>{const db=await openDB();return new Promise((res,rej)=>{const q=db.transaction(STORE).objectStore(STORE).getAll();q.onsuccess=()=>res(q.result.sort((a,b)=>b.created-a.created));q.onerror=()=>rej(q.error);});};
+  const put=async rec=>{const db=await openDB();return new Promise((res,rej)=>{const q=db.transaction(STORE,'readwrite').objectStore(STORE).put(rec);q.onsuccess=()=>res();q.onerror=()=>rej(q.error);});};
+  const del=async id=>{const db=await openDB();return new Promise((res,rej)=>{const q=db.transaction(STORE,'readwrite').objectStore(STORE).delete(id);q.onsuccess=()=>res();q.onerror=()=>rej(q.error);});};
+  const esc=x=>String(x||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const render=async()=>{const rows=await all(), box=$('warrantyList'); if(!rows.length){box.innerHTML='<div class="meta">No saved registrations yet.</div>';return;} box.innerHTML=rows.map(r=>`<div class="warranty-record"><div class="warranty-record-head"><div><strong>${esc(r.address||'No address')}</strong><div class="meta-line">${esc(r.manufacturer)} ${r.date?'· '+esc(r.date):''}</div></div></div><div class="meta-line">Serial: <strong>${esc(r.serial||'—')}</strong></div><div class="warranty-actions"><button data-copy-war="${r.id}">Copy serial</button><button data-delete-war="${r.id}">Delete</button></div></div>`).join(''); box.querySelectorAll('[data-copy-war]').forEach(b=>b.onclick=async()=>{const r=rows.find(x=>x.id===b.dataset.copyWar);if(r?.serial){await navigator.clipboard.writeText(r.serial);b.textContent='Copied';setTimeout(()=>b.textContent='Copy serial',900);}}); box.querySelectorAll('[data-delete-war]').forEach(b=>b.onclick=async()=>{if(confirm('Delete this saved warranty record?')){await del(b.dataset.deleteWar);render();}});};
+  const preview=(input,img,which)=>{input.onchange=()=>{const f=input.files?.[0]||null;if(which==='boiler')boilerBlob=f;else filterBlob=f;if(f){img.src=URL.createObjectURL(f);img.hidden=false;}};};
+  preview($('warBoilerPhoto'),$('warBoilerPreview'),'boiler'); preview($('warFilterPhoto'),$('warFilterPreview'),'filter');
+  $('copySerial').onclick=async()=>{if($('warSerial').value){await navigator.clipboard.writeText($('warSerial').value.trim());$('copySerial').textContent='Copied';setTimeout(()=>$('copySerial').textContent='Copy',900);}};
+  $('readSerial').onclick=async()=>{const st=$('ocrStatus');st.style.display='block';if(!boilerBlob){st.textContent='Take or choose the boiler serial number photo first.';return;}if(!window.Tesseract){st.textContent='Serial reader needs an internet connection. You can still type the serial number manually.';return;}try{st.textContent='Reading serial number…';const result=await Tesseract.recognize(boilerBlob,'eng');const lines=(result.data.text||'').split(/\n+/).map(x=>x.trim()).filter(Boolean);const candidates=lines.flatMap(x=>x.match(/[A-Z0-9][A-Z0-9\-\/]{5,}/gi)||[]).sort((a,b)=>b.length-a.length);if(candidates[0]){$('warSerial').value=candidates[0].replace(/\s/g,'');st.textContent='Serial found. Check it matches the photo before saving.';}else st.textContent='Could not confidently find a serial number. Enter it manually from the photo.';}catch(e){st.textContent='Could not read the photo. Enter the serial number manually.';}};
+  $('saveWarranty').onclick=async()=>{const address=$('warAddress').value.trim(),serial=$('warSerial').value.trim();if(!address){alert('Please enter the property address.');return;}const rec={id:String(Date.now()),created:Date.now(),address,date:$('warDate').value,manufacturer:$('warManufacturer').value.trim(),serial,notes:$('warNotes').value.trim(),boilerPhoto:boilerBlob,filterPhoto:filterBlob};try{await put(rec);$('warAddress').value='';$('warDate').value='';$('warManufacturer').value='';$('warSerial').value='';$('warNotes').value='';$('warBoilerPhoto').value='';$('warFilterPhoto').value='';$('warBoilerPreview').hidden=true;$('warFilterPreview').hidden=true;boilerBlob=filterBlob=null;$('ocrStatus').style.display='none';$('saveWarranty').textContent='Saved ✓';setTimeout(()=>$('saveWarranty').textContent='Save warranty record',1000);render();}catch(e){alert('Could not save this record on the device.');}};
+  render();
+}
+
 function init() {
   buildAccessories();
   buildHeat();
@@ -774,7 +798,7 @@ function init() {
   el('boilerModel').onchange=()=>{ refreshAccessories(); updateWarrantyOptions(); calc(); };
   el('priceBasis').onchange=calc;
   el('warranty').onchange=()=>{ updateWarrantyRule(); refreshFilterOptions(); calc(); };
-  ['labour','materials','thermostat','limescale','shockArrestor','filter','trvQty','trvType','powerflush','powerflushRads','commission'].forEach(id=>el(id).onchange=calc);
+  ['labour','materials','thermostat','limescale','shockArrestor','terminalGuard','roofer','filter','trvQty','trvType','powerflush','powerflushRads','commission'].forEach(id=>el(id).onchange=calc);
 
   el('copyQuote').onclick=async()=>{
     const b=currentBoiler(); if(!b) return;
@@ -786,6 +810,7 @@ function init() {
   calc();
   setupPages();
   setupRadiatorCalculator();
+  setupWarrantyRegistration();
 }
 
 init();
