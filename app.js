@@ -5,6 +5,14 @@ const val = id => el(id).value;
 const manufacturers = [...new Set(D.boilers.map(x => x.manufacturer))];
 const PRICE_CHECKED = '28 Aug 2026';
 
+function normalizeBoilerType(type) {
+  const t = String(type || '').trim().toLowerCase();
+  if (t.includes('combi')) return 'Combi';
+  if (t.includes('system')) return 'System';
+  if (t.includes('heat') || t.includes('regular') || t.includes('open vent')) return 'Heat Only';
+  return String(type || '').trim();
+}
+
 const cityOffers = [
   {
     manufacturer:'Baxi', model:'Baxi 424 Combi 2.1 24kW Boiler', supplier:'City Plumbing',
