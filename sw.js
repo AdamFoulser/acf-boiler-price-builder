@@ -1,5 +1,5 @@
-const CACHE='acf-boiler-v20';
-const ASSETS=['./','./index.html','./styles.css?v=20','./app.js?v=20','./data.js?v=20','./manifest.webmanifest','./IMG_9229.jpeg'];
+const CACHE='acf-boiler-v21';
+const ASSETS=['./','./index.html','./styles.css?v=21','./app.js?v=21','./data.js?v=21','./manifest.webmanifest','./IMG_9229.jpeg'];
 
 self.addEventListener('install',event=>{
   self.skipWaiting();
