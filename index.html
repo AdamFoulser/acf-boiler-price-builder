@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="ACF Boilers"/>
   <title>ACF Boiler Price Builder</title>
   <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="stylesheet" href="styles.css?v=19"/>
+  <link rel="stylesheet" href="styles.css?v=20"/>
 </head>
 <body>
 <header class="topbar">
@@ -17,7 +17,7 @@
     <img class="brand-logo" src="IMG_9229.jpeg" alt="ACF Services Ltd"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v19</div>
+      <div class="subtitle">ACF engineer tools · v20</div>
     </div>
   </div>
 </header>
@@ -59,9 +59,10 @@
     <section class="card"><h2>Step 1. Boiler</h2><label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label><label>Manufacturer<select id="manufacturer"></select></label><label>Boiler model<select id="boilerModel"></select></label><label>Warranty<select id="warranty"></select></label><div id="warrantyRule" class="warranty-rule"></div><label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label><div id="boilerMeta" class="meta"></div></section>
     <section class="card supplier-card williams-primary"><div class="section-title-row"><h2>Step 2. Williams Price Basis</h2><span class="internal-badge">DEFAULT</span></div><p class="supplier-help">Build the job using Williams prices. City Plumbing and Wolseley are compared automatically at the end against the selected equipment.</p><div class="williams-basis-box"><div><span>Boiler cost basis</span><strong id="williamsBoilerBasis">£0.00</strong></div><div><span>Equipment supplier</span><strong>Williams</strong></div></div></section>
     <section class="card"><div class="section-title-row"><h2>Step 3. Flues & Accessories</h2><div class="using-label">Williams pricing</div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
-    <section class="card"><div class="section-title-row"><h2>Step 4. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div><label>Labour<select id="labour"></select></label><label>Pipework / materials<select id="materials"></select></label><label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div><label>Limescale reducer<select id="limescale"></select></label><label>Magnetic filter<select id="filter"></select></label><div id="filterCompare"></div></section>
-    <section class="card" id="heatOnlyCard"><h2>Step 5. Heat-only extras</h2><div id="heatOnlyExtras"></div><p class="hint">Use these only where required on heat-only boiler changes.</p></section>
-    <section class="card"><h2>Step 6. Letting Agent Commission</h2><label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label></section>
+    <section class="card"><div class="section-title-row"><h2>Step 4. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div><label>Labour<select id="labour"></select></label><label>Pipework / materials<select id="materials"></select></label><label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div><label>Limescale reducer<select id="limescale"></select></label><label>Shock arrestor<select id="shockArrestor"><option value="0">None</option><option value="20">Shock arrestor — £20.00</option></select></label><label>Magnetic filter<select id="filter"></select></label><div id="filterCompare"></div></section>
+    <section class="card"><h2>Step 5. TRVs & Powerflush</h2><label>Number of TRVs<select id="trvQty"></select></label><label>TRV brand / type<select id="trvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="trvBreakdown" class="meta"></div><label>Full powerflush<select id="powerflush"><option value="0">None</option><option value="1">Full heating system powerflush</option></select></label><label id="powerflushRadLabel" style="display:none">Number of radiators<select id="powerflushRads"></select></label><div id="powerflushBreakdown" class="meta" style="display:none"></div></section>
+    <section class="card" id="heatOnlyCard"><h2>Step 6. Heat-only extras</h2><div id="heatOnlyExtras"></div><p class="hint">Use these only where required on heat-only boiler changes.</p></section>
+    <section class="card"><h2>Step 7. Letting Agent Commission</h2><label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label></section>
   </div>
 </section>
 
@@ -79,7 +80,7 @@
   <button type="button" data-page="summary">📄<span>Summary</span></button>
   <button type="button" data-page="info">ⓘ<span>Info</span></button>
 </nav>
-<script src="data.js?v=19"></script>
-<script src="app.js?v=19"></script>
+<script src="data.js?v=20"></script>
+<script src="app.js?v=20"></script>
 </body>
 </html>

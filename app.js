@@ -322,13 +322,13 @@ function refreshAccessories() {
 
 function makeSelectOptions() {
   refreshManufacturers();
-  fill(el('labour'), D.settings.labourOptions, x => ({text:gbp(x), value:x}));
-  fill(el('materials'), D.settings.materialsOptions, x => ({text:gbp(x), value:x}));
+  fill(el('labour'), [0, ...D.settings.labourOptions.filter(x=>Number(x)!==0)], x => ({text:Number(x)===0?'None — £0.00':gbp(x), value:x}));
+  fill(el('materials'), [0, ...D.settings.materialsOptions.filter(x=>Number(x)!==0)], x => ({text:Number(x)===0?'None — £0.00':gbp(x), value:x}));
   fill(el('thermostat'), D.settings.thermostats, x => ({text:`${x.name}${x.price ? ' — '+gbp(x.price) : ''}`, value:x.name}));
   fill(el('limescale'), D.settings.limescaleReducers, x => ({text:`${x.name}${x.price ? ' — '+gbp(x.price) : ''}`, value:x.name}));
   fill(el('filter'), D.settings.magneticFilters, x => ({text:`${x.name}${x.price ? ' — '+gbp(x.price) : ''}`, value:x.name}));
-  el('labour').value = '1200';
-  el('materials').value = '100';
+  el('labour').value = '0';
+  el('materials').value = '0';
 }
 
 function buildAccessories() {
@@ -568,13 +568,25 @@ function calc() {
 
   const thermostat=Number(D.settings.thermostats.find(x=>x.name===val('thermostat'))?.price||0);
   const limescale=Number(D.settings.limescaleReducers.find(x=>x.name===val('limescale'))?.price||0);
+  const shockArrestor=Number(val('shockArrestor')||0);
+  const trvQty=Number(val('trvQty')||0);
+  const trvUnit=Number(val('trvType')||0);
+  const trvParts=trvQty*trvUnit;
+  const trvLabour=trvQty*30;
+  const trvTotal=trvParts+trvLabour;
+  const powerflushOn=val('powerflush')==='1';
+  const powerflushRads=Number(val('powerflushRads')||0);
+  const powerflushTotal=powerflushOn ? 450 + Math.max(0,powerflushRads-8)*30 : 0;
+  if(el('trvBreakdown')) el('trvBreakdown').textContent=trvQty ? `${trvQty} TRV${trvQty===1?'':'s'}: ${gbp(trvParts)} parts + ${gbp(trvLabour)} labour = ${gbp(trvTotal)} ex VAT` : 'No TRVs selected';
+  if(el('powerflushRadLabel')) el('powerflushRadLabel').style.display=powerflushOn?'block':'none';
+  if(el('powerflushBreakdown')) { el('powerflushBreakdown').style.display=powerflushOn?'block':'none'; el('powerflushBreakdown').textContent=powerflushOn ? `Powerflush: ${gbp(powerflushTotal)} ex VAT${powerflushRads>8?` (${powerflushRads-8} additional radiator${powerflushRads-8===1?'':'s'})`: ' — includes up to 8 radiators'}` : ''; }
   const filter=filterPrice(val('filter'));
   if(el('thermostatCompare')) el('thermostatCompare').textContent=val('thermostat')==='None'?'':`Williams: ${gbp(thermostat)}`;
   if(el('filterCompare')) el('filterCompare').textContent=val('filter')==='None'?'':`Williams: ${gbp(filter)}`;
 
   let heatExtras=0;
   if(isHeatOnly) document.querySelectorAll('.heatCheck:checked').forEach(x=>heatExtras+=Number(x.dataset.price||0));
-  const extras=Number(val('labour'))+Number(val('materials'))+thermostat+limescale+filter+heatExtras;
+  const extras=Number(val('labour'))+Number(val('materials'))+thermostat+limescale+shockArrestor+filter+trvTotal+powerflushTotal+heatExtras;
   const subtotal=boilerPrice+accessoriesTotal+extras;
   const commission=subtotal*Number(val('commission'));
   const rawExVat=subtotal+commission;
@@ -641,10 +653,15 @@ function resetFreshQuote() {
   el('boilerModel').selectedIndex = 0;
   el('priceBasis').value = 'Standard';
   el('warranty').value = '0';
-  el('labour').value = '1200';
-  el('materials').value = '100';
+  el('labour').value = '0';
+  el('materials').value = '0';
   el('thermostat').selectedIndex = 0;
   el('limescale').selectedIndex = 0;
+  el('shockArrestor').value = '0';
+  el('trvQty').value = '0';
+  el('trvType').value = '0';
+  el('powerflush').value = '0';
+  el('powerflushRads').value = '8';
   el('commission').value = '0';
   document.querySelectorAll('.accSel').forEach(s => s.selectedIndex = 0);
   document.querySelectorAll('.heatCheck').forEach(c => c.checked = false);
@@ -690,6 +707,9 @@ function init() {
   buildAccessories();
   buildHeat();
   makeSelectOptions();
+  fill(el('trvQty'), Array.from({length:21},(_,i)=>i), x=>({text:x===0?'None':String(x),value:x}));
+  fill(el('powerflushRads'), Array.from({length:21},(_,i)=>i+1), x=>({text:String(x),value:x}));
+  el('powerflushRads').value='8';
   refreshModels();
   resetFreshQuote();
 
@@ -698,7 +718,7 @@ function init() {
   el('boilerModel').onchange=()=>{ refreshAccessories(); updateWarrantyOptions(); calc(); };
   el('priceBasis').onchange=calc;
   el('warranty').onchange=()=>{ updateWarrantyRule(); refreshFilterOptions(); calc(); };
-  ['labour','materials','thermostat','limescale','filter','commission'].forEach(id=>el(id).onchange=calc);
+  ['labour','materials','thermostat','limescale','shockArrestor','filter','trvQty','trvType','powerflush','powerflushRads','commission'].forEach(id=>el(id).onchange=calc);
 
   el('copyQuote').onclick=async()=>{
     const b=currentBoiler(); if(!b) return;
