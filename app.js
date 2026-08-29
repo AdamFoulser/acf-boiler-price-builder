@@ -663,6 +663,8 @@ function setupPages(){
     window.scrollTo({top:0,behavior:'instant'});
   };
   buttons.forEach(b=>b.addEventListener('click',()=>show(b.dataset.page)));
+  document.querySelectorAll('[data-open-page]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.openPage)));
+  show('home');
 }
 
 function setupRadiatorCalculator(){
