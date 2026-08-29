@@ -418,26 +418,115 @@ function buildHeat() {
 const wolseleyBoilerOffers = [];
 const wolseleyItemOffers = [];
 
-const warrantyRules = {
-  "Baxi":[{label:"Manufacturer warranty",restriction:"Warranty length/rules to be populated by range"}],
-  "Baxi Main":[{label:"Manufacturer warranty",restriction:"Warranty length/rules to be populated by range"}],
-  "Worcester Bosch":[
-    {label:"Standard warranty",restriction:"Any compatible filter"},
-    {label:"Extended warranty",restriction:"Worcester-approved filter / pack required where applicable"}
-  ],
-  "Vaillant":[
-    {label:"Standard warranty",restriction:"Any compatible filter"},
-    {label:"Extended warranty",restriction:"Vaillant-approved filter / controls required where applicable"}
-  ],
-  "Ideal":[{label:"Manufacturer warranty",restriction:"Warranty length/rules to be populated by range"}],
-  "Glow-worm":[{label:"Manufacturer warranty",restriction:"Warranty length/rules to be populated by range"}]
-};
+const warrantySourcesChecked = '29 Aug 2026';
 
-function normalizeBoilerType(t){
-  const s=String(t||'').toLowerCase();
-  if(s.includes('combi')) return 'Combi';
-  if(s.includes('system')) return 'System';
-  return 'Heat Only';
+function warrantyOptionsForBoiler(b){
+  const m=String(b?.model||'');
+  const make=String(b?.manufacturer||'');
+
+  if(make==='Baxi'){
+    if(/Baxi 8\d\d|Baxi 800 Heat/i.test(m)) return [{years:10,label:'10 years',restriction:'The magnetic filter supplied with the Baxi 800 must be fitted and maintained for the full 10-year warranty.',filterRule:'baxi800'}];
+    if(/Baxi 6\d\d/i.test(m)) return [{years:7,label:'7 years',restriction:'Baxi 600 range: 7-year parts and labour warranty, subject to registration, Benchmark completion and annual servicing.',filterRule:'any'}];
+    if(/Baxi 4\d\d/i.test(m)) return [{years:5,label:'5 years',restriction:'Baxi 400 range: 5-year parts and labour warranty, subject to registration, Benchmark completion and annual servicing.',filterRule:'any'}];
+    if(/Baxi 2\d\d/i.test(m)) return [{years:2,label:'2 years',restriction:'Baxi 200 range: 2-year parts and labour warranty, subject to registration, Benchmark completion and annual servicing.',filterRule:'any'}];
+  }
+  if(make==='Baxi Main'){
+    if(/Eco Compact/i.test(m)) return [{years:5,label:'5 years',restriction:'Main Eco Compact: 5-year warranty, subject to registration and annual servicing.',filterRule:'any'}];
+  }
+  if(make==='Worcester Bosch'){
+    if(/8000\+/i.test(m)) return [
+      {years:8,label:'8 years — standard',restriction:'Standard Worcester guarantee. Any compatible system filter can be selected.',filterRule:'any'},
+      {years:10,label:'10 years — with Greenstar System Filter',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter. The System Filter Micro does not qualify for the 10-year 8000+ guarantee.',filterRule:'worcester'}
+    ];
+    if(/4000|CDi Compact|Ri Compact|\bRi\b/i.test(m)) return [
+      {years:7,label:'7 years — standard',restriction:'Standard Worcester guarantee.',filterRule:'any'},
+      {years:8,label:'8 years — with Greenstar System Filter',restriction:'8-year guarantee requires a qualifying Worcester Greenstar System Filter.',filterRule:'worcester'}
+    ];
+    if(/2000/i.test(m)) return [{years:7,label:'7 years',restriction:'7-year guarantee subject to fitting a Worcester Bosch or third-party system filter.',filterRule:'any-required'}];
+    if(/1000/i.test(m)) return [{years:5,label:'5 years',restriction:'5-year guarantee subject to fitting a Worcester Bosch or third-party system filter.',filterRule:'any-required'}];
+    if(/8000 F/i.test(m)) return [
+      {years:7,label:'7 years — standard',restriction:'Standard Worcester guarantee.',filterRule:'any'},
+      {years:8,label:'8 years — with Greenstar System Filter',restriction:'8-year guarantee requires a qualifying Worcester Greenstar System Filter.',filterRule:'worcester'}
+    ];
+  }
+  if(make==='Vaillant'){
+    if(/ecoTEC Plus/i.test(m)) return [
+      {years:5,label:'5 years — standard',restriction:'5-year out-of-the-box guarantee.',filterRule:'any'},
+      {years:10,label:'10 years — with Vaillant Boiler Protection Kit',restriction:'10-year guarantee requires a qualifying Vaillant Boiler Protection Kit and eligible installer registration.',filterRule:'vaillant'}
+    ];
+    if(/ecoFIT Pure/i.test(m)) return [
+      {years:2,label:'2 years — standard',restriction:'2-year out-of-the-box guarantee.',filterRule:'any'},
+      {years:10,label:'10 years — with Vaillant Protection Kit',restriction:'10-year guarantee requires a qualifying Vaillant Boiler Protection Kit / Advance Boiler Protection Kit and eligible installer registration.',filterRule:'vaillant'}
+    ];
+    if(/ecoTEC Pro/i.test(m)) return [
+      {years:2,label:'2 years — standard',restriction:'2-year out-of-the-box guarantee.',filterRule:'any'},
+      {years:7,label:'7 years — eligible installer registration',restriction:'7-year guarantee available through the Vaillant installer rewards scheme. Check current registration eligibility.',filterRule:'any'}
+    ];
+  }
+  if(make==='Ideal'){
+    if(/Vogue MAX/i.test(m)) return [
+      {years:10,label:'10 years — standard',restriction:'10-year parts and labour warranty when registered within 30 days and serviced annually.',filterRule:'any'},
+      {years:12,label:'12 years — MAX Accredited Installer',restriction:'12-year warranty is available when installed by an Ideal Heating MAX Accredited Installer. Terms apply.',filterRule:'any'}
+    ];
+    if(/Logic MAX/i.test(m)) return [{years:10,label:'10 years',restriction:'Logic MAX: 10-year warranty as standard, subject to registration and annual servicing.',filterRule:'any'}];
+    if(/Logic\+/i.test(m)) return [{years:7,label:'7 years',restriction:'Logic+: 7-year warranty as standard. Terms and registration requirements apply.',filterRule:'any'}];
+  }
+  if(make==='Glow-worm'){
+    if(/Energy/i.test(m)) return [
+      {years:7,label:'7 years — standard',restriction:'Energy range: 7-year guarantee as standard.',filterRule:'any'},
+      {years:10,label:'10 years — with Glow-worm Power System Filter',restriction:'10-year extended guarantee requires a Glow-worm Power System Filter and eligible myREWARDS registration.',filterRule:'glowworm'}
+    ];
+    if(/Easicom/i.test(m)) return [
+      {years:3,label:'3 years — standard',restriction:'Easicom: 3-year standard guarantee.',filterRule:'any'},
+      {years:5,label:'5 years — eligible installer registration',restriction:'Up to 5 years when registered by an eligible Glow-worm installer.',filterRule:'any'}
+    ];
+    if(/Compact/i.test(m)) return [{years:5,label:'5 years',restriction:'Glow-worm Compact: 5-year guarantee.',filterRule:'any'}];
+  }
+  return [{years:null,label:'Check manufacturer warranty',restriction:'Warranty rule for this older/specialist range has not yet been verified. Do not quote a warranty length until checked.',filterRule:'any'}];
+}
+
+function selectedWarranty(){
+  const b=currentBoiler();
+  const rules=warrantyOptionsForBoiler(b);
+  return rules[Number(val('warranty')||0)] || rules[0];
+}
+
+function qualifyingManufacturerFilters(b, rule){
+  const allAcc=(D.accessories||[]).filter(x=>x.manufacturer===b.manufacturer && /filter/i.test(x.description||''));
+  if(rule==='worcester') return allAcc.filter(x=>/system filter/i.test(x.description||'') && !/micro/i.test(x.description||''));
+  if(rule==='vaillant') return allAcc.filter(x=>/filter|protection/i.test(x.description||''));
+  if(rule==='glowworm') return allAcc.filter(x=>/power system filter/i.test(x.description||''));
+  return allAcc;
+}
+
+function filterPrice(name){
+  if(!name || name==='None' || /included/i.test(name)) return 0;
+  const s=(D.settings.magneticFilters||[]).find(x=>x.name===name);
+  if(s) return Number(s.price||0);
+  const a=(D.accessories||[]).find(x=>x.description===name);
+  return Number(a?.price||0);
+}
+
+function refreshFilterOptions(){
+  const b=currentBoiler(), sel=el('filter');
+  if(!b || !sel) return;
+  const old=sel.value;
+  const w=selectedWarranty();
+  let opts=[];
+  if(w.filterRule==='baxi800'){
+    opts=[{name:'Baxi supplied Adey Micro2 filter (included)',price:0}];
+  } else if(['worcester','vaillant','glowworm'].includes(w.filterRule)){
+    opts=qualifyingManufacturerFilters(b,w.filterRule).map(x=>({name:x.description,price:Number(x.price||0)}));
+    if(!opts.length) opts=[{name:'Required manufacturer filter — price to confirm',price:0}];
+  } else {
+    opts=(D.settings.magneticFilters||[]).map(x=>({name:x.name,price:Number(x.price||0)}));
+    const extra=qualifyingManufacturerFilters(b,'any').map(x=>({name:x.description,price:Number(x.price||0)}));
+    const seen=new Set(opts.map(x=>x.name));
+    extra.forEach(x=>{ if(!seen.has(x.name)){ opts.push(x); seen.add(x.name); } });
+    if(w.filterRule==='any-required') opts=opts.filter(x=>x.name!=='None');
+  }
+  sel.innerHTML=opts.map(x=>`<option value="${x.name.replace(/"/g,'&quot;')}">${x.name}${x.price?` — ${gbp(x.price)}`:''}</option>`).join('');
+  if([...sel.options].some(o=>o.value===old)) sel.value=old;
 }
 
 function updateWarrantyOptions(){
@@ -445,16 +534,18 @@ function updateWarrantyOptions(){
   const s=el('warranty');
   if(!b || !s) return;
   const old=s.value;
-  const rules=warrantyRules[b.manufacturer] || [{label:'Manufacturer warranty',restriction:''}];
+  const rules=warrantyOptionsForBoiler(b);
   s.innerHTML=rules.map((r,i)=>`<option value="${i}">${r.label}</option>`).join('');
-  if([...s.options].some(o=>o.value===old)) s.value=old;
+  if([...s.options].some(o=>o.value===old)) s.value=old; else s.value='0';
   updateWarrantyRule();
+  refreshFilterOptions();
 }
 function updateWarrantyRule(){
   const b=currentBoiler(), box=el('warrantyRule');
   if(!b || !box) return;
-  const rules=warrantyRules[b.manufacturer] || [];
-  box.textContent=rules[Number(val('warranty')||0)]?.restriction || '';
+  const r=selectedWarranty();
+  box.innerHTML=`<strong>${r.years ? r.years+' year warranty' : r.label}</strong><br>${r.restriction}<br><small>Warranty data checked ${warrantySourcesChecked}. Manufacturer terms apply.</small>`;
+  if(el('sumWarranty')) el('sumWarranty').textContent=r.years ? `${r.years} years` : 'Check manufacturer';
 }
 
 function selectedWilliamsBasket(){
@@ -473,8 +564,8 @@ function selectedWilliamsBasket(){
   }
   const f=val('filter');
   if(f && f!=='None'){
-    const x=D.settings.magneticFilters.find(x=>x.name===f);
-    if(x) items.push({kind:'filter',manufacturer:'',name:x.name,williams:Number(x.price||0)});
+    const p=filterPrice(f);
+    items.push({kind:'filter',manufacturer:b.manufacturer,name:f,williams:p});
   }
   return {items,total:items.reduce((s,x)=>s+x.williams,0)};
 }
@@ -538,7 +629,7 @@ function calc() {
 
   const thermostat=Number(D.settings.thermostats.find(x=>x.name===val('thermostat'))?.price||0);
   const limescale=Number(D.settings.limescaleReducers.find(x=>x.name===val('limescale'))?.price||0);
-  const filter=Number(D.settings.magneticFilters.find(x=>x.name===val('filter'))?.price||0);
+  const filter=filterPrice(val('filter'));
   if(el('thermostatCompare')) el('thermostatCompare').textContent=val('thermostat')==='None'?'':`Williams: ${gbp(thermostat)}`;
   if(el('filterCompare')) el('filterCompare').textContent=val('filter')==='None'?'':`Williams: ${gbp(filter)}`;
 
@@ -576,12 +667,13 @@ function init() {
   el('manufacturer').onchange=refreshModels;
   el('boilerModel').onchange=()=>{ refreshAccessories(); updateWarrantyOptions(); calc(); };
   el('priceBasis').onchange=calc;
-  el('warranty').onchange=()=>{ updateWarrantyRule(); calc(); };
+  el('warranty').onchange=()=>{ updateWarrantyRule(); refreshFilterOptions(); calc(); };
   ['labour','materials','thermostat','limescale','filter','commission'].forEach(id=>el(id).onchange=calc);
 
   el('copyQuote').onclick=async()=>{
     const b=currentBoiler(); if(!b) return;
-    const text=`ACF Boiler Quote\n${b.model}\nCustomer price ex VAT: ${el('exvat').textContent}\nVAT: ${el('vat').textContent}\nTotal inc VAT: ${el('incvat').textContent}`;
+    const w=selectedWarranty();
+    const text=`ACF Boiler Quote\n${b.model}\nWarranty: ${w.years ? w.years+' years' : 'Check manufacturer'}\nCustomer price ex VAT: ${el('exvat').textContent}\nVAT: ${el('vat').textContent}\nTotal inc VAT: ${el('incvat').textContent}`;
     try{ await navigator.clipboard.writeText(text); el('copyQuote').textContent='Copied'; setTimeout(()=>el('copyQuote').textContent='Copy quote summary',1200); }catch(e){}
   };
   calc();
