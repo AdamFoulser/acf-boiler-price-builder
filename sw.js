@@ -1,5 +1,5 @@
-const CACHE='acf-boiler-v28';
-const ASSETS=['./','./index.html','./styles.css?v=28','./app.js?v=28','./data.js?v=28','./manifest.webmanifest','./acf-boiler-pricing-logo.png','./apple-touch-icon.png','./icon-192.png','./icon-512.png'];
+const CACHE='acf-boiler-v29';
+const ASSETS=['./','./index.html','./styles.css?v=29','./app.js?v=29','./data.js?v=29','./manifest.webmanifest','./acf-boiler-pricing-logo.png','./apple-touch-icon.png','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install',event=>{
   self.skipWaiting();
