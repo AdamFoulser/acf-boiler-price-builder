@@ -631,11 +631,35 @@ function warrantyQuoteText(b,w){
 }
 
 
+function resetFreshQuote() {
+  // Always start a new quote when the app is opened/reloaded.
+  el('boilerType').value = 'Combi';
+  refreshManufacturers();
+  el('manufacturer').selectedIndex = 0;
+  refreshModels();
+
+  el('boilerModel').selectedIndex = 0;
+  el('priceBasis').value = 'Standard';
+  el('warranty').value = '0';
+  el('labour').value = '1200';
+  el('materials').value = '100';
+  el('thermostat').selectedIndex = 0;
+  el('limescale').selectedIndex = 0;
+  el('commission').value = '0';
+  document.querySelectorAll('.accSel').forEach(s => s.selectedIndex = 0);
+  document.querySelectorAll('.heatCheck').forEach(c => c.checked = false);
+  updateWarrantyOptions();
+  refreshFilterOptions();
+  if (el('filter')) el('filter').selectedIndex = 0;
+  calc();
+}
+
 function init() {
   buildAccessories();
   buildHeat();
   makeSelectOptions();
   refreshModels();
+  resetFreshQuote();
 
   el('boilerType').onchange=()=>{ refreshManufacturers(); refreshModels(); };
   el('manufacturer').onchange=refreshModels;
