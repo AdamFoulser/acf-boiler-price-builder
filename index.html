@@ -18,7 +18,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v36</div>
+      <div class="subtitle">ACF engineer tools · v37</div>
     </div>
   </div>
 </header>
@@ -107,14 +107,54 @@
    document.querySelectorAll('option').forEach(o=>{ if(/£\s*\d/.test(o.textContent)) o.textContent=o.textContent.replace(/\s*[—-]\s*£[\d,.]+(?:\s*each)?/gi,''); });
  }
  let photo=''; const pi=q('#quotePhoto'); if(pi) pi.addEventListener('change',()=>{const f=pi.files&&pi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{photo=r.result;const im=q('#quotePhotoPreview');im.src=photo;im.hidden=false};r.readAsDataURL(f)});
- function getStore(){try{return JSON.parse(localStorage.getItem('acf_saved_quotes_v36')||'[]')}catch(e){return[]}}
- function setStore(v){localStorage.setItem('acf_saved_quotes_v36',JSON.stringify(v))}
- function snapshot(){ const ids=['boilerType','manufacturer','boilerModel','warranty','priceBasis','labour','materials','thermostat','limescale','shockArrestor','terminalGuard','roofer','filter','trvQty','trvType','powerflush','powerflushRads','commission']; const vals={}; ids.forEach(id=>{const e=q('#'+id);if(e)vals[id]={value:e.value,text:e.options?.[e.selectedIndex]?.text||e.value}}); return vals }
- function render(){const el=q('#savedQuotesList');if(!el)return;const rows=getStore();if(!rows.length){el.innerHTML='<div class="meta">No saved quotes yet.</div>';return} el.innerHTML=rows.map((r,i)=>`<div class="warranty-record"><strong>${r.address||'No address'}</strong><div class="meta">${r.option||'Boiler option'} · ${r.values?.boilerModel?.text||''}<br>${r.total?.incvat||''} · saved by ${r.user||'ACF'}</div>${r.photo?`<img class="warranty-preview" src="${r.photo}" alt="Existing boiler">`:''}<button type="button" class="small-action" data-load="${i}">Load</button> <button type="button" class="small-action" data-del="${i}">Delete</button></div>`).join('');}
- q('#saveQuoteOption')?.addEventListener('click',()=>{const address=q('#quoteAddress').value.trim();if(!address){q('#quoteSaveStatus').textContent='Enter the property address first.';return}const rows=getStore();rows.unshift({id:Date.now(),address,option:q('#quoteOptionName').value.trim(),photo,values:snapshot(),total:moneyText(),user,created:new Date().toISOString()});try{setStore(rows);q('#quoteSaveStatus').textContent='Boiler option saved.';render()}catch(e){q('#quoteSaveStatus').textContent='Could not save — photo may be too large.'}});
- document.addEventListener('click',e=>{const open=e.target.closest('[data-open-page]');if(open){const page=open.dataset.openPage;document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-'+page)?.classList.add('active-page');document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));if(page==='saved')render()}
- const d=e.target.closest('[data-del]');if(d){const rows=getStore();rows.splice(+d.dataset.del,1);setStore(rows);render()}
- const l=e.target.closest('[data-load]');if(l){const r=getStore()[+l.dataset.load];if(!r)return;q('#quoteAddress').value=r.address||'';q('#quoteOptionName').value=r.option||'';Object.entries(r.values||{}).forEach(([id,v])=>{const x=q('#'+id);if(x){x.value=v.value;x.dispatchEvent(new Event('change',{bubbles:true}))}});document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-quote').classList.add('active-page');window.scrollTo(0,0)} });
+ function getStore(){try{return JSON.parse(localStorage.getItem('acf_saved_quotes_v37')||localStorage.getItem('acf_saved_quotes_v36')||'[]')}catch(e){return[]}}
+ function setStore(v){localStorage.setItem('acf_saved_quotes_v37',JSON.stringify(v))}
+ function cleanText(t){return String(t||'').replace(/\s*[—-]\s*£[\d,.]+(?:\s*each)?/gi,'').trim()}
+ function snapshot(){
+   const ids=['boilerType','manufacturer','boilerModel','warranty','priceBasis','labour','materials','thermostat','limescale','shockArrestor','terminalGuard','roofer','filter','trvQty','trvType','powerflush','powerflushRads','commission'];
+   const vals={}; ids.forEach(id=>{const e=q('#'+id);if(e)vals[id]={value:e.value,text:e.options?.[e.selectedIndex]?.text||e.value}});
+   vals.accessories=[...document.querySelectorAll('#accessorySlots select')].map(e=>({value:e.value,text:e.options?.[e.selectedIndex]?.text||''})).filter(x=>x.value && !/^0(?:\.0+)?$/.test(x.value) && !/none|no additional/i.test(x.text));
+   return vals;
+ }
+ function selectedItems(r){
+   const v=r.values||{}, out=[];
+   (v.accessories||[]).forEach(x=>{if(x.text)out.push(cleanText(x.text))});
+   ['thermostat','limescale','shockArrestor','terminalGuard','roofer','filter','trvType','powerflush'].forEach(id=>{const x=v[id]; if(x&&x.value&&x.value!=='0'&&!/none|no\b/i.test(x.text||'')) out.push(cleanText(x.text))});
+   if(v.materials&&v.materials.value&&v.materials.value!=='0') out.push('Pipework / materials '+cleanText(v.materials.text));
+   return [...new Set(out.filter(Boolean))];
+ }
+ function quoteCopy(r){
+   const boiler=cleanText(r.values?.boilerModel?.text||r.option||'Boiler option');
+   const items=selectedItems(r);
+   return [boiler, ...items.map(x=>'• '+x), 'Total: '+(r.total?.incvat||'')].filter(Boolean).join('\n');
+ }
+ function esc(x){return String(x||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
+ function render(){
+   const el=q('#savedQuotesList'); if(!el)return; const rows=getStore();
+   if(!rows.length){el.innerHTML='<div class="meta">No saved quotes yet.</div>';return}
+   const groups=[]; const map=new Map();
+   rows.forEach((r,i)=>{const key=(r.address||'No address').trim().toLowerCase(); if(!map.has(key)){const g={address:r.address||'No address',photo:r.photo||'',rows:[]};map.set(key,g);groups.push(g)} const g=map.get(key);if(!g.photo&&r.photo)g.photo=r.photo;g.rows.push({r,i})});
+   el.innerHTML=groups.map(g=>`<div class="warranty-record property-record"><strong style="font-size:1.15em">${esc(g.address)}</strong>${g.photo?`<img class="warranty-preview" src="${g.photo}" alt="Existing boiler">`:''}<div class="meta" style="margin:8px 0">${g.rows.length} boiler option${g.rows.length===1?'':'s'} saved</div>${g.rows.map(({r,i},n)=>{const items=selectedItems(r);return `<div style="padding:12px 0;border-top:1px solid #dbe4ec"><strong>${esc(r.option||('Option '+(n+1)))} — ${esc(cleanText(r.values?.boilerModel?.text||''))}</strong><div style="font-size:1.08em;font-weight:800;margin:6px 0">${esc(r.total?.incvat||'')}</div>${items.length?`<ul style="margin:6px 0 10px;padding-left:20px">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<div class="meta">No extras selected</div>'}<button type="button" class="small-action" data-copy="${i}">Copy quote text</button> <button type="button" class="small-action" data-load="${i}">Edit</button> <button type="button" class="small-action" data-del="${i}">Delete</button></div>`}).join('')}</div>`).join('');
+ }
+ q('#saveQuoteOption')?.addEventListener('click',()=>{const address=q('#quoteAddress').value.trim();if(!address){q('#quoteSaveStatus').textContent='Enter the property address first.';return}const rows=getStore();const same=rows.filter(r=>(r.address||'').trim().toLowerCase()===address.toLowerCase()).length;const opt=q('#quoteOptionName').value.trim()||('Option '+(same+1));rows.unshift({id:Date.now(),address,option:opt,photo,values:snapshot(),total:moneyText(),user,created:new Date().toISOString()});try{setStore(rows);q('#quoteSaveStatus').textContent='Boiler option saved to '+address+'.';render()}catch(e){q('#quoteSaveStatus').textContent='Could not save — photo may be too large.'}});
+ document.addEventListener('click',async e=>{
+   const open=e.target.closest('[data-open-page]');if(open){const page=open.dataset.openPage;document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-'+page)?.classList.add('active-page');document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));if(page==='saved')render()}
+   const c=e.target.closest('[data-copy]');if(c){const r=getStore()[+c.dataset.copy];if(!r)return;try{await navigator.clipboard.writeText(quoteCopy(r));const old=c.textContent;c.textContent='Copied ✓';setTimeout(()=>c.textContent=old,1400)}catch(_){prompt('Copy this quote text:',quoteCopy(r))}}
+   const d=e.target.closest('[data-del]');if(d){const rows=getStore();rows.splice(+d.dataset.del,1);setStore(rows);render()}
+   const l=e.target.closest('[data-load]');if(l){const r=getStore()[+l.dataset.load];if(!r)return;q('#quoteAddress').value=r.address||'';q('#quoteOptionName').value=r.option||'';Object.entries(r.values||{}).forEach(([id,v])=>{if(id==='accessories')return;const x=q('#'+id);if(x){x.value=v.value;x.dispatchEvent(new Event('change',{bubbles:true}))}});document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-quote').classList.add('active-page');window.scrollTo(0,0)}
+ });
+ // v37: restore Baxi vertical-flue visibility. Williams lists the 5118576 vertical terminal;
+ // roof flashings already exist in the Williams accessory data. Add the terminal to Baxi flue dropdowns if missing.
+ function ensureBaxiVertical(){
+   const man=q('#manufacturer'); if(!man||!/baxi/i.test(man.options?.[man.selectedIndex]?.text||man.value||''))return;
+   document.querySelectorAll('#accessorySlots select').forEach(sel=>{
+     const txt=[...sel.options].map(o=>o.textContent).join(' ');
+     if(/horizontal|flue|terminal/i.test(txt)&&!/[\s>]5118576\b/.test(txt)){
+       const o=document.createElement('option'); o.value='153.52'; o.textContent='Baxi Vertical Flue Terminal 60/100 - Black 5118576 — £153.52'; sel.appendChild(o);
+     }
+   });
+ }
+ const mo=new MutationObserver(ensureBaxiVertical); const as=q('#accessorySlots'); if(as)mo.observe(as,{childList:true,subtree:true}); q('#manufacturer')?.addEventListener('change',()=>setTimeout(ensureBaxiVertical,50)); q('#boilerModel')?.addEventListener('change',()=>setTimeout(ensureBaxiVertical,50)); setTimeout(ensureBaxiVertical,300);
  render();
 })();
 </script>

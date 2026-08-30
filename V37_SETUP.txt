@@ -1,0 +1,11 @@
+ACF Boiler Pricing v37
+
+Changes:
+- Saved Quotes grouped by property/address
+- Unlimited boiler options per address (designed for 5+)
+- Saved option shows final price + selected items only
+- Copy quote text button for pasting into Commusoft
+- Existing v36 saved quotes migrate automatically
+- Baxi vertical flue terminal 5118576 restored to flue choices
+
+Upload these files over the existing GitHub/Vercel project files.
