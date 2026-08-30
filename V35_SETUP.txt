@@ -1,0 +1,5 @@
+ACF Boiler Pricing v35 — iPhone Home Screen icon fix
+
+Upload middleware.js and index.html over the existing files.
+No Vercel environment variable changes are required.
+After deployment, delete the old Home Screen shortcut and add the app to Home Screen again from Safari.
