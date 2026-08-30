@@ -1,0 +1,16 @@
+ACF Boiler Pricing v33 — Private Access
+
+NEW IN v33
+- Vercel server-side access protection added.
+- The whole app, including pricing files and warranty pages, is blocked before loading unless valid credentials are supplied.
+- No password is stored in the GitHub code.
+
+AFTER UPLOADING THESE FILES TO GITHUB
+In Vercel > acf-boiler-price-builder > Settings > Environment Variables add:
+
+ACF_APP_USER = acflimited@hotmail.com
+ACF_APP_PASSWORD = choose your private password
+
+Apply both to Production (and Preview if you want previews protected), then redeploy the latest deployment.
+
+When opening the app, the browser will request the username/email and password.
