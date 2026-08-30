@@ -9,7 +9,7 @@
   <meta name="apple-mobile-web-app-title" content="ACF Boilers"/>
   <title>ACF Boiler Price Builder</title>
   <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=35"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=36"/>
   <link rel="stylesheet" href="styles.css?v=33"/>
 </head>
 <body>
@@ -18,7 +18,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v35</div>
+      <div class="subtitle">ACF engineer tools · v36</div>
     </div>
   </div>
 </header>
@@ -33,6 +33,7 @@
     <button type="button" class="home-tool" data-open-page="quote"><span class="home-icon">🔥</span><strong>Boilers</strong><small>Build a complete boiler price</small></button>
     <button type="button" class="home-tool" data-open-page="boilers"><span class="home-icon"><svg class="home-radiator" viewBox="0 0 28 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="20" height="13" rx="1.5"/><path d="M8 5v11M12 5v11M16 5v11M20 5v11M2 7h2M24 7h2M7 17v2M21 17v2"/></g></svg></span><strong>Radiators</strong><small>Calculate room heat requirement</small></button>
     <button type="button" class="home-tool" data-open-page="warranty"><span class="home-icon">📷</span><strong>Warranty</strong><small>Save boiler registration details</small></button>
+      <button type="button" class="home-tool" data-open-page="saved"><span class="home-icon">📁</span><strong>Saved Quotes</strong><small>Properties, boiler options & photos</small></button>
   </div>
 </section>
 
@@ -67,6 +68,7 @@
 </section>
 
 <section id="page-quote" class="app-page">
+  <section class="card"><h2>Property / Quote</h2><label>Property address<textarea id="quoteAddress" rows="2" placeholder="Enter property address"></textarea></label><label>Existing boiler photo<input id="quotePhoto" type="file" accept="image/*" capture="environment"></label><img id="quotePhotoPreview" class="warranty-preview" alt="" hidden><label>Option name<input id="quoteOptionName" type="text" placeholder="e.g. Vaillant option"></label><button id="saveQuoteOption" type="button" class="primary">Save this boiler option</button><div id="quoteSaveStatus" class="meta"></div></section>
   <div class="grid">
     <section class="card"><h2>Step 1. Boiler</h2><label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label><label>Manufacturer<select id="manufacturer"></select></label><label>Boiler model<select id="boilerModel"></select></label><label>Warranty<select id="warranty"></select></label><div id="warrantyRule" class="warranty-rule"></div><label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label><div id="boilerMeta" class="meta"></div></section>
 
@@ -80,6 +82,7 @@
 </section>
 
 <section id="page-warranty" class="app-page"><div class="warranty-tabs"><button type="button" class="warranty-tab active" data-warranty-tab="new">New Registration</button><button type="button" class="warranty-tab" data-warranty-tab="pending">To Register</button><button type="button" class="warranty-tab" data-warranty-tab="archive">Registered</button></div><div id="warranty-tab-new" class="warranty-tab-panel active"><section class="card warranty-card"><h2>Boiler Warranty Registration</h2><p class="supplier-help">Save the details now and register the warranty later. Photos stay with this record on this device.</p><label>Property address<textarea id="warAddress" rows="3" placeholder="Enter installation address"></textarea></label><label>Date fitted<input id="warDate" type="date"></label><label>Boiler manufacturer<input id="warManufacturer" type="text" placeholder="e.g. Vaillant"></label><label>Boiler serial number<div class="serial-row"><input id="warSerial" type="text" placeholder="Take photo or enter serial"><button id="copySerial" type="button" class="small-action">Copy</button></div></label><label>Boiler serial number photo<input id="warBoilerPhoto" type="file" accept="image/*" capture="environment"></label><img id="warBoilerPreview" class="warranty-preview" alt="" hidden><button id="readSerial" type="button" class="secondary-action">Read serial number from photo</button><div id="ocrStatus" class="meta" style="display:none"></div><label>Filter photo<input id="warFilterPhoto" type="file" accept="image/*" capture="environment"></label><img id="warFilterPreview" class="warranty-preview" alt="" hidden><label>Notes<textarea id="warNotes" rows="2" placeholder="Optional"></textarea></label><button id="saveWarranty" class="primary" type="button">Save warranty record</button></section></div><div id="warranty-tab-pending" class="warranty-tab-panel"><section class="card"><div class="section-title-row"><h2>To Register</h2><span class="using-label">Tick when completed</span></div><div id="warrantyList" class="warranty-list"><div class="meta">No warranties waiting to be registered.</div></div></section></div><div id="warranty-tab-archive" class="warranty-tab-panel"><section class="card"><div class="section-title-row"><h2>Registered</h2><span class="using-label">Kept for 30 days</span></div><div id="warrantyArchive" class="warranty-list"><div class="meta">No recently registered warranties.</div></div></section></div></section>
+<section id="page-saved" class="app-page"><section class="card"><div class="section-title-row"><h2>Saved Quotes</h2><span class="using-label">Saved on this device</span></div><div id="savedQuotesList" class="warranty-list"><div class="meta">No saved quotes yet.</div></div></section></section>
 <section id="page-info" class="app-page"></section>
 </main>
 <nav class="bottom-nav" aria-label="App navigation">
@@ -87,9 +90,33 @@
   <button type="button" data-page="quote"><span class="nav-symbol" aria-hidden="true">🔥</span><span>Boilers</span></button>
   <button type="button" data-page="boilers"><svg class="nav-radiator" viewBox="0 0 28 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="20" height="13" rx="1.5"/><path d="M8 5v11M12 5v11M16 5v11M20 5v11M2 7h2M24 7h2M7 17v2M21 17v2"/></g></svg><span>Radiators</span></button>
   <button type="button" data-page="warranty"><span class="nav-symbol" aria-hidden="true">📷</span><span>Warranty</span></button>
+  <button type="button" data-page="saved"><span class="nav-symbol" aria-hidden="true">📁</span><span>Saved</span></button>
 </nav>
 <script src="data.js?v=33"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="app.js?v=33"></script>
+<script>
+(function(){
+ const role=(document.cookie.match(/(?:^|; )acf_role=([^;]+)/)||[])[1]||'admin';
+ const user=decodeURIComponent((document.cookie.match(/(?:^|; )acf_user=([^;]+)/)||[])[1]||'');
+ document.body.dataset.role=role;
+ function q(s){return document.querySelector(s)}
+ function moneyText(){return {exvat:q('#exvat')?.textContent||'',vat:q('#vat')?.textContent||'',incvat:q('#incvat')?.textContent||''}}
+ if(role==='quoter'){
+   const st=document.createElement('style'); st.textContent=`#boilerMeta,#thermostatCompare,#filterCompare,#trvBreakdown,#powerflushBreakdown,#sumBoiler,#sumAccessories,#sumExtras,#subtotal,#sumCommission{filter:blur(6px);user-select:none}.using-label{display:none!important}`; document.head.appendChild(st);
+   document.querySelectorAll('option').forEach(o=>{ if(/£\s*\d/.test(o.textContent)) o.textContent=o.textContent.replace(/\s*[—-]\s*£[\d,.]+(?:\s*each)?/gi,''); });
+ }
+ let photo=''; const pi=q('#quotePhoto'); if(pi) pi.addEventListener('change',()=>{const f=pi.files&&pi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{photo=r.result;const im=q('#quotePhotoPreview');im.src=photo;im.hidden=false};r.readAsDataURL(f)});
+ function getStore(){try{return JSON.parse(localStorage.getItem('acf_saved_quotes_v36')||'[]')}catch(e){return[]}}
+ function setStore(v){localStorage.setItem('acf_saved_quotes_v36',JSON.stringify(v))}
+ function snapshot(){ const ids=['boilerType','manufacturer','boilerModel','warranty','priceBasis','labour','materials','thermostat','limescale','shockArrestor','terminalGuard','roofer','filter','trvQty','trvType','powerflush','powerflushRads','commission']; const vals={}; ids.forEach(id=>{const e=q('#'+id);if(e)vals[id]={value:e.value,text:e.options?.[e.selectedIndex]?.text||e.value}}); return vals }
+ function render(){const el=q('#savedQuotesList');if(!el)return;const rows=getStore();if(!rows.length){el.innerHTML='<div class="meta">No saved quotes yet.</div>';return} el.innerHTML=rows.map((r,i)=>`<div class="warranty-record"><strong>${r.address||'No address'}</strong><div class="meta">${r.option||'Boiler option'} · ${r.values?.boilerModel?.text||''}<br>${r.total?.incvat||''} · saved by ${r.user||'ACF'}</div>${r.photo?`<img class="warranty-preview" src="${r.photo}" alt="Existing boiler">`:''}<button type="button" class="small-action" data-load="${i}">Load</button> <button type="button" class="small-action" data-del="${i}">Delete</button></div>`).join('');}
+ q('#saveQuoteOption')?.addEventListener('click',()=>{const address=q('#quoteAddress').value.trim();if(!address){q('#quoteSaveStatus').textContent='Enter the property address first.';return}const rows=getStore();rows.unshift({id:Date.now(),address,option:q('#quoteOptionName').value.trim(),photo,values:snapshot(),total:moneyText(),user,created:new Date().toISOString()});try{setStore(rows);q('#quoteSaveStatus').textContent='Boiler option saved.';render()}catch(e){q('#quoteSaveStatus').textContent='Could not save — photo may be too large.'}});
+ document.addEventListener('click',e=>{const open=e.target.closest('[data-open-page]');if(open){const page=open.dataset.openPage;document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-'+page)?.classList.add('active-page');document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));if(page==='saved')render()}
+ const d=e.target.closest('[data-del]');if(d){const rows=getStore();rows.splice(+d.dataset.del,1);setStore(rows);render()}
+ const l=e.target.closest('[data-load]');if(l){const r=getStore()[+l.dataset.load];if(!r)return;q('#quoteAddress').value=r.address||'';q('#quoteOptionName').value=r.option||'';Object.entries(r.values||{}).forEach(([id,v])=>{const x=q('#'+id);if(x){x.value=v.value;x.dispatchEvent(new Event('change',{bubbles:true}))}});document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-quote').classList.add('active-page');window.scrollTo(0,0)} });
+ render();
+})();
+</script>
 </body>
 </html>

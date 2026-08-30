@@ -1,0 +1,25 @@
+ACF Boiler Pricing v36 — Individual logins + saved quote library
+
+Upload middleware.js and index.html over the existing files in GitHub/Vercel.
+
+Existing ACF_APP_USER / ACF_APP_PASSWORD continue to work as Admin 1.
+
+Add these Vercel Environment Variables for the other individual users:
+ACF_ADMIN2_USER
+ACF_ADMIN2_PASSWORD
+ACF_QUOTER1_USER
+ACF_QUOTER1_PASSWORD
+ACF_QUOTER2_USER
+ACF_QUOTER2_PASSWORD
+
+Admin users: full pricing access.
+Quoter users: quote-building access with internal component/cost breakdown obscured.
+
+Saved Quotes:
+- Save property address
+- Save existing boiler photo
+- Stack multiple boiler options against an address
+- Reopen saved options
+- Delete records
+
+IMPORTANT: v36 saved quotes/photos are stored on the device/browser. Cross-device shared cloud storage requires the next database-backed update.
