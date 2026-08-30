@@ -1,0 +1,12 @@
+ACF Boiler Pricing v34 — Branded Login
+
+Upload these files over the existing GitHub files:
+- middleware.js
+- index.html
+- sw.js
+
+No Vercel environment-variable changes are needed. Keep the existing:
+ACF_APP_USER
+ACF_APP_PASSWORD
+
+After GitHub/Vercel deploys v34, opening the app will show the branded ACF Engineer Login page.

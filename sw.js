@@ -1,4 +1,4 @@
-const CACHE='acf-boiler-v33';
+const CACHE='acf-boiler-v34';
 const ASSETS=['./','./index.html','./styles.css?v=33','./app.js?v=33','./data.js?v=33','./manifest.webmanifest','./acf-boiler-pricing-logo.png','./apple-touch-icon.png','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install',event=>{
