@@ -1,0 +1,7 @@
+ACF Boiler Pricing v38
+
+Adds third full-access admin login:
+ACF_ADMIN3_USER
+ACF_ADMIN3_PASSWORD
+
+Existing Admin 1, Admin 2 and Quoter accounts unchanged.
