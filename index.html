@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles.css?v=33"/>
 
   <style>
-    /* v39 mobile navigation fix */
+    /* v40 saved quote copy-all update */
     .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
     .bottom-nav button{min-width:0!important;width:100%!important;padding-left:2px!important;padding-right:2px!important;font-size:12px!important;}
     .bottom-nav button span:last-child{white-space:nowrap!important;font-size:12px!important;}
@@ -26,7 +26,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v39</div>
+      <div class="subtitle">ACF engineer tools · v40</div>
     </div>
   </div>
 </header>
@@ -131,22 +131,31 @@
    if(v.materials&&v.materials.value&&v.materials.value!=='0') out.push('Pipework / materials '+cleanText(v.materials.text));
    return [...new Set(out.filter(Boolean))];
  }
+ function warrantyText(r){
+   let w=cleanText(r.values?.warranty?.text||r.values?.warranty?.value||'').trim();
+   if(!w || /select|none|choose/i.test(w)) return '';
+   if(!/warranty/i.test(w)) w += ' Warranty';
+   return w;
+ }
  function quoteCopy(r){
    const boiler=cleanText(r.values?.boilerModel?.text||r.option||'Boiler option');
-   const items=selectedItems(r);
-   return [boiler, ...items.map(x=>'• '+x), 'Total: '+(r.total?.incvat||'')].filter(Boolean).join('\n');
+   const price=r.total?.exvat||r.total?.incvat||'';
+   const warranty=warrantyText(r);
+   return boiler+' – Supply and installation: '+price+' + VAT'+(warranty?' – '+warranty:'');
  }
+ function groupCopy(g){ return g.rows.map(({r})=>quoteCopy(r)).join('\n'); }
  function esc(x){return String(x||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
  function render(){
    const el=q('#savedQuotesList'); if(!el)return; const rows=getStore();
    if(!rows.length){el.innerHTML='<div class="meta">No saved quotes yet.</div>';return}
    const groups=[]; const map=new Map();
    rows.forEach((r,i)=>{const key=(r.address||'No address').trim().toLowerCase(); if(!map.has(key)){const g={address:r.address||'No address',photo:r.photo||'',rows:[]};map.set(key,g);groups.push(g)} const g=map.get(key);if(!g.photo&&r.photo)g.photo=r.photo;g.rows.push({r,i})});
-   el.innerHTML=groups.map(g=>`<div class="warranty-record property-record"><strong style="font-size:1.15em">${esc(g.address)}</strong>${g.photo?`<img class="warranty-preview" src="${g.photo}" alt="Existing boiler">`:''}<div class="meta" style="margin:8px 0">${g.rows.length} boiler option${g.rows.length===1?'':'s'} saved</div>${g.rows.map(({r,i},n)=>{const items=selectedItems(r);return `<div style="padding:12px 0;border-top:1px solid #dbe4ec"><strong>${esc(r.option||('Option '+(n+1)))} — ${esc(cleanText(r.values?.boilerModel?.text||''))}</strong><div style="font-size:1.08em;font-weight:800;margin:6px 0">${esc(r.total?.incvat||'')}</div>${items.length?`<ul style="margin:6px 0 10px;padding-left:20px">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<div class="meta">No extras selected</div>'}<button type="button" class="small-action" data-copy="${i}">Copy quote text</button> <button type="button" class="small-action" data-load="${i}">Edit</button> <button type="button" class="small-action" data-del="${i}">Delete</button></div>`}).join('')}</div>`).join('');
+   el.innerHTML=groups.map((g,gi)=>`<div class="warranty-record property-record"><strong style="font-size:1.15em">${esc(g.address)}</strong>${g.photo?`<img class="warranty-preview" src="${g.photo}" alt="Existing boiler">`:''}<div class="meta" style="margin:8px 0">${g.rows.length} boiler option${g.rows.length===1?'':'s'} saved</div><button type="button" class="primary" style="margin:4px 0 10px" data-copy-group="${gi}">Copy All Options</button>${g.rows.map(({r,i},n)=>{const items=selectedItems(r);return `<div style="padding:12px 0;border-top:1px solid #dbe4ec"><strong>${esc(r.option||('Option '+(n+1)))} — ${esc(cleanText(r.values?.boilerModel?.text||''))}</strong><div style="font-size:1.08em;font-weight:800;margin:6px 0">${esc(r.total?.incvat||'')}</div>${items.length?`<ul style="margin:6px 0 10px;padding-left:20px">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<div class="meta">No extras selected</div>'}<button type="button" class="small-action" data-copy="${i}">Copy quote line</button> <button type="button" class="small-action" data-load="${i}">Edit</button> <button type="button" class="small-action" data-del="${i}">Delete</button></div>`}).join('')}</div>`).join('');
  }
  q('#saveQuoteOption')?.addEventListener('click',()=>{const address=q('#quoteAddress').value.trim();if(!address){q('#quoteSaveStatus').textContent='Enter the property address first.';return}const rows=getStore();const same=rows.filter(r=>(r.address||'').trim().toLowerCase()===address.toLowerCase()).length;const opt=q('#quoteOptionName').value.trim()||('Option '+(same+1));rows.unshift({id:Date.now(),address,option:opt,photo,values:snapshot(),total:moneyText(),user,created:new Date().toISOString()});try{setStore(rows);q('#quoteSaveStatus').textContent='Boiler option saved to '+address+'.';render()}catch(e){q('#quoteSaveStatus').textContent='Could not save — photo may be too large.'}});
  document.addEventListener('click',async e=>{
    const open=e.target.closest('[data-open-page]');if(open){const page=open.dataset.openPage;document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-'+page)?.classList.add('active-page');document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));if(page==='saved')render()}
+   const cg=e.target.closest('[data-copy-group]');if(cg){const rows=getStore(),groups=[],map=new Map();rows.forEach((r,i)=>{const key=(r.address||'No address').trim().toLowerCase();if(!map.has(key)){const g={address:r.address||'No address',rows:[]};map.set(key,g);groups.push(g)}map.get(key).rows.push({r,i})});const g=groups[+cg.dataset.copyGroup];if(!g)return;const text=groupCopy(g);try{await navigator.clipboard.writeText(text);const old=cg.textContent;cg.textContent='All Options Copied ✓';setTimeout(()=>cg.textContent=old,1600)}catch(_){prompt('Copy all quote options:',text)}}
    const c=e.target.closest('[data-copy]');if(c){const r=getStore()[+c.dataset.copy];if(!r)return;try{await navigator.clipboard.writeText(quoteCopy(r));const old=c.textContent;c.textContent='Copied ✓';setTimeout(()=>c.textContent=old,1400)}catch(_){prompt('Copy this quote text:',quoteCopy(r))}}
    const d=e.target.closest('[data-del]');if(d){const rows=getStore();rows.splice(+d.dataset.del,1);setStore(rows);render()}
    const l=e.target.closest('[data-load]');if(l){const r=getStore()[+l.dataset.load];if(!r)return;q('#quoteAddress').value=r.address||'';q('#quoteOptionName').value=r.option||'';Object.entries(r.values||{}).forEach(([id,v])=>{if(id==='accessories')return;const x=q('#'+id);if(x){x.value=v.value;x.dispatchEvent(new Event('change',{bubbles:true}))}});document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-quote').classList.add('active-page');window.scrollTo(0,0)}
