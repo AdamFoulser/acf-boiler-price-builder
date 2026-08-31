@@ -11,6 +11,14 @@
   <link rel="manifest" href="manifest.webmanifest"/>
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=36"/>
   <link rel="stylesheet" href="styles.css?v=33"/>
+
+  <style>
+    /* v39 mobile navigation fix */
+    .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
+    .bottom-nav button{min-width:0!important;width:100%!important;padding-left:2px!important;padding-right:2px!important;font-size:12px!important;}
+    .bottom-nav button span:last-child{white-space:nowrap!important;font-size:12px!important;}
+    .page-home-back{display:inline-flex;align-items:center;gap:6px;margin:12px 0 14px;padding:10px 14px;border:1px solid #cbd7e3;border-radius:12px;background:#fff;color:#0b3d73;font:inherit;font-weight:700;box-shadow:0 2px 8px rgba(11,47,91,.08);}
+  </style>
 </head>
 <body>
 <header class="topbar">
@@ -18,7 +26,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v38</div>
+      <div class="subtitle">ACF engineer tools · v39</div>
     </div>
   </div>
 </header>
@@ -37,7 +45,7 @@
   </div>
 </section>
 
-<section id="page-boilers" class="app-page">
+<section id="page-boilers" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
   <section class="card radiator-card">
     <h2>Radiator Sizing Calculator</h2>
     <p class="supplier-help">Enter the room details to get an estimated heat requirement and suitable standard radiator sizes.</p>
@@ -67,7 +75,7 @@
   </section>
 </section>
 
-<section id="page-quote" class="app-page">
+<section id="page-quote" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
   <section class="card"><h2>Property / Quote</h2><label>Property address<textarea id="quoteAddress" rows="2" placeholder="Enter property address"></textarea></label><label>Existing boiler photo<input id="quotePhoto" type="file" accept="image/*" capture="environment"></label><img id="quotePhotoPreview" class="warranty-preview" alt="" hidden><label>Option name<input id="quoteOptionName" type="text" placeholder="e.g. Vaillant option"></label><button id="saveQuoteOption" type="button" class="primary">Save this boiler option</button><div id="quoteSaveStatus" class="meta"></div></section>
   <div class="grid">
     <section class="card"><h2>Step 1. Boiler</h2><label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label><label>Manufacturer<select id="manufacturer"></select></label><label>Boiler model<select id="boilerModel"></select></label><label>Warranty<select id="warranty"></select></label><div id="warrantyRule" class="warranty-rule"></div><label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label><div id="boilerMeta" class="meta"></div></section>
@@ -81,8 +89,8 @@
   <section class="card summary"><h2>Quote Summary</h2><div class="row"><span>Boiler quote basis</span><strong id="sumBoiler">£0.00</strong></div><div class="row"><span>Boiler warranty</span><strong id="sumWarranty">—</strong></div><div class="row"><span>Accessories</span><strong id="sumAccessories">£0.00</strong></div><div class="row"><span>Labour / materials / extras</span><strong id="sumExtras">£0.00</strong></div><div class="row" id="sumRooferRow" style="display:none"><span>Roofer</span><strong id="sumRoofer">£150.00 + VAT</strong></div><div class="row"><span>Subtotal before commission</span><strong id="subtotal">£0.00</strong></div><div class="row"><span>Letting agent commission</span><strong id="sumCommission">£0.00</strong></div><div class="row total"><span>Customer price ex VAT</span><strong id="exvat">£0.00</strong></div><div class="row"><span>VAT @ 20%</span><strong id="vat">£0.00</strong></div><div class="row grand"><span>Total inc VAT</span><strong id="incvat">£0.00</strong></div><button id="copyQuote" class="primary">Copy quote line</button></section>
 </section>
 
-<section id="page-warranty" class="app-page"><div class="warranty-tabs"><button type="button" class="warranty-tab active" data-warranty-tab="new">New Registration</button><button type="button" class="warranty-tab" data-warranty-tab="pending">To Register</button><button type="button" class="warranty-tab" data-warranty-tab="archive">Registered</button></div><div id="warranty-tab-new" class="warranty-tab-panel active"><section class="card warranty-card"><h2>Boiler Warranty Registration</h2><p class="supplier-help">Save the details now and register the warranty later. Photos stay with this record on this device.</p><label>Property address<textarea id="warAddress" rows="3" placeholder="Enter installation address"></textarea></label><label>Date fitted<input id="warDate" type="date"></label><label>Boiler manufacturer<input id="warManufacturer" type="text" placeholder="e.g. Vaillant"></label><label>Boiler serial number<div class="serial-row"><input id="warSerial" type="text" placeholder="Take photo or enter serial"><button id="copySerial" type="button" class="small-action">Copy</button></div></label><label>Boiler serial number photo<input id="warBoilerPhoto" type="file" accept="image/*" capture="environment"></label><img id="warBoilerPreview" class="warranty-preview" alt="" hidden><button id="readSerial" type="button" class="secondary-action">Read serial number from photo</button><div id="ocrStatus" class="meta" style="display:none"></div><label>Filter photo<input id="warFilterPhoto" type="file" accept="image/*" capture="environment"></label><img id="warFilterPreview" class="warranty-preview" alt="" hidden><label>Notes<textarea id="warNotes" rows="2" placeholder="Optional"></textarea></label><button id="saveWarranty" class="primary" type="button">Save warranty record</button></section></div><div id="warranty-tab-pending" class="warranty-tab-panel"><section class="card"><div class="section-title-row"><h2>To Register</h2><span class="using-label">Tick when completed</span></div><div id="warrantyList" class="warranty-list"><div class="meta">No warranties waiting to be registered.</div></div></section></div><div id="warranty-tab-archive" class="warranty-tab-panel"><section class="card"><div class="section-title-row"><h2>Registered</h2><span class="using-label">Kept for 30 days</span></div><div id="warrantyArchive" class="warranty-list"><div class="meta">No recently registered warranties.</div></div></section></div></section>
-<section id="page-saved" class="app-page"><section class="card"><div class="section-title-row"><h2>Saved Quotes</h2><span class="using-label">Saved on this device</span></div><div id="savedQuotesList" class="warranty-list"><div class="meta">No saved quotes yet.</div></div></section></section>
+<section id="page-warranty" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><div class="warranty-tabs"><button type="button" class="warranty-tab active" data-warranty-tab="new">New Registration</button><button type="button" class="warranty-tab" data-warranty-tab="pending">To Register</button><button type="button" class="warranty-tab" data-warranty-tab="archive">Registered</button></div><div id="warranty-tab-new" class="warranty-tab-panel active"><section class="card warranty-card"><h2>Boiler Warranty Registration</h2><p class="supplier-help">Save the details now and register the warranty later. Photos stay with this record on this device.</p><label>Property address<textarea id="warAddress" rows="3" placeholder="Enter installation address"></textarea></label><label>Date fitted<input id="warDate" type="date"></label><label>Boiler manufacturer<input id="warManufacturer" type="text" placeholder="e.g. Vaillant"></label><label>Boiler serial number<div class="serial-row"><input id="warSerial" type="text" placeholder="Take photo or enter serial"><button id="copySerial" type="button" class="small-action">Copy</button></div></label><label>Boiler serial number photo<input id="warBoilerPhoto" type="file" accept="image/*" capture="environment"></label><img id="warBoilerPreview" class="warranty-preview" alt="" hidden><button id="readSerial" type="button" class="secondary-action">Read serial number from photo</button><div id="ocrStatus" class="meta" style="display:none"></div><label>Filter photo<input id="warFilterPhoto" type="file" accept="image/*" capture="environment"></label><img id="warFilterPreview" class="warranty-preview" alt="" hidden><label>Notes<textarea id="warNotes" rows="2" placeholder="Optional"></textarea></label><button id="saveWarranty" class="primary" type="button">Save warranty record</button></section></div><div id="warranty-tab-pending" class="warranty-tab-panel"><section class="card"><div class="section-title-row"><h2>To Register</h2><span class="using-label">Tick when completed</span></div><div id="warrantyList" class="warranty-list"><div class="meta">No warranties waiting to be registered.</div></div></section></div><div id="warranty-tab-archive" class="warranty-tab-panel"><section class="card"><div class="section-title-row"><h2>Registered</h2><span class="using-label">Kept for 30 days</span></div><div id="warrantyArchive" class="warranty-list"><div class="meta">No recently registered warranties.</div></div></section></div></section>
+<section id="page-saved" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><section class="card"><div class="section-title-row"><h2>Saved Quotes</h2><span class="using-label">Saved on this device</span></div><div id="savedQuotesList" class="warranty-list"><div class="meta">No saved quotes yet.</div></div></section></section>
 <section id="page-info" class="app-page"></section>
 </main>
 <nav class="bottom-nav" aria-label="App navigation">
