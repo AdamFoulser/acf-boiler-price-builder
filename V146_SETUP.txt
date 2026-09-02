@@ -1,0 +1,8 @@
+ACF Boiler Pricing v1.46
+
+Navigation update:
+- Removed bottom navigation strip completely.
+- Home screen is now the main navigation menu.
+- Existing Home buttons remain at the top of every section.
+- Updated home instruction text.
+- Preserves v1.45 Boiler Spares database and v1.44 Ongoing Jobs mobile overlap fix.

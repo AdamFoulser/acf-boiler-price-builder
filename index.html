@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles.css?v=33"/>
 
   <style>
-    /* v1.45 engineer tools */
+    /* v1.46 engineer tools */
     .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
     .bottom-nav button{min-width:0!important;width:100%!important;padding-left:2px!important;padding-right:2px!important;font-size:12px!important;}
     .bottom-nav button span:last-child{white-space:nowrap!important;font-size:12px!important;}
@@ -28,7 +28,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v1.45</div>
+      <div class="subtitle">ACF engineer tools · v1.46</div>
     </div>
   </div>
 </header>
@@ -37,7 +37,7 @@
 <section id="page-home" class="app-page active-page">
   <section class="home-hero">
     <h1>What do you need?</h1>
-    <p>Select a tool below. You can switch between sections at any time using the bottom menu.</p>
+    <p>Select a tool below. Use the Home button at the top of each section to switch tools.</p>
   </section>
   <div class="home-tools">
     <button type="button" class="home-tool" data-open-page="quote"><span class="home-icon">🔥</span><strong>Boilers</strong><small>Build a complete boiler price</small></button>
@@ -160,13 +160,7 @@
 <section id="page-spares" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><section class="card"><h2>Boiler Service Parts / Spares</h2><p class="supplier-help">Search by manufacturer, boiler model, spare description or manufacturer part number.</p><div class="spares-search"><input id="sparesSearch" type="search" placeholder="Search boiler or part number"><div id="sparesResults" class="meta">Verified Williams and City Plumbing boiler spares. Search manufacturer, part description or manufacturer part number.</div></div></section></section>
 <section id="page-info" class="app-page"></section>
 </main>
-<nav class="bottom-nav" aria-label="App navigation">
-  <button type="button" data-page="home" class="active">⌂<span>Home</span></button>
-  <button type="button" data-page="quote"><span class="nav-symbol" aria-hidden="true">🔥</span><span>Boilers</span></button>
-  <button type="button" data-page="boilers"><svg class="nav-radiator" viewBox="0 0 28 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="20" height="13" rx="1.5"/><path d="M8 5v11M12 5v11M16 5v11M20 5v11M2 7h2M24 7h2M7 17v2M21 17v2"/></g></svg><span>Radiators</span></button>
-  <button type="button" data-page="warranty"><span class="nav-symbol" aria-hidden="true">📷</span><span>Warranty</span></button>
-  <button type="button" data-page="saved"><span class="nav-symbol" aria-hidden="true">📁</span><span>Saved</span></button>
-</nav>
+
 <script src="data.js?v=33"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="app.js?v=33"></script>
