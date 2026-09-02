@@ -1,0 +1,14 @@
+ACF Boiler Pricing v1.44 — Ongoing Jobs
+
+Upload/replace the files in this ZIP over the existing v1.43 app.
+
+New Ongoing Jobs tab:
+- Property address, job description and status
+- Repeat visit history by date
+- Labour time in hours or days
+- Materials from the Williams Issue 179 database
+- Manual “Other material” entry with ex-VAT cost and quantity
+- Running visit, labour and material totals
+- Copy full job history
+- Active / Complete / All job filtering
+- Records saved on the device in local storage

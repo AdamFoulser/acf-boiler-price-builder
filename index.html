@@ -13,11 +13,12 @@
   <link rel="stylesheet" href="styles.css?v=33"/>
 
   <style>
-    /* v1.43 engineer tools */
+    /* v1.44 engineer tools */
     .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
     .bottom-nav button{min-width:0!important;width:100%!important;padding-left:2px!important;padding-right:2px!important;font-size:12px!important;}
     .bottom-nav button span:last-child{white-space:nowrap!important;font-size:12px!important;}
     .page-home-back{display:inline-flex;align-items:center;gap:6px;margin:12px 0 14px;padding:10px 14px;border:1px solid #cbd7e3;border-radius:12px;background:#fff;color:#0b3d73;font:inherit;font-weight:700;box-shadow:0 2px 8px rgba(11,47,91,.08);}
+    .oj-grid{display:grid;gap:12px}.oj-job-card{width:100%;text-align:left;border:1px solid #d9e2ea;border-radius:14px;background:#fff;padding:13px;display:grid;grid-template-columns:1fr auto;gap:6px 10px;color:inherit;font:inherit}.oj-job-card.selected{outline:2px solid #0b3d73}.oj-job-card span:first-child{display:grid;gap:3px}.oj-job-card small{color:#647586}.oj-job-meta{grid-column:1/-1;color:#647586;font-size:.88rem}.oj-status{font-size:.75rem;font-weight:800;padding:5px 8px;border-radius:999px;background:#e9f0f6;align-self:start}.oj-status.waiting-for-parts,.oj-status.waiting-for-approval{background:#fff4d8}.oj-status.complete{background:#e7f6ec}.oj-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin:10px 0}.oj-summary div{background:#eef4fa;border-radius:10px;padding:10px;display:grid;gap:2px}.oj-summary span{font-size:.78rem;color:#647586}.oj-visit{border-top:1px solid #dbe4ec;padding:14px 0}.oj-visit:first-child{border-top:0}.oj-visit-head,.oj-visit-total,.oj-material-lines>div,.oj-material-row{display:flex;align-items:center;justify-content:space-between;gap:10px}.oj-material-lines{display:grid;gap:4px;margin-top:8px}.oj-material-lines small{color:#647586}.oj-visit-total{margin-top:8px}.oj-material-row{border-top:1px solid #e3e9ee;padding:10px 0}.oj-material-row span{display:grid;flex:1}.oj-material-row small{color:#647586}.oj-material-tabs{display:grid;grid-template-columns:1fr;gap:12px}.oj-two{display:grid;grid-template-columns:1fr 1fr;gap:10px}@media(min-width:720px){.oj-material-tabs{grid-template-columns:1fr 1fr}.oj-summary{grid-template-columns:repeat(4,minmax(0,1fr))}}
       .tool-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tool-tab{border:1px solid #cbd7e3;background:#fff;color:#0b3d73;border-radius:10px;padding:10px 12px;font-weight:800}.tool-tab.active{background:#0b3d73;color:#fff}.tool-panel{display:none}.tool-panel.active{display:block}.gas-result{padding:16px;border-radius:12px;background:#eef4fa;margin-top:12px}.gas-result strong{font-size:1.35rem}.timer-readout{font-size:2rem;font-weight:900;letter-spacing:.03em;text-align:center;padding:12px}.guide-item{border-top:1px solid #dbe4ec;padding:12px 0}.guide-item:first-child{border-top:0}.guide-item h3{margin:0 0 6px}.spares-search{display:grid;gap:10px}.warning-note{padding:10px 12px;border-radius:10px;background:#fff7e6;border:1px solid #ead6a4;color:#604b1c}
   </style>
 </head>
@@ -27,7 +28,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v1.43</div>
+      <div class="subtitle">ACF engineer tools · v1.44</div>
     </div>
   </div>
 </header>
@@ -44,8 +45,22 @@
     <button type="button" class="home-tool" data-open-page="warranty"><span class="home-icon">📷</span><strong>Warranty</strong><small>Save boiler registration details</small></button>
       <button type="button" class="home-tool" data-open-page="saved"><span class="home-icon">📁</span><strong>Saved Quotes</strong><small>Properties, boiler options & photos</small></button>
       <button type="button" class="home-tool" data-open-page="general"><span class="home-icon">🧰</span><strong>General Job Price Builder</strong><small>Build any job from Williams catalogue items</small></button>
+      <button type="button" class="home-tool" data-open-page="ongoing"><span class="home-icon">📋</span><strong>Ongoing Jobs</strong><small>Track repeat visits, labour & materials</small></button>
       <button type="button" class="home-tool" data-open-page="gasrate"><span class="home-icon">⏱️</span><strong>Gas Rate Calculator</strong><small>Metric, imperial & smart meter guide</small></button>
       <button type="button" class="home-tool" data-open-page="spares"><span class="home-icon">🔧</span><strong>Boiler Spares</strong><small>Service parts, part numbers & prices</small></button>
+  </div>
+</section>
+
+<section id="page-ongoing" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
+  <section class="card"><div class="section-title-row"><h2>Ongoing Jobs</h2><select id="ojFilter" style="width:auto"><option value="active">Active</option><option value="complete">Complete</option><option value="all">All</option></select></div><p class="supplier-help">Keep a running record for jobs that need multiple visits. Labour time and materials stay against the property.</p><div id="ojJobList" class="oj-grid"></div></section>
+  <section class="card"><h2>Start New Ongoing Job</h2><label>Property address<textarea id="ojNewAddress" rows="2" placeholder="Enter property address"></textarea></label><label>Job description<textarea id="ojNewDescription" rows="2" placeholder="e.g. Bathroom refurbishment, heating fault, leak investigation"></textarea></label><button id="ojCreate" type="button" class="primary">Create ongoing job</button><div id="ojNewStatus" class="meta" style="margin-top:8px"></div></section>
+  <section id="ojNoJob" class="card"><div class="meta">Select an ongoing job above, or create a new one.</div></section>
+  <div id="ojJobPanel" hidden>
+    <section class="card"><div class="section-title-row"><h2>Job Details</h2><select id="ojStatus" style="width:auto"><option>Ongoing</option><option>Waiting for Parts</option><option>Waiting for Approval</option><option>Complete</option></select></div><label>Property address<textarea id="ojEditAddress" rows="2"></textarea></label><label>Job description<textarea id="ojEditDescription" rows="2"></textarea></label><div id="ojSummary" class="oj-summary"></div><div class="oj-two"><button id="ojSaveJob" type="button" class="primary">Save job details</button><button id="ojCopyJob" type="button" class="secondary-action">Copy job history</button></div><button id="ojDeleteJob" type="button" class="small-action" style="margin-top:10px">Delete job</button></section>
+    <section class="card"><h2>Add Visit</h2><div class="oj-two"><label>Date<input id="ojVisitDate" type="date"></label><label>Labour time<div style="display:grid;grid-template-columns:1fr 110px;gap:8px"><input id="ojLabour" type="number" inputmode="decimal" min="0" step="0.25" placeholder="e.g. 3.5"><select id="ojLabourUnit"><option value="hours">Hours</option><option value="days">Days</option></select></div></label></div><label>Visit notes<textarea id="ojVisitNotes" rows="3" placeholder="Work carried out / what is needed next"></textarea></label>
+      <h3>Materials used</h3><div class="oj-material-tabs"><div><strong>Williams catalogue</strong><label>Section<select id="ojWilliamsSection"></select></label><label>Search<input id="ojWilliamsSearch" type="search" placeholder="Product or Williams code"></label><label>Item<select id="ojWilliamsItem"></select></label><div class="oj-two"><label>Qty<input id="ojWilliamsQty" type="number" min="1" step="1" value="1"></label><button id="ojAddWilliams" type="button" class="secondary-action" style="align-self:end">Add Williams material</button></div></div><div><strong>Other material</strong><label>Description<input id="ojCustomDesc" type="text" placeholder="Anything not in Williams"></label><label>Cost each ex VAT<input id="ojCustomPrice" type="number" inputmode="decimal" min="0" step="0.01" placeholder="£"></label><div class="oj-two"><label>Qty<input id="ojCustomQty" type="number" min="1" step="1" value="1"></label><button id="ojAddCustom" type="button" class="secondary-action" style="align-self:end">Add other material</button></div></div></div><div id="ojVisitMaterials" style="margin-top:12px"></div><button id="ojSaveVisit" type="button" class="primary" style="margin-top:12px">Save visit</button><div id="ojVisitSaveStatus" class="meta" style="margin-top:8px"></div>
+    </section>
+    <section class="card"><h2>Visit History</h2><div id="ojVisits"></div></section>
   </div>
 </section>
 
@@ -157,6 +172,7 @@
 <script src="app.js?v=33"></script>
 <script src="williams-catalogue.js?v=143"></script>
 <script src="williams-builder.js?v=143"></script>
+<script src="ongoing-jobs.js?v=144"></script>
 <script>
 (function(){
  const role=(document.cookie.match(/(?:^|; )acf_role=([^;]+)/)||[])[1]||'admin';
