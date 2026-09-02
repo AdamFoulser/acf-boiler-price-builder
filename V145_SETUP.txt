@@ -1,0 +1,7 @@
+ACF Boiler Pricing v1.45
+- Boiler Spares tab now populated with verified Williams Pricebusters Issue 179 boiler-spares best sellers.
+- Search by manufacturer, description or manufacturer part number.
+- Williams prices displayed ex VAT.
+- Initial current City Plumbing public-price cross-checks included and explicitly labelled inc VAT.
+- This database is designed to expand beyond the quote-builder boiler list; only verified compatibility/parts should be added.
+- Preserves v1.44 Ongoing Jobs and mobile layout fix.
