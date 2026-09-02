@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles.css?v=33"/>
 
   <style>
-    /* v1.42 engineer tools */
+    /* v1.43 engineer tools */
     .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
     .bottom-nav button{min-width:0!important;width:100%!important;padding-left:2px!important;padding-right:2px!important;font-size:12px!important;}
     .bottom-nav button span:last-child{white-space:nowrap!important;font-size:12px!important;}
@@ -27,7 +27,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v1.42</div>
+      <div class="subtitle">ACF engineer tools · v1.43</div>
     </div>
   </div>
 </header>
@@ -50,22 +50,24 @@
 </section>
 
 <section id="page-general" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
-  <section class="card"><h2>General Job Price Builder</h2><p class="supplier-help">Build a materials list for any plumbing or heating job. Williams catalogue sections and products will be added when the new catalogue is uploaded.</p>
+  <section class="card"><h2>General Job Price Builder</h2><p class="supplier-help">Build a materials list from Williams Pricebusters Issue 179 (September 2026). Catalogue prices are ex VAT.</p>
     <label>Job address<textarea id="generalAddress" rows="2" placeholder="Enter property address"></textarea></label>
     <label>Job description<textarea id="generalDescription" rows="2" placeholder="e.g. New gas run, bathroom installation, cylinder works"></textarea></label>
   </section>
-  <section class="card"><div class="section-title-row"><h2>Williams Catalogue</h2><span class="using-label">Catalogue data pending</span></div>
-    <label>Section<select id="generalSection"><option value="">Upload catalogue to populate sections</option></select></label>
+  <section class="card"><div class="section-title-row"><h2>Williams Catalogue</h2><span class="using-label">Williams Issue 179</span></div>
+    <label>Section<select id="generalSection"><option value="">Loading catalogue…</option></select></label>
+    <label>Search catalogue<input id="generalSearch" type="search" placeholder="Search product name or Williams code"></label>
     <label>Item<select id="generalItem" disabled><option value="">Select a section first</option></select></label>
     <label>Quantity<input id="generalQty" type="number" inputmode="numeric" min="1" step="1" value="1"></label>
     <button id="generalAddItem" type="button" class="primary" disabled>Add item to job</button>
-    <p class="hint">The catalogue will be split into the same sections as the Williams contents page, so products can be found quickly from dropdown menus.</p>
+    <p class="hint">Prices are from Williams Pricebusters Issue 179 and exclude VAT. Use section + search to find products quickly.</p>
   </section>
   <section class="card"><div class="section-title-row"><h2>Job Materials</h2><button id="generalClear" type="button" class="small-action">Clear</button></div>
     <div id="generalItems" class="meta">No items added yet.</div>
     <div class="row total" style="margin-top:12px"><span>Materials ex VAT</span><strong id="generalExVat">£0.00</strong></div>
     <div class="row"><span>VAT @ 20%</span><strong id="generalVat">£0.00</strong></div>
     <div class="row grand"><span>Materials inc VAT</span><strong id="generalIncVat">£0.00</strong></div>
+    <button id="generalCopy" type="button" class="primary" style="margin-top:12px">Copy job</button>
   </section>
 </section>
 
@@ -140,7 +142,7 @@
     <p class="warning-note"><b>Engineer note:</b> Supplier guides tell customers to ignore decimals when submitting billing readings. For a gas-rate test, do the opposite: use the changing decimal digits so the measured volume over the timed period is captured.</p>
   </section></div>
 </section>
-<section id="page-spares" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><section class="card"><h2>Boiler Service Parts / Spares</h2><p class="supplier-help">Search by manufacturer, boiler model, spare description or manufacturer part number.</p><div class="spares-search"><input id="sparesSearch" type="search" placeholder="Search boiler or part number"><div id="sparesResults" class="meta">The v1.42 spares library is ready for the verified parts dataset. No unverified manufacturer part numbers or prices are shown.</div></div></section></section>
+<section id="page-spares" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><section class="card"><h2>Boiler Service Parts / Spares</h2><p class="supplier-help">Search by manufacturer, boiler model, spare description or manufacturer part number.</p><div class="spares-search"><input id="sparesSearch" type="search" placeholder="Search boiler or part number"><div id="sparesResults" class="meta">The v1.43 spares library is ready for the verified parts dataset. No unverified manufacturer part numbers or prices are shown.</div></div></section></section>
 <section id="page-info" class="app-page"></section>
 </main>
 <nav class="bottom-nav" aria-label="App navigation">
@@ -153,6 +155,8 @@
 <script src="data.js?v=33"></script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 <script src="app.js?v=33"></script>
+<script src="williams-catalogue.js?v=143"></script>
+<script src="williams-builder.js?v=143"></script>
 <script>
 (function(){
  const role=(document.cookie.match(/(?:^|; )acf_role=([^;]+)/)||[])[1]||'admin';
@@ -223,11 +227,11 @@
  }
  const mo=new MutationObserver(ensureBaxiVertical); const as=q('#accessorySlots'); if(as)mo.observe(as,{childList:true,subtree:true}); q('#manufacturer')?.addEventListener('change',()=>setTimeout(ensureBaxiVertical,50)); q('#boilerModel')?.addEventListener('change',()=>setTimeout(ensureBaxiVertical,50)); setTimeout(ensureBaxiVertical,300);
 
- // v1.42 gas rate calculator and guide
+ // v1.43 gas rate calculator and guide
  document.querySelectorAll('[data-gas-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-gas-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('#page-gasrate .tool-panel').forEach(x=>x.classList.toggle('active',x.id==='gas-tab-'+b.dataset.gasTab))}));
  q('#gasCalc')?.addEventListener('click',()=>{const a=parseFloat(q('#gasStart').value),b=parseFloat(q('#gasEnd').value),sec=parseFloat(q('#gasSeconds').value),cv=parseFloat(q('#gasCV').value),cf=parseFloat(q('#gasCF').value),type=q('#gasMeterType').value,res=q('#gasResult');if(![a,b,sec,cv,cf].every(Number.isFinite)||b<=a||sec<=0){res.innerHTML='<strong>Check the readings and timed period.</strong>';return}let vol=b-a;if(type==='imperial')vol*=0.028316846592;const m3h=vol*3600/sec;const kw=m3h*cv*cf/3.6;res.innerHTML='<div>Gas rate</div><strong>'+m3h.toFixed(3)+' m³/hr</strong><div style="margin-top:8px">Gross input</div><strong>'+kw.toFixed(2)+' kW</strong><div class="meta" style="margin-top:8px">Measured volume: '+(b-a).toFixed(type==='metric'?3:2)+' '+(type==='metric'?'m³':'ft³')+' in '+sec.toFixed(1)+' seconds</div>'});
  let timerStart=0,timerRAF=0,timerElapsed=0;function drawTimer(){const ms=timerElapsed+(timerStart?performance.now()-timerStart:0),s=ms/1000,m=Math.floor(s/60),r=s-m*60;q('#gasTimerReadout').textContent=String(m).padStart(2,'0')+':'+r.toFixed(1).padStart(4,'0');if(timerStart)timerRAF=requestAnimationFrame(drawTimer)}q('#gasTimerStart')?.addEventListener('click',()=>{if(timerStart)return;timerStart=performance.now();drawTimer()});q('#gasTimerStop')?.addEventListener('click',()=>{if(!timerStart)return;timerElapsed+=performance.now()-timerStart;timerStart=0;cancelAnimationFrame(timerRAF);drawTimer();q('#gasSeconds').value=(timerElapsed/1000).toFixed(1)});q('#gasTimerReset')?.addEventListener('click',()=>{timerStart=0;timerElapsed=0;cancelAnimationFrame(timerRAF);drawTimer()});
- // v1.42: Main boilers use the Baxi flue/accessory system. Capture Baxi accessory option sets when seen and merge them into Main.
+ // v1.43: Main boilers use the Baxi flue/accessory system. Capture Baxi accessory option sets when seen and merge them into Main.
  const baxiAccessorySets=[];function accessorySignature(sel){return [...sel.options].map(o=>o.textContent.trim()).filter(Boolean)}function rememberBaxiAccessories(){const man=q('#manufacturer'),name=man?.options?.[man.selectedIndex]?.text||man?.value||'';if(!/baxi/i.test(name))return;document.querySelectorAll('#accessorySlots select').forEach((sel,i)=>{const rows=[...sel.options].map(o=>({value:o.value,text:o.textContent}));if(rows.length>1)baxiAccessorySets[i]=rows})}function mergeBaxiIntoMain(){const man=q('#manufacturer'),name=man?.options?.[man.selectedIndex]?.text||man?.value||'';if(!/main/i.test(name)||!/boiler/i.test(name+' boiler'))return;document.querySelectorAll('#accessorySlots select').forEach((sel,i)=>{const rows=baxiAccessorySets[i]||[];const existing=new Set([...sel.options].map(o=>o.textContent.trim()));rows.forEach(r=>{if(!existing.has(r.text.trim())){const o=document.createElement('option');o.value=r.value;o.textContent=r.text;sel.appendChild(o)}})})}function syncBaxiMain(){rememberBaxiAccessories();setTimeout(mergeBaxiIntoMain,20)}q('#manufacturer')?.addEventListener('change',()=>setTimeout(syncBaxiMain,80));q('#boilerModel')?.addEventListener('change',()=>setTimeout(syncBaxiMain,80));if(as)mo.observe(as,{childList:true,subtree:true});
 
  render();

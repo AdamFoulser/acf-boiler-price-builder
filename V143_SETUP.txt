@@ -1,0 +1,8 @@
+ACF Boiler Pricing v1.43
+- Williams Pricebusters Issue 179 General Job Price Builder integration
+- 2,029 priced catalogue lines extracted across 29 sections
+- Williams product codes, descriptions, catalogue page and ex-VAT price
+- Section dropdown + product search
+- Quantity, add/remove, ex-VAT/VAT/inc-VAT totals
+- Copy job summary and local draft persistence
+- Existing v1.42 features retained
