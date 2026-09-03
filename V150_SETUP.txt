@@ -1,0 +1,7 @@
+ACF Boiler Pricing v1.50
+
+- Fixed Main boiler flue/accessory dropdowns.
+- Main now receives the Baxi compatible flue/accessory range directly, without needing Baxi to be selected first.
+- Includes horizontal flue, vertical terminal, 1m/500mm/250mm extensions, 135° elbows, 93° elbow and flat roof flashing.
+- Existing Main stand-off kit remains available.
+- Retains v1.49 full quote copy fix and earlier optional powerflush/TRV changes.
