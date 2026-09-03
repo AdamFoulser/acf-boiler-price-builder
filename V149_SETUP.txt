@@ -1,0 +1,4 @@
+ACF Boiler Pricing v1.49
+- Fixed Full Quote line-break generation so copied text contains real paragraph breaks instead of malformed newline escapes.
+- Changed iPhone/PWA Full Quote copy to use a synchronous selection + copy first, with Clipboard API fallback.
+- Full Powerflush retains Not Required / Required / Optional Extra modes from v1.48.

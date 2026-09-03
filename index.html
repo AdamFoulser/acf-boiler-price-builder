@@ -255,7 +255,7 @@
 })();
 </script>
 <script>
-// v1.48 Dynamic ACF customer quote writer
+// v1.49 Dynamic ACF customer quote writer
 (()=>{
  const $=s=>document.querySelector(s);
  const txt=id=>{const e=$(id);return e?.options?.[e.selectedIndex]?.text||e?.value||''};
@@ -297,16 +297,12 @@
    let opts=savedBoilerLines();const cur=currentBoilerLine();if(!opts.length&&cur)opts=[cur];lines.push('BOILER OPTIONS:');opts.forEach(x=>lines.push(x));
    if($('#trvQuoteMode')?.value==='optional'&&Number($('#optionalTrvQty')?.value||0)>0&&Number($('#optionalTrvType')?.value||0)>0){const n=Number($('#optionalTrvQty').value),p=Math.ceil(optionalTrvTotal()/10)*10;lines.push('','OPTIONAL EXTRA:','Supply and fit '+n+' thermostatic radiator valve'+(n===1?'':'s')+' – £'+p+'.00 + VAT.','Replacing the TRVs while the heating system is already drained down reduces the additional labour involved and provides improved individual temperature control of each radiator.')}
    if($('#powerflushQuoteMode')?.value==='optional'){const n=Number($('#optionalPowerflushRads')?.value||0),p=Number($('#optionalPowerflushPrice')?.value||0);if(n&&p)lines.push('','OPTIONAL EXTRA:','Carry out full powerflush of heating system ('+n+' radiator'+(n===1?'':'s')+') – £'+p.toFixed(2)+' + VAT.','A full powerflush helps remove accumulated sludge and debris from the heating system, improving circulation and helping protect the new boiler and system components.')}
-   return lines.join('\
-').replace(/\
-{3,}/g,'\
-\
-').trim();
+   return lines.join('\n').replace(/\n{3,}/g,'\n\n').trim();
  }
  function updateQuote(){const e=$('#fullQuotePreview');if(e)e.textContent=buildQuote()}
  fillOptionalQty();fillOptionalPowerflushRads(); $('#trvQuoteMode')?.addEventListener('change',trvMode);$('#powerflushQuoteMode')?.addEventListener('change',powerflushMode);['#optionalTrvQty','#optionalTrvType','#optionalPowerflushRads','#optionalPowerflushPrice','#quoteReason','#quoteAddress'].forEach(id=>$(id)?.addEventListener('change',()=>{updateOptionalPrice();updateQuote()}));
  document.addEventListener('change',e=>{if(e.target.closest('#page-quote'))setTimeout(updateQuote,60)});document.addEventListener('click',e=>{if(e.target.closest('#page-quote'))setTimeout(updateQuote,80)});
- async function copyTextRobust(t){try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t);return true}}catch(e){}try{const ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';ta.style.left='-9999px';document.body.appendChild(ta);ta.focus();ta.select();ta.setSelectionRange(0,ta.value.length);const ok=document.execCommand('copy');ta.remove();if(ok)return true}catch(e){}return false}
+ async function copyTextRobust(t){let ta=null;try{ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.top='0';ta.style.left='0';ta.style.width='1px';ta.style.height='1px';ta.style.opacity='0.01';ta.style.fontSize='16px';document.body.appendChild(ta);ta.focus();ta.setSelectionRange(0,t.length);const ok=document.execCommand('copy');ta.remove();ta=null;if(ok)return true}catch(e){if(ta)ta.remove()}try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t);return true}}catch(e){}return false}
  $('#copyFullQuote')?.addEventListener('click',async()=>{const t=buildQuote(),b=$('#copyFullQuote'),old=b.textContent;const ok=await copyTextRobust(t);if(ok){b.textContent='Full Quote Copied ✓';setTimeout(()=>b.textContent=old,1800)}else{const pre=$('#fullQuotePreview');if(pre){const range=document.createRange();range.selectNodeContents(pre);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range)}b.textContent='Quote selected — tap Copy';setTimeout(()=>b.textContent=old,2500)}});
  trvMode();powerflushMode();setTimeout(updateQuote,400);
 })();
