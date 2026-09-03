@@ -1,0 +1,4 @@
+ACF Boiler Pricing v1.52
+Built from v1.49 FULL_QUOTE_COPY_FIX.
+Preserves full Customer Quote Write-Up / Copy Full Quote for Commusoft / Email, optional TRVs and optional Full Powerflush.
+Adds Baxi 60/100 flue/accessory options directly whenever Main / Main Eco Compact is selected, while retaining the Main stand-off kit.
