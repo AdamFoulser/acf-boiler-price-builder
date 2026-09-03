@@ -1,7 +1,16 @@
 ACF Boiler Pricing v1.50
 
-- Fixed Main boiler flue/accessory dropdowns.
-- Main now receives the Baxi compatible flue/accessory range directly, without needing Baxi to be selected first.
-- Includes horizontal flue, vertical terminal, 1m/500mm/250mm extensions, 135° elbows, 93° elbow and flat roof flashing.
-- Existing Main stand-off kit remains available.
-- Retains v1.49 full quote copy fix and earlier optional powerflush/TRV changes.
+Dynamic Quote Writer update:
+- Customer Quote Write-Up added directly to Boiler Quote Builder.
+- Opening reason dropdown: Recommended Upgrade / Boiler Requires Replacement / Repair or Replace / None.
+- Combi, System and Heat-Only wording generated automatically.
+- Selected flue/accessory items generate customer-facing quote wording.
+- Limescale reducer, shock absorber, terminal guard, roofer, condensate pump and thermostat selections generate wording.
+- Heat-only pump / motorised valve / programmer selections generate wording; pump/valve contingency remains only when not pre-selected.
+- TRVs now support Required / Optional / Not Required.
+- Optional TRVs are kept out of the main boiler price and shown in a separate Optional Extra section with benefit wording.
+- Saved boiler options for the same property are stacked into BOILER OPTIONS.
+- Copy Full Quote button outputs plain text for Commusoft or email.
+- Warranty wording added: parts and labour, subject to annual boiler servicing.
+
+This package is based on v1.46 HOME_NAV and preserves the existing v1.43-v1.46 modules/files.
