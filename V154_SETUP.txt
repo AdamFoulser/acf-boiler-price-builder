@@ -1,0 +1,4 @@
+ACF Boiler Pricing v1.54
+Fixes visible app version stuck at v1.47.
+Preserves v1.53 Main/Baxi data fix and full quote writer.
+Local JS references cache-busted to v154.

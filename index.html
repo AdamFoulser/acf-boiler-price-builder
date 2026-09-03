@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="styles.css?v=33"/>
 
   <style>
-    /* v1.47 dynamic quote writer */
+    /* v1.54 dynamic quote writer */
     .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
     .bottom-nav button{min-width:0!important;width:100%!important;padding-left:2px!important;padding-right:2px!important;font-size:12px!important;}
     .bottom-nav button span:last-child{white-space:nowrap!important;font-size:12px!important;}
@@ -28,7 +28,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
     <div class="brand-copy">
       <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v1.47</div>
+      <div class="subtitle">ACF engineer tools · v1.54</div>
     </div>
   </div>
 </header>
@@ -167,13 +167,30 @@
 <section id="page-info" class="app-page"></section>
 </main>
 
-<script src="data.js?v=33"></script>
+<script src="data.js?v=154"></script>
+<script>
+// v1.54 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
+// Clone Baxi accessories as Baxi Main BEFORE app.js initialises so the existing
+// accessory dropdown, price calculation, saved basket and quote logic all work unchanged.
+(function(){
+  const D = window.ACF_DATA;
+  if (!D || !Array.isArray(D.accessories)) return;
+  const existing = new Set(D.accessories
+    .filter(x => x.manufacturer === 'Baxi Main')
+    .map(x => String(x.partCode || '') + '|' + String(x.description || '')));
+  const clones = D.accessories
+    .filter(x => x.manufacturer === 'Baxi')
+    .filter(x => !existing.has(String(x.partCode || '') + '|' + String(x.description || '')))
+    .map(x => ({...x, manufacturer:'Baxi Main'}));
+  D.accessories.push(...clones);
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="app.js?v=33"></script>
-<script src="williams-catalogue.js?v=143"></script>
-<script src="williams-builder.js?v=143"></script>
-<script src="ongoing-jobs.js?v=144"></script>
-<script src="boiler-spares.js?v=145"></script>
+<script src="app.js?v=154"></script>
+<script src="williams-catalogue.js?v=154"></script>
+<script src="williams-builder.js?v=154"></script>
+<script src="ongoing-jobs.js?v=154"></script>
+<script src="boiler-spares.js?v=154"></script>
 <script>
 (function(){
  const role=(document.cookie.match(/(?:^|; )acf_role=([^;]+)/)||[])[1]||'admin';
@@ -251,27 +268,11 @@
  // v1.43: Main boilers use the Baxi flue/accessory system. Capture Baxi accessory option sets when seen and merge them into Main.
  const baxiAccessorySets=[];function accessorySignature(sel){return [...sel.options].map(o=>o.textContent.trim()).filter(Boolean)}function rememberBaxiAccessories(){const man=q('#manufacturer'),name=man?.options?.[man.selectedIndex]?.text||man?.value||'';if(!/baxi/i.test(name))return;document.querySelectorAll('#accessorySlots select').forEach((sel,i)=>{const rows=[...sel.options].map(o=>({value:o.value,text:o.textContent}));if(rows.length>1)baxiAccessorySets[i]=rows})}function mergeBaxiIntoMain(){const man=q('#manufacturer'),name=man?.options?.[man.selectedIndex]?.text||man?.value||'';if(!/main/i.test(name)||!/boiler/i.test(name+' boiler'))return;document.querySelectorAll('#accessorySlots select').forEach((sel,i)=>{const rows=baxiAccessorySets[i]||[];const existing=new Set([...sel.options].map(o=>o.textContent.trim()));rows.forEach(r=>{if(!existing.has(r.text.trim())){const o=document.createElement('option');o.value=r.value;o.textContent=r.text;sel.appendChild(o)}})})}function syncBaxiMain(){rememberBaxiAccessories();setTimeout(mergeBaxiIntoMain,20)}q('#manufacturer')?.addEventListener('change',()=>setTimeout(syncBaxiMain,80));q('#boilerModel')?.addEventListener('change',()=>setTimeout(syncBaxiMain,80));if(as)mo.observe(as,{childList:true,subtree:true});
 
- // v1.52: Main Eco Compact uses Baxi 60/100 flue accessories. Add them directly for Main, without relying on Baxi having been selected first.
- const mainBaxiAccessories=[
-  ['94.99','Baxi Standard Horizontal Flue 7222019 — £94.99'],
-  ['153.52','Baxi Vertical Flue Terminal 60/100 - Black 5118576 — £153.52'],
-  ['56.99','Baxi 1m Flue Extension 720648801 — £56.99'],
-  ['47.99','Baxi 500mm Flue Extension 720643001 — £47.99'],
-  ['37.99','Baxi 250mm Flue Extension 720643101 — £37.99'],
-  ['86.99','Baxi 135 Degree Elbow (pair) 720647901 — £86.99'],
-  ['51.99','Baxi 93 Degree Elbow 720648401 — £51.99'],
-  ['52.99','Baxi Flat Roof Flashing 246144 — £52.99']
- ];
- function isMainSelected(){const m=q('#manufacturer');const model=q('#boilerModel');const mt=m?.options?.[m.selectedIndex]?.text||m?.value||'';const bt=model?.options?.[model.selectedIndex]?.text||model?.value||'';return /main/i.test(mt)||/main\s*eco/i.test(bt)}
- function forceMainBaxiAccessories(){if(!isMainSelected())return;document.querySelectorAll('#accessorySlots select').forEach(sel=>{const existing=new Set([...sel.options].map(o=>o.textContent.trim()));mainBaxiAccessories.forEach(([value,text])=>{if(!existing.has(text)){const o=document.createElement('option');o.value=value;o.textContent=text;sel.appendChild(o)}})})}
- const mainAccessoryObserver=new MutationObserver(()=>setTimeout(forceMainBaxiAccessories,0));if(as)mainAccessoryObserver.observe(as,{childList:true,subtree:true});
- q('#manufacturer')?.addEventListener('change',()=>setTimeout(forceMainBaxiAccessories,100));q('#boilerModel')?.addEventListener('change',()=>setTimeout(forceMainBaxiAccessories,100));setTimeout(forceMainBaxiAccessories,500);
-
  render();
 })();
 </script>
 <script>
-// v1.52 Dynamic ACF customer quote writer
+// v1.49 Dynamic ACF customer quote writer
 (()=>{
  const $=s=>document.querySelector(s);
  const txt=id=>{const e=$(id);return e?.options?.[e.selectedIndex]?.text||e?.value||''};

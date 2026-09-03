@@ -1,0 +1,9 @@
+ACF Boiler Pricing v1.53
+
+- Built from the v1.49 full-quote master.
+- Main Eco Compact now receives the complete Baxi accessory range at data-load time.
+- Keeps the Main Eco Compact stand-off kit.
+- Preserves the v1.49 Customer Quote Write-Up and Copy Full Quote logic unchanged.
+- Preserves optional TRVs and optional Full Powerflush.
+- Cache-busts data.js and app.js with v153 query strings.
+- Updates visible app/login version to v1.53.
