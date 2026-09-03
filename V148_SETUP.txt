@@ -1,0 +1,6 @@
+ACF Boiler Pricing v1.48
+- Fixed Copy Full Quote for Commusoft / Email with iPhone/PWA clipboard fallback.
+- Removed visible escaped newline artifacts from quote writer injection.
+- Added Full Powerflush status: Not required / Required / Optional extra.
+- Required powerflush stays in main quote/price.
+- Optional powerflush is excluded from main boiler price and shown under OPTIONAL EXTRA with radiator quantity, separate price and benefit wording.
