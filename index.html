@@ -248,34 +248,40 @@
  document.querySelectorAll('[data-gas-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-gas-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('#page-gasrate .tool-panel').forEach(x=>x.classList.toggle('active',x.id==='gas-tab-'+b.dataset.gasTab))}));
  q('#gasCalc')?.addEventListener('click',()=>{const a=parseFloat(q('#gasStart').value),b=parseFloat(q('#gasEnd').value),sec=parseFloat(q('#gasSeconds').value),cv=parseFloat(q('#gasCV').value),cf=parseFloat(q('#gasCF').value),type=q('#gasMeterType').value,res=q('#gasResult');if(![a,b,sec,cv,cf].every(Number.isFinite)||b<=a||sec<=0){res.innerHTML='<strong>Check the readings and timed period.</strong>';return}let vol=b-a;if(type==='imperial')vol*=0.028316846592;const m3h=vol*3600/sec;const kw=m3h*cv*cf/3.6;res.innerHTML='<div>Gas rate</div><strong>'+m3h.toFixed(3)+' m³/hr</strong><div style="margin-top:8px">Gross input</div><strong>'+kw.toFixed(2)+' kW</strong><div class="meta" style="margin-top:8px">Measured volume: '+(b-a).toFixed(type==='metric'?3:2)+' '+(type==='metric'?'m³':'ft³')+' in '+sec.toFixed(1)+' seconds</div>'});
  let timerStart=0,timerRAF=0,timerElapsed=0;function drawTimer(){const ms=timerElapsed+(timerStart?performance.now()-timerStart:0),s=ms/1000,m=Math.floor(s/60),r=s-m*60;q('#gasTimerReadout').textContent=String(m).padStart(2,'0')+':'+r.toFixed(1).padStart(4,'0');if(timerStart)timerRAF=requestAnimationFrame(drawTimer)}q('#gasTimerStart')?.addEventListener('click',()=>{if(timerStart)return;timerStart=performance.now();drawTimer()});q('#gasTimerStop')?.addEventListener('click',()=>{if(!timerStart)return;timerElapsed+=performance.now()-timerStart;timerStart=0;cancelAnimationFrame(timerRAF);drawTimer();q('#gasSeconds').value=(timerElapsed/1000).toFixed(1)});q('#gasTimerReset')?.addEventListener('click',()=>{timerStart=0;timerElapsed=0;cancelAnimationFrame(timerRAF);drawTimer()});
- // v1.50: Main boilers use Baxi flues/accessories. Build the list directly so it works even if Baxi has not been selected first.
- const mainBaxiAccessories=[
-  {value:'94.99',text:'Baxi Standard Horizontal Flue 7222019 — £94.99'},
-  {value:'153.52',text:'Baxi Vertical Flue Terminal 60/100 - Black 5118576 — £153.52'},
-  {value:'56.99',text:'Baxi 1m Flue Extension 720648801 — £56.99'},
-  {value:'47.99',text:'Baxi 500mm Flue Extension 720643001 — £47.99'},
-  {value:'37.99',text:'Baxi 250mm Flue Extension 720643101 — £37.99'},
-  {value:'86.99',text:'Baxi 135 Degree Elbow (pair) 720647901 — £86.99'},
-  {value:'51.99',text:'Baxi 93 Degree Elbow 720648401 — £51.99'},
-  {value:'52.99',text:'Baxi Flat Roof Flashing 246144 — £52.99'}
- ];
- function ensureMainBaxiAccessories(){
-   const man=q('#manufacturer'),name=man?.options?.[man.selectedIndex]?.text||man?.value||'';
-   if(!/main/i.test(name))return;
-   document.querySelectorAll('#accessorySlots select').forEach(sel=>{
-     const existing=new Set([...sel.options].map(o=>o.textContent.trim()));
-     mainBaxiAccessories.forEach(r=>{if(!existing.has(r.text)){const o=document.createElement('option');o.value=r.value;o.textContent=r.text;sel.appendChild(o)}});
-   });
- }
- q('#manufacturer')?.addEventListener('change',()=>setTimeout(ensureMainBaxiAccessories,80));
- q('#boilerModel')?.addEventListener('change',()=>setTimeout(ensureMainBaxiAccessories,80));
- if(as)new MutationObserver(()=>setTimeout(ensureMainBaxiAccessories,0)).observe(as,{childList:true,subtree:true});
- setTimeout(ensureMainBaxiAccessories,300);
+ // v1.43: Main boilers use the Baxi flue/accessory system. Capture Baxi accessory option sets when seen and merge them into Main.
+ const baxiAccessorySets=[];function accessorySignature(sel){return [...sel.options].map(o=>o.textContent.trim()).filter(Boolean)}function rememberBaxiAccessories(){const man=q('#manufacturer'),name=man?.options?.[man.selectedIndex]?.text||man?.value||'';if(!/baxi/i.test(name))return;document.querySelectorAll('#accessorySlots select').forEach((sel,i)=>{const rows=[...sel.options].map(o=>({value:o.value,text:o.textContent}));if(rows.length>1)baxiAccessorySets[i]=rows})}function mergeBaxiIntoMain(){const man=q('#manufacturer'),name=man?.options?.[man.selectedIndex]?.text||man?.value||'';if(!/main/i.test(name)||!/boiler/i.test(name+' boiler'))return;document.querySelectorAll('#accessorySlots select').forEach((sel,i)=>{const rows=baxiAccessorySets[i]||[];const existing=new Set([...sel.options].map(o=>o.textContent.trim()));rows.forEach(r=>{if(!existing.has(r.text.trim())){const o=document.createElement('option');o.value=r.value;o.textContent=r.text;sel.appendChild(o)}})})}function syncBaxiMain(){rememberBaxiAccessories();setTimeout(mergeBaxiIntoMain,20)}q('#manufacturer')?.addEventListener('change',()=>setTimeout(syncBaxiMain,80));q('#boilerModel')?.addEventListener('change',()=>setTimeout(syncBaxiMain,80));if(as)mo.observe(as,{childList:true,subtree:true});
 
  render();
 })();
 </script>
 <script>
+// v1.50: Main boilers use the Baxi flue/accessory range directly.
+// This is deliberately static so Main does NOT depend on selecting a Baxi boiler first.
+(function(){
+ const MAIN_BAXI_ACCESSORIES=[
+  ['94.99','Baxi Standard Horizontal Flue 7222019 — £94.99'],
+  ['153.52','Baxi Vertical Flue Terminal 60/100 - Black 5118576 — £153.52'],
+  ['56.99','Baxi 1m Flue Extension 720648801 — £56.99'],
+  ['47.99','Baxi 500mm Flue Extension 720643001 — £47.99'],
+  ['37.99','Baxi 250mm Flue Extension 720643101 — £37.99'],
+  ['86.99','Baxi 135 Degree Elbows (pair) 720647901 — £86.99'],
+  ['51.99','Baxi 93 Degree Elbow 720648401 — £51.99'],
+  ['52.99','Baxi Flat Roof Flashing 246144 — £52.99']
+ ];
+ function isMain(){const m=q('#manufacturer');const t=(m?.options?.[m.selectedIndex]?.text||m?.value||'');return /main/i.test(t)}
+ function addMainBaxi(){
+  if(!isMain()) return;
+  document.querySelectorAll('#accessorySlots select').forEach(sel=>{
+   const existing=new Set([...sel.options].map(o=>o.textContent.trim().toLowerCase()));
+   MAIN_BAXI_ACCESSORIES.forEach(([value,text])=>{if(!existing.has(text.toLowerCase())){const o=document.createElement('option');o.value=value;o.textContent=text;sel.appendChild(o)}});
+  });
+ }
+ q('#manufacturer')?.addEventListener('change',()=>setTimeout(addMainBaxi,60));
+ q('#boilerModel')?.addEventListener('change',()=>setTimeout(addMainBaxi,60));
+ const slots=q('#accessorySlots'); if(slots)new MutationObserver(()=>setTimeout(addMainBaxi,0)).observe(slots,{childList:true,subtree:true});
+ setTimeout(addMainBaxi,250);
+})();
+
 // v1.49 Dynamic ACF customer quote writer
 (()=>{
  const $=s=>document.querySelector(s);
