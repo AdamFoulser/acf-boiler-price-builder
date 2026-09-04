@@ -1,0 +1,4 @@
+ACF On the Go v1.60
+- Added Hive Thermostat Mini (SLT6) to thermostat options
+- Retains v1.59 T3/T3R thermostat options and v1.58 Worcester/Vaillant warranty-filter logic
+- Existing live-base branding and icons retained

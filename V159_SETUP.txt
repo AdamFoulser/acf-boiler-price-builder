@@ -1,0 +1,5 @@
+ACF On the Go v1.59
+- Added Honeywell Home T3 Programmable Thermostat (Wired).
+- Added Honeywell Home T3R Programmable Thermostat (Wireless).
+- Williams current thermostat range checked: both T3 wired and T3R wireless are active products.
+- Existing v1.58 warranty/filter logic, thermostat options, logo and all other features retained.
