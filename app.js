@@ -297,15 +297,17 @@ function refreshManufacturers() {
   const type = val('boilerType');
   const brands = [...new Set(D.boilers.filter(x => normalizeBoilerType(x.type) === type).map(x => x.manufacturer))];
   const old = el('manufacturer').value;
-  fill(el('manufacturer'), brands);
+  fill(el('manufacturer'), [''].concat(brands), x => ({text:x || 'Select manufacturer', value:x}));
   if (brands.includes(old)) el('manufacturer').value = old;
+  else el('manufacturer').value = '';
 }
 
 function refreshModels() {
   const brand = val('manufacturer');
   const type = val('boilerType');
-  const models = D.boilers.filter(x => x.manufacturer === brand && normalizeBoilerType(x.type) === type);
-  fill(el('boilerModel'), models, x => ({text:x.model, value:x.model}));
+  const models = brand ? D.boilers.filter(x => x.manufacturer === brand && normalizeBoilerType(x.type) === type) : [];
+  fill(el('boilerModel'), [{model:'', placeholder:true}].concat(models), x => ({text:x.placeholder ? 'Select boiler' : x.model, value:x.placeholder ? '' : x.model}));
+  el('boilerModel').value = '';
   refreshAccessories();
   updateWarrantyOptions();
   calc();
@@ -656,10 +658,10 @@ function resetFreshQuote() {
   // Always start a new quote when the app is opened/reloaded.
   el('boilerType').value = 'Combi';
   refreshManufacturers();
-  el('manufacturer').selectedIndex = 0;
+  el('manufacturer').value = '';
   refreshModels();
 
-  el('boilerModel').selectedIndex = 0;
+  el('boilerModel').value = '';
   el('priceBasis').value = 'Standard';
   el('warranty').value = '0';
   el('labour').value = '0';

@@ -1,0 +1,7 @@
+ACF On the Go v1.61
+- Boiler Quote Builder now starts with no manufacturer or boiler selected.
+- Manufacturer dropdown shows Select manufacturer until chosen.
+- Boiler dropdown shows Select boiler until a model is deliberately chosen.
+- Changing boiler type clears manufacturer/model selection.
+- Changing manufacturer clears boiler model selection.
+- No quote calculation is generated until a boiler is selected.
