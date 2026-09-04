@@ -2938,18 +2938,12 @@ window.ACF_DATA = {
       500
     ],
     "thermostats": [
-      {
-        "name": "None",
-        "price": 0
-      },
-      {
-        "name": "T3R Wired",
-        "price": 50
-      },
-      {
-        "name": "T3R Wireless",
-        "price": 67
-      }
+      {"name":"None","price":0},
+      {"name":"Honeywell T3 Wired","price":50},
+      {"name":"Honeywell T3R Wireless","price":67},
+      {"name":"EPH CP4B Wired Thermostat","price":32.99},
+      {"name":"EPH CP3 RF Wireless Thermostat","price":52.99},
+      {"name":"Hive H+HW V4 with Hive Hub","price":159.99}
     ],
     "limescaleReducers": [
       {

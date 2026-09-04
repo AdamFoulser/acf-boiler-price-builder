@@ -1,0 +1,13 @@
+ACF On the Go v1.57
+Built directly from the live v1.56 GitHub project.
+
+- Preserved existing ACF logo and all app icons exactly from live build.
+- Imperial gas-rate calculator retained/fixed with m³/h and kW output plus imperial-friendly input steps/placeholders.
+- Worcester 8000+ warranty choices: 8 / 10 / 12 years with Greenstar filter and WAI/WAP VAULT / £40 wording.
+- Worcester 4000 warranty choices: 7 / 8 / 10 years with Greenstar filter and WAI/WAP VAULT / £40 wording.
+- Extended Worcester warranty selections restrict filter list to qualifying Worcester Greenstar filters.
+- Vaillant ecoTEC Plus / ecoFIT Pure 10-year selections restrict filter list to qualifying Vaillant protection kit/filter.
+- Thermostats moved into core pricing data: Honeywell T3 Wired, Honeywell T3R Wireless, EPH CP4B Wired, EPH CP3 RF Wireless, Hive H+HW V4.
+- EPH prices taken from the loaded Williams catalogue (£32.99 / £52.99).
+- Optional powerflush wording retained, including usual £750 + VAT wording.
+- Written quote accessory output strips trailing part/product numbers.
