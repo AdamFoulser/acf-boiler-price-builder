@@ -1,0 +1,6 @@
+ACF On the Go v1.56
+- TRV and Lockshield labour £45 per set
+- Save Full Written Quote and reopen/copy later
+- Imperial/metric gas rate returns m³/h and kW
+- Added EPH CP4 and Hive V4 thermostat options
+- Honeywell T3/T3R naming refreshed; existing Williams-loaded prices retained where present

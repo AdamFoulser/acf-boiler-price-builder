@@ -6,14 +6,17 @@
   <meta name="theme-color" content="#0b2f5b"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="default"/>
-  <meta name="apple-mobile-web-app-title" content="ACF Boilers"/>
-  <title>ACF Boiler Price Builder</title>
+  <meta name="apple-mobile-web-app-title" content="ACF On the Go"/>
+  <title>ACF On the Go</title>
   <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=36"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=156"/>
   <link rel="stylesheet" href="styles.css?v=33"/>
 
   <style>
-    /* v1.54 dynamic quote writer */
+    /* v1.56 ACF On the Go */
+    /* v1.56: compact ACF On the Go home screen */
+    .topbar .brand{align-items:center!important}.topbar .brand-logo{max-height:48px!important;width:auto!important}.topbar .brand-copy .title{font-size:20px!important;font-weight:900!important;line-height:1.05!important}.topbar .brand-copy .subtitle{font-size:11px!important;margin-top:3px!important}.home-tools{margin-top:4px!important;gap:10px!important}.home-tool{padding:12px 8px!important;min-height:104px!important}.home-icon{margin-bottom:4px!important}
+
     .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
     .bottom-nav button{min-width:0!important;width:100%!important;padding-left:2px!important;padding-right:2px!important;font-size:12px!important;}
     .bottom-nav button span:last-child{white-space:nowrap!important;font-size:12px!important;}
@@ -25,20 +28,16 @@
 <body>
 <header class="topbar">
   <div class="brand">
-    <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF Boiler Pricing"/>
+    <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
-      <div class="title">ACF Boiler Price Builder</div>
-      <div class="subtitle">ACF engineer tools · v1.54</div>
+      <div class="title">On the Go</div>
+      <div class="subtitle">ACF engineer tools · v1.56</div>
     </div>
   </div>
 </header>
 
 <main class="shell">
 <section id="page-home" class="app-page active-page">
-  <section class="home-hero">
-    <h1>What do you need?</h1>
-    <p>Select a tool below. Use the Home button at the top of each section to switch tools.</p>
-  </section>
   <div class="home-tools">
     <button type="button" class="home-tool" data-open-page="quote"><span class="home-icon">🔥</span><strong>Boilers</strong><small>Build a complete boiler price</small></button>
     <button type="button" class="home-tool" data-open-page="boilers"><span class="home-icon"><svg class="home-radiator" viewBox="0 0 28 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="20" height="13" rx="1.5"/><path d="M8 5v11M12 5v11M16 5v11M20 5v11M2 7h2M24 7h2M7 17v2M21 17v2"/></g></svg></span><strong>Radiators</strong><small>Calculate room heat requirement</small></button>
@@ -123,7 +122,7 @@
 
     <section class="card"><div class="section-title-row"><h2>Step 2. Flues & Accessories</h2><div class="using-label">Williams pricing</div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
     <section class="card"><div class="section-title-row"><h2>Step 3. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div><label>Labour<select id="labour"></select></label><label>Pipework / materials<select id="materials"></select></label><label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div><label>Limescale reducer<select id="limescale"></select></label><label>Shock arrestor<select id="shockArrestor"><option value="0">None</option><option value="20">Shock arrestor — £20.00</option></select></label><label>Flue terminal guard<select id="terminalGuard"><option value="0">None</option><option value="20">Flue terminal guard — £20.00</option></select></label><label>Roofer Required<select id="roofer"><option value="0">No</option><option value="180">Yes — £180.00 + VAT</option></select></label><label>Condensate pump<select id="condensatePump"><option value="0">None</option><option value="100">Condensate pump — £100.00 + VAT</option></select></label><label>Magnetic filter<select id="filter"></select></label><div id="filterCompare"></div></section>
-    <section class="card"><h2>Step 4. TRVs & Powerflush</h2><label>TRV quote status<select id="trvQuoteMode"><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option><option value="none">Not required</option></select></label><div id="optionalTrvFields" style="display:none"><label>Optional TRV quantity<select id="optionalTrvQty"></select></label><label>Optional TRV brand / type<select id="optionalTrvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="optionalTrvPrice" class="meta"></div></div><div id="requiredTrvFields"><label>Number of TRVs<select id="trvQty"></select></label><label>TRV brand / type<select id="trvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="trvBreakdown" class="meta"></div></div><label>Full powerflush quote status<select id="powerflushQuoteMode"><option value="none">Not required</option><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option></select></label><div id="powerflushRequiredFields" style="display:none"><label>Full powerflush<select id="powerflush"><option value="0">None</option><option value="1">Full heating system powerflush</option></select></label><label id="powerflushRadLabel" style="display:none">Number of radiators<select id="powerflushRads"></select></label><div id="powerflushBreakdown" class="meta" style="display:none"></div></div><div id="powerflushOptionalFields" style="display:none"><label>Number of radiators for optional powerflush<select id="optionalPowerflushRads"></select></label><label>Optional powerflush price + VAT<input id="optionalPowerflushPrice" type="number" inputmode="decimal" min="0" step="10" placeholder="Enter optional price"></label><p class="hint">Shown separately as an optional extra and not included in the main boiler price.</p></div></section>
+    <section class="card"><h2>Step 4. TRV and Lockshield & Powerflush</h2><label>TRV and Lockshield quote status<select id="trvQuoteMode"><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option><option value="none">Not required</option></select></label><div id="optionalTrvFields" style="display:none"><label>Optional TRV and Lockshield quantity<select id="optionalTrvQty"></select></label><label>Optional TRV and Lockshield brand / type<select id="optionalTrvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="optionalTrvPrice" class="meta"></div></div><div id="requiredTrvFields"><label>Number of TRV and Lockshield sets<select id="trvQty"></select></label><label>TRV and Lockshield brand / type<select id="trvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="trvBreakdown" class="meta"></div></div><label>Full powerflush quote status<select id="powerflushQuoteMode"><option value="none">Not required</option><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option></select></label><div id="powerflushRequiredFields" style="display:none"><label>Full powerflush<select id="powerflush"><option value="0">None</option><option value="1">Full heating system powerflush</option></select></label><label id="powerflushRadLabel" style="display:none">Number of radiators<select id="powerflushRads"></select></label><div id="powerflushBreakdown" class="meta" style="display:none"></div></div><div id="powerflushOptionalFields" style="display:none"><label>Number of radiators for optional powerflush<select id="optionalPowerflushRads"></select></label><label>Optional powerflush price + VAT<input id="optionalPowerflushPrice" type="number" inputmode="decimal" min="0" step="10" placeholder="Enter optional price"></label><p class="hint">Shown separately as an optional extra and not included in the main boiler price. A full powerflush would usually cost £750 + VAT.</p></div></section>
     <section class="card" id="heatOnlyCard"><h2>Step 5. Heat-only extras</h2><div id="heatOnlyExtras"></div><p class="hint">Use these only where required on heat-only boiler changes.</p></section>
     <section class="card"><h2>Step 6. Letting Agent Commission</h2><label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label></section>
   </div>
@@ -131,7 +130,7 @@
   <section class="card" id="quoteWriterCard"><div class="section-title-row"><h2>Customer Quote Write-Up</h2><span class="using-label">Commusoft / Email</span></div>
     <label>Reason for quotation<select id="quoteReason"><option value="upgrade">Recommended upgrade — age / future reliability</option><option value="failed">Boiler requires replacement</option><option value="repair">Repair or replace option</option><option value="none">No opening paragraph</option></select></label>
     <div id="fullQuotePreview" class="meta" style="white-space:pre-wrap;line-height:1.55;max-height:520px;overflow:auto"></div>
-    <button id="copyFullQuote" type="button" class="primary">Copy Full Quote for Commusoft / Email</button>
+    <button id="copyFullQuote" type="button" class="primary">Copy Full Quote for Commusoft / Email</button><button id="saveFullQuote" type="button" class="secondary-action" style="margin-top:8px">Save Full Written Quote</button><div id="fullQuoteSaveStatus" class="meta"></div>
   </section>
   <section class="card summary"><h2>Quote Summary</h2><div class="row"><span>Boiler quote basis</span><strong id="sumBoiler">£0.00</strong></div><div class="row"><span>Boiler warranty</span><strong id="sumWarranty">—</strong></div><div class="row"><span>Accessories</span><strong id="sumAccessories">£0.00</strong></div><div class="row"><span>Labour / materials / extras</span><strong id="sumExtras">£0.00</strong></div><div class="row" id="sumRooferRow" style="display:none"><span>Roofer</span><strong id="sumRoofer">£180.00 + VAT</strong></div><div class="row"><span>Subtotal before commission</span><strong id="subtotal">£0.00</strong></div><div class="row"><span>Letting agent commission</span><strong id="sumCommission">£0.00</strong></div><div class="row total"><span>Customer price ex VAT</span><strong id="exvat">£0.00</strong></div><div class="row"><span>VAT @ 20%</span><strong id="vat">£0.00</strong></div><div class="row grand"><span>Total inc VAT</span><strong id="incvat">£0.00</strong></div><button id="copyQuote" class="primary">Copy quote line</button></section>
 </section>
@@ -167,9 +166,9 @@
 <section id="page-info" class="app-page"></section>
 </main>
 
-<script src="data.js?v=154"></script>
+<script src="data.js?v=156"></script>
 <script>
-// v1.54 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
+// v1.56 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
 // Clone Baxi accessories as Baxi Main BEFORE app.js initialises so the existing
 // accessory dropdown, price calculation, saved basket and quote logic all work unchanged.
 (function(){
@@ -185,12 +184,40 @@
   D.accessories.push(...clones);
 })();
 </script>
+<script>
+// v1.56 — Current Worcester Bosch guarantee choices (September 2026).
+// WAI/WAP VAULT members can access the maximum eligible extension free; non-WAI VAULT members can pay £40 where shown.
+(function(){
+  function yearsFor(model){
+    const m=String(model||'').toLowerCase();
+    if(/8000\+|8000 plus|8000.*style/.test(m)) return [['8 years — standard',8],['10 years — with Greenstar System Filter',10],['12 years — with Greenstar System Filter (WAI/WAP VAULT free; eligible non-WAI VAULT + £40)',12]];
+    if(/8000.*floor|8000 f|4000|cdi compact|ri compact|\bri\b|30i compact/.test(m)) return [['7 years — standard',7],['8 years — with Greenstar System Filter',8],['10 years — with Greenstar System Filter (WAI/WAP VAULT free; eligible non-WAI VAULT + £40)',10]];
+    if(/2000/.test(m)) return [['7 years — system filter required (any brand)',7]];
+    if(/1000/.test(m)) return [['5 years — system filter required (any brand)',5]];
+    return null;
+  }
+  window.addEventListener('DOMContentLoaded',()=>{
+    const model=document.getElementById('boilerModel'), manu=document.getElementById('manufacturer'), warranty=document.getElementById('warranty'), rule=document.getElementById('warrantyRule');
+    if(!model||!warranty)return;
+    function refresh(){
+      if(!/worcester/i.test(manu?.value||manu?.options?.[manu.selectedIndex]?.text||'')) return;
+      const opts=yearsFor(model.options?.[model.selectedIndex]?.text||model.value); if(!opts)return;
+      const old=warranty.value; warranty.innerHTML='';
+      opts.forEach(([label,val])=>{const o=document.createElement('option');o.value=String(val);o.textContent=label;warranty.appendChild(o)});
+      if([...warranty.options].some(o=>o.value===old))warranty.value=old;
+      if(rule)rule.textContent='Worcester Bosch guarantee options shown for this model. Extended terms depend on the qualifying system filter and VAULT/WAI status.';
+      warranty.dispatchEvent(new Event('change',{bubbles:true}));
+    }
+    model.addEventListener('change',()=>setTimeout(refresh,0)); manu?.addEventListener('change',()=>setTimeout(refresh,0)); setTimeout(refresh,250);
+  });
+})();
+</script>
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="app.js?v=154"></script>
-<script src="williams-catalogue.js?v=154"></script>
-<script src="williams-builder.js?v=154"></script>
-<script src="ongoing-jobs.js?v=154"></script>
-<script src="boiler-spares.js?v=154"></script>
+<script src="app.js?v=156"></script>
+<script src="williams-catalogue.js?v=156"></script>
+<script src="williams-builder.js?v=156"></script>
+<script src="ongoing-jobs.js?v=156"></script>
+<script src="boiler-spares.js?v=156"></script>
 <script>
 (function(){
  const role=(document.cookie.match(/(?:^|; )acf_role=([^;]+)/)||[])[1]||'admin';
@@ -286,7 +313,7 @@
    if(mode!=='required'){const q=$('#trvQty'),t=$('#trvType');if(q&&q.value!=='0'){q.value='0';q.dispatchEvent(new Event('change',{bubbles:true}))}if(t&&t.value!=='0'){t.value='0';t.dispatchEvent(new Event('change',{bubbles:true}))}}
    updateOptionalPrice();setTimeout(updateQuote,30);
  }
- function optionalTrvTotal(){const q=Number($('#optionalTrvQty')?.value||0), unit=Number($('#optionalTrvType')?.value||0);return q&&unit?q*(unit+25):0}
+ function optionalTrvTotal(){const q=Number($('#optionalTrvQty')?.value||0), unit=Number($('#optionalTrvType')?.value||0);return q&&unit?q*(unit+45):0}
  function updateOptionalPrice(){const e=$('#optionalTrvPrice'),v=optionalTrvTotal();if(e)e.textContent=v?'Optional extra price: £'+Math.ceil(v/10)*10+'.00 + VAT (includes fitting)':'Select quantity and TRV type.'}
  function fillOptionalPowerflushRads(){const s=$('#optionalPowerflushRads');if(!s||s.options.length)return;for(let i=1;i<=30;i++){const o=document.createElement('option');o.value=i;o.textContent=i;s.appendChild(o)}}
  function powerflushMode(){const mode=$('#powerflushQuoteMode')?.value||'none',req=$('#powerflushRequiredFields'),opt=$('#powerflushOptionalFields'),pf=$('#powerflush');if(req)req.style.display=mode==='required'?'':'none';if(opt)opt.style.display=mode==='optional'?'':'none';if(mode==='required'){if(pf&&pf.value==='0'){pf.value='1';pf.dispatchEvent(new Event('change',{bubbles:true}))}}else if(pf&&pf.value!=='0'){pf.value='0';pf.dispatchEvent(new Event('change',{bubbles:true}))}setTimeout(updateQuote,50)}
@@ -306,14 +333,14 @@
    if(selected('#condensatePump'))lines.push('Supply and fit condensate pump.','');
    if(selected('#roofer'))lines.push('Roofer to access roof to connect new boiler flue.','');
    if(selected('#thermostat')&&!isHeat)lines.push('Supply and fit Boiler Plus compliant programmable room thermostat.','');
-   if(($('#trvQuoteMode')?.value==='required')&&Number($('#trvQty')?.value||0)>0&&selected('#trvType'))lines.push('Supply and fit '+qtyWord($('#trvQty').value)+' thermostatic radiator valve'+(Number($('#trvQty').value)===1?'':'s')+'.','');
-   if($('#powerflushQuoteMode')?.value==='required'&&selected('#powerflush'))lines.push('Carry out full powerflush of heating system.','');
+   if(($('#trvQuoteMode')?.value==='required')&&Number($('#trvQty')?.value||0)>0&&selected('#trvType'))lines.push('Supply and fit '+qtyWord($('#trvQty').value)+' TRV and lockshield set'+(Number($('#trvQty').value)===1?'':'s')+'.','');
+   if($('#powerflushQuoteMode')?.value==='required'&&selected('#powerflush'))lines.push('Carry out full powerflush of heating system. A full powerflush would usually cost £750 + VAT.','');
    const h=isHeat?heatLines():[];h.forEach(x=>lines.push(x,''));
    if(isHeat&&!h.some(x=>/pump|motorised valve/i.test(x)))lines.push('If, when carrying out these works, we find the central heating pump or motorised valves are faulty, the additional cost to replace these would be:','','Central heating pump – £150 + VAT','Motorised valve – £150 + VAT','');
    lines.push('Register boiler with manufacturer and Gas Safe for warranty and Building Regulations.','','Warranty covers parts and labour and is valid subject to the boiler being serviced annually.','');
    let opts=savedBoilerLines();const cur=currentBoilerLine();if(!opts.length&&cur)opts=[cur];lines.push('BOILER OPTIONS:');opts.forEach(x=>lines.push(x));
-   if($('#trvQuoteMode')?.value==='optional'&&Number($('#optionalTrvQty')?.value||0)>0&&Number($('#optionalTrvType')?.value||0)>0){const n=Number($('#optionalTrvQty').value),p=Math.ceil(optionalTrvTotal()/10)*10;lines.push('','OPTIONAL EXTRA:','Supply and fit '+n+' thermostatic radiator valve'+(n===1?'':'s')+' – £'+p+'.00 + VAT.','Replacing the TRVs while the heating system is already drained down reduces the additional labour involved and provides improved individual temperature control of each radiator.')}
-   if($('#powerflushQuoteMode')?.value==='optional'){const n=Number($('#optionalPowerflushRads')?.value||0),p=Number($('#optionalPowerflushPrice')?.value||0);if(n&&p)lines.push('','OPTIONAL EXTRA:','Carry out full powerflush of heating system ('+n+' radiator'+(n===1?'':'s')+') – £'+p.toFixed(2)+' + VAT.','A full powerflush helps remove accumulated sludge and debris from the heating system, improving circulation and helping protect the new boiler and system components.')}
+   if($('#trvQuoteMode')?.value==='optional'&&Number($('#optionalTrvQty')?.value||0)>0&&Number($('#optionalTrvType')?.value||0)>0){const n=Number($('#optionalTrvQty').value),p=Math.ceil(optionalTrvTotal()/10)*10;lines.push('','OPTIONAL EXTRA:','Supply and fit '+n+' TRV and lockshield set'+(n===1?'':'s')+' – £'+p+'.00 + VAT.','Replacing the TRVs while the heating system is already drained down reduces the additional labour involved and provides improved individual temperature control of each radiator.')}
+   if($('#powerflushQuoteMode')?.value==='optional'){const n=Number($('#optionalPowerflushRads')?.value||0),p=Number($('#optionalPowerflushPrice')?.value||0);if(n&&p)lines.push('','OPTIONAL EXTRA:','Carry out full powerflush of heating system ('+n+' radiator'+(n===1?'':'s')+') – £'+p.toFixed(2)+' + VAT.','A full powerflush would usually cost £750 + VAT. It helps remove accumulated sludge and debris from the heating system, improving circulation and helping protect the new boiler and system components.')}
    return lines.join('\n').replace(/\n{3,}/g,'\n\n').trim();
  }
  function updateQuote(){const e=$('#fullQuotePreview');if(e)e.textContent=buildQuote()}
@@ -322,6 +349,45 @@
  async function copyTextRobust(t){let ta=null;try{ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.top='0';ta.style.left='0';ta.style.width='1px';ta.style.height='1px';ta.style.opacity='0.01';ta.style.fontSize='16px';document.body.appendChild(ta);ta.focus();ta.setSelectionRange(0,t.length);const ok=document.execCommand('copy');ta.remove();ta=null;if(ok)return true}catch(e){if(ta)ta.remove()}try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t);return true}}catch(e){}return false}
  $('#copyFullQuote')?.addEventListener('click',async()=>{const t=buildQuote(),b=$('#copyFullQuote'),old=b.textContent;const ok=await copyTextRobust(t);if(ok){b.textContent='Full Quote Copied ✓';setTimeout(()=>b.textContent=old,1800)}else{const pre=$('#fullQuotePreview');if(pre){const range=document.createRange();range.selectNodeContents(pre);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range)}b.textContent='Quote selected — tap Copy';setTimeout(()=>b.textContent=old,2500)}});
  trvMode();powerflushMode();setTimeout(updateQuote,400);
+})();
+</script>
+<script>
+// v1.56 enhancements: full written quote saving, TRV & Lockshield labour, thermostat choices.
+(function(){
+ const $=s=>document.querySelector(s), esc=x=>String(x||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
+ const FKEY='acf_full_written_quotes_v156';
+ function fullStore(){try{return JSON.parse(localStorage.getItem(FKEY)||'[]')}catch(e){return[]}}
+ function setFull(v){localStorage.setItem(FKEY,JSON.stringify(v))}
+ function addThermostats(){
+   const sel=$('#thermostat'); if(!sel)return;
+   // Correct existing Honeywell model names; retain the app's current Williams prices where already loaded.
+   [...sel.options].forEach(o=>{if(/Honeywell.*T3R|T3R.*Honeywell/i.test(o.textContent))o.textContent=o.textContent.replace(/Honeywell.*T3R[^—-]*/i,'Honeywell T3R Wireless'); if(/Honeywell.*T3\b(?!R)|T3\b(?!R).*Honeywell/i.test(o.textContent))o.textContent=o.textContent.replace(/Honeywell.*T3[^—-]*/i,'Honeywell T3 Wired')});
+   const add=(text,val)=>{if(![...sel.options].some(o=>o.textContent.toLowerCase().includes(text.toLowerCase()))){const o=document.createElement('option');o.value=val;o.textContent=text;sel.appendChild(o)}};
+   add('EPH CP4 Wireless Programmable — £55.99', '55.99');
+   add('Hive H+HW V4 with Hive Hub — £159.99', '159.99');
+ }
+ function trvLabour45(){
+   // Existing required-TRV calculation includes £25 fitting per valve. Add £20 to material option values => £45 labour total.
+   const sel=$('#trvType'); if(!sel||sel.dataset.v156)return; sel.dataset.v156='1';
+   [...sel.options].forEach(o=>{const v=Number(o.value);if(v>0)o.value=String(v+20)});
+ }
+ $('#saveFullQuote')?.addEventListener('click',()=>{
+   const address=($('#quoteAddress')?.value||'').trim(), text=($('#fullQuotePreview')?.textContent||'').trim(), status=$('#fullQuoteSaveStatus');
+   if(!address){if(status)status.textContent='Enter the property address first.';return} if(!text){if(status)status.textContent='Build the quote first.';return}
+   const rows=fullStore(); rows.unshift({id:Date.now(),address,text,created:new Date().toISOString()}); setFull(rows); if(status)status.textContent='Full written quote saved to '+address+'.'; renderFull();
+ });
+ function renderFull(){
+   const host=$('#savedQuotesList'); if(!host)return; host.querySelectorAll('.full-written-quotes-v156').forEach(x=>x.remove());
+   const rows=fullStore(); if(!rows.length)return;
+   const box=document.createElement('div');box.className='full-written-quotes-v156 warranty-record';box.innerHTML='<strong style="font-size:1.15em">Saved Full Written Quotes</strong>'+rows.map((r,i)=>'<div style="padding:12px 0;border-top:1px solid #dbe4ec"><strong>'+esc(r.address)+'</strong><div class="meta" style="white-space:pre-wrap;max-height:180px;overflow:auto;margin:8px 0">'+esc(r.text)+'</div><button class="small-action" data-full-copy="'+i+'">Copy Full Quote</button> <button class="small-action" data-full-load="'+i+'">Open in Boiler Quote</button> <button class="small-action" data-full-del="'+i+'">Delete</button></div>').join('');host.prepend(box);
+ }
+ document.addEventListener('click',async e=>{
+   if(e.target.closest('[data-open-page="saved"]'))setTimeout(renderFull,30);
+   const c=e.target.closest('[data-full-copy]');if(c){const r=fullStore()[+c.dataset.fullCopy];if(r){try{await navigator.clipboard.writeText(r.text);c.textContent='Copied ✓';setTimeout(()=>c.textContent='Copy Full Quote',1400)}catch(_){prompt('Copy full quote:',r.text)}}}
+   const d=e.target.closest('[data-full-del]');if(d){const a=fullStore();a.splice(+d.dataset.fullDel,1);setFull(a);renderFull()}
+   const l=e.target.closest('[data-full-load]');if(l){const r=fullStore()[+l.dataset.fullLoad];if(!r)return;$('#quoteAddress').value=r.address; const pre=$('#fullQuotePreview');if(pre)pre.textContent=r.text;document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));$('#page-quote')?.classList.add('active-page');window.scrollTo(0,0)}
+ });
+ window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{addThermostats();trvLabour45();renderFull()},500));
 })();
 </script>
 </body>

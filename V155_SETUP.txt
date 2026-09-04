@@ -1,0 +1,9 @@
+ACF On the Go v1.55
+Base: v1.54 VERSION_AND_CACHE_FIX
+- Renamed app/header to ACF On the Go
+- Removed “What do you need?” home hero to fit more tools on screen
+- Compact home/header layout
+- Powerflush quote wording now states full powerflush would usually cost £750 + VAT, whether included or optional
+- Worcester Bosch guarantee choices updated from current Worcester Bosch guarantee guidance
+- Customer-facing accessory quote cleanup strengthened to remove trailing part numbers
+- Existing v1.54 functionality retained
