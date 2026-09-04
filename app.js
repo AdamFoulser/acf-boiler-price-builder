@@ -377,20 +377,20 @@ function warrantyOptionsForBoiler(b){
   if(make==='Worcester Bosch'){
     if(/8000\+/i.test(m)) return [
       {years:8,label:'8 years — standard',restriction:'Standard Worcester guarantee. Any compatible system filter can be selected.',filterRule:'any'},
-      {years:10,label:'10 years — with Greenstar System Filter',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter. The System Filter Micro does not qualify for the extended 8000+ guarantee.',filterRule:'worcester'},
-      {years:12,label:'12 years — Greenstar System Filter + WAI/WAP VAULT or £40',restriction:'12-year guarantee requires a qualifying Worcester Greenstar System Filter. Free for eligible WAI/WAP VAULT members; eligible non-WAI loyalty members can extend to 12 years for £40. Terms apply.',filterRule:'worcester'}
+      {years:10,label:'10 years — with Greenstar System Filter',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter. The System Filter Micro does not qualify.',filterRule:'worcester'},
+      {years:12,label:'12 years — Greenstar System Filter + eligible loyalty terms',restriction:'12-year guarantee requires a qualifying Worcester Greenstar System Filter plus the applicable Worcester loyalty/WAI/WAP terms. System Filter Micro does not qualify.',filterRule:'worcester'}
     ];
     if(/4000|CDi Compact|Ri Compact|\bRi\b/i.test(m)) return [
       {years:7,label:'7 years — standard',restriction:'Standard Worcester guarantee.',filterRule:'any'},
       {years:8,label:'8 years — with Greenstar System Filter',restriction:'8-year guarantee requires a qualifying Worcester Greenstar System Filter.',filterRule:'worcester'},
-      {years:10,label:'10 years — Greenstar System Filter + WAI/WAP VAULT or £40',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter. Free for eligible WAI/WAP VAULT members; eligible non-WAI loyalty members can extend to 10 years for £40. Terms apply.',filterRule:'worcester'}
+      {years:10,label:'10 years — Greenstar System Filter + eligible loyalty terms',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter plus the applicable Worcester loyalty/WAI/WAP terms. System Filter Micro does not qualify.',filterRule:'worcester'}
     ];
     if(/2000/i.test(m)) return [{years:7,label:'7 years',restriction:'7-year guarantee subject to fitting a Worcester Bosch or third-party system filter.',filterRule:'any-required'}];
     if(/1000/i.test(m)) return [{years:5,label:'5 years',restriction:'5-year guarantee subject to fitting a Worcester Bosch or third-party system filter.',filterRule:'any-required'}];
     if(/8000 F/i.test(m)) return [
       {years:7,label:'7 years — standard',restriction:'Standard Worcester guarantee.',filterRule:'any'},
       {years:8,label:'8 years — with Greenstar System Filter',restriction:'8-year guarantee requires a qualifying Worcester Greenstar System Filter.',filterRule:'worcester'},
-      {years:10,label:'10 years — Greenstar System Filter + WAI/WAP VAULT or £40',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter. Free for eligible WAI/WAP VAULT members; eligible non-WAI loyalty members can extend to 10 years for £40. Terms apply.',filterRule:'worcester'}
+      {years:10,label:'10 years — Greenstar System Filter + eligible loyalty terms',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter plus applicable Worcester loyalty terms.',filterRule:'worcester'}
     ];
   }
   if(make==='Vaillant'){
@@ -436,9 +436,9 @@ function selectedWarranty(){
 }
 
 function qualifyingManufacturerFilters(b, rule){
-  const allAcc=(D.accessories||[]).filter(x=>x.manufacturer===b.manufacturer && /filter/i.test(x.description||''));
+  const allAcc=(D.accessories||[]).filter(x=>x.manufacturer===b.manufacturer && (/filter/i.test(x.description||'') || /filter/i.test(x.category||'')));
   if(rule==='worcester') return allAcc.filter(x=>/system filter/i.test(x.description||'') && !/micro/i.test(x.description||''));
-  if(rule==='vaillant') return allAcc.filter(x=>/filter|protection/i.test(x.description||''));
+  if(rule==='vaillant') return allAcc.filter(x=>/Boiler Protection Kit|Advance Filter/i.test(x.description||''));
   if(rule==='glowworm') return allAcc.filter(x=>/power system filter/i.test(x.description||''));
   return allAcc;
 }

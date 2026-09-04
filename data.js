@@ -2939,10 +2939,16 @@ window.ACF_DATA = {
     ],
     "thermostats": [
       {"name":"None","price":0},
-      {"name":"Honeywell T3 Wired","price":50},
-      {"name":"Honeywell T3R Wireless","price":67},
-      {"name":"EPH CP4B Wired Thermostat","price":32.99},
-      {"name":"EPH CP3 RF Wireless Thermostat","price":52.99},
+      {"name":"Worcester Comfort I RF Stat","price":146.99},
+      {"name":"Worcester Comfort II RF Stat","price":161.99},
+      {"name":"Ideal Halo Lite RF Programmable Thermostat","price":94.99},
+      {"name":"Honeywell Home DT4R Wireless Thermostat","price":61.99},
+      {"name":"Honeywell Home T6360 Room Thermostat","price":23.49},
+      {"name":"EPH CP4B Battery Hard Wired Thermostat","price":32.99},
+      {"name":"EPH CP3 RF Room Thermostat","price":52.99},
+      {"name":"Drayton RTS8 Combi-stat","price":16.99},
+      {"name":"Drayton LP711 7 Day Digital Clock","price":59.99},
+      {"name":"Drayton LP722 7 Day Digital Programmer","price":59.99},
       {"name":"Hive H+HW V4 with Hive Hub","price":159.99}
     ],
     "limescaleReducers": [

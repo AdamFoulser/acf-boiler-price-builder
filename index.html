@@ -9,12 +9,12 @@
   <meta name="apple-mobile-web-app-title" content="ACF On the Go"/>
   <title>ACF On the Go</title>
   <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=157"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=158"/>
   <link rel="stylesheet" href="styles.css?v=33"/>
 
   <style>
-    /* v1.56 ACF On the Go */
-    /* v1.56: compact ACF On the Go home screen */
+    /* v1.58 ACF On the Go */
+    /* v1.58: compact ACF On the Go home screen */
     .topbar .brand{align-items:center!important}.topbar .brand-logo{max-height:48px!important;width:auto!important}.topbar .brand-copy .title{font-size:20px!important;font-weight:900!important;line-height:1.05!important}.topbar .brand-copy .subtitle{font-size:11px!important;margin-top:3px!important}.home-tools{margin-top:4px!important;gap:10px!important}.home-tool{padding:12px 8px!important;min-height:104px!important}.home-icon{margin-bottom:4px!important}
 
     .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
@@ -31,7 +31,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
       <div class="title">On the Go</div>
-      <div class="subtitle">ACF engineer tools · v1.56</div>
+      <div class="subtitle">ACF engineer tools · v1.58</div>
     </div>
   </div>
 </header>
@@ -166,9 +166,9 @@
 <section id="page-info" class="app-page"></section>
 </main>
 
-<script src="data.js?v=157"></script>
+<script src="data.js?v=158"></script>
 <script>
-// v1.56 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
+// v1.58 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
 // Clone Baxi accessories as Baxi Main BEFORE app.js initialises so the existing
 // accessory dropdown, price calculation, saved basket and quote logic all work unchanged.
 (function(){
@@ -184,40 +184,13 @@
   D.accessories.push(...clones);
 })();
 </script>
-<script>
-// v1.56 — Current Worcester Bosch guarantee choices (September 2026).
-// WAI/WAP VAULT members can access the maximum eligible extension free; non-WAI VAULT members can pay £40 where shown.
-(function(){
-  function yearsFor(model){
-    const m=String(model||'').toLowerCase();
-    if(/8000\+|8000 plus|8000.*style/.test(m)) return [['8 years — standard',8],['10 years — with Greenstar System Filter',10],['12 years — with Greenstar System Filter (WAI/WAP VAULT free; eligible non-WAI VAULT + £40)',12]];
-    if(/8000.*floor|8000 f|4000|cdi compact|ri compact|\bri\b|30i compact/.test(m)) return [['7 years — standard',7],['8 years — with Greenstar System Filter',8],['10 years — with Greenstar System Filter (WAI/WAP VAULT free; eligible non-WAI VAULT + £40)',10]];
-    if(/2000/.test(m)) return [['7 years — system filter required (any brand)',7]];
-    if(/1000/.test(m)) return [['5 years — system filter required (any brand)',5]];
-    return null;
-  }
-  window.addEventListener('DOMContentLoaded',()=>{
-    const model=document.getElementById('boilerModel'), manu=document.getElementById('manufacturer'), warranty=document.getElementById('warranty'), rule=document.getElementById('warrantyRule');
-    if(!model||!warranty)return;
-    function refresh(){
-      if(!/worcester/i.test(manu?.value||manu?.options?.[manu.selectedIndex]?.text||'')) return;
-      const opts=yearsFor(model.options?.[model.selectedIndex]?.text||model.value); if(!opts)return;
-      const old=warranty.value; warranty.innerHTML='';
-      opts.forEach(([label,val])=>{const o=document.createElement('option');o.value=String(val);o.textContent=label;warranty.appendChild(o)});
-      if([...warranty.options].some(o=>o.value===old))warranty.value=old;
-      if(rule)rule.textContent='Worcester Bosch guarantee options shown for this model. Extended terms depend on the qualifying system filter and VAULT/WAI status.';
-      warranty.dispatchEvent(new Event('change',{bubbles:true}));
-    }
-    model.addEventListener('change',()=>setTimeout(refresh,0)); manu?.addEventListener('change',()=>setTimeout(refresh,0)); setTimeout(refresh,250);
-  });
-})();
-</script>
+
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="app.js?v=157"></script>
-<script src="williams-catalogue.js?v=156"></script>
-<script src="williams-builder.js?v=156"></script>
-<script src="ongoing-jobs.js?v=156"></script>
-<script src="boiler-spares.js?v=156"></script>
+<script src="app.js?v=158"></script>
+<script src="williams-catalogue.js?v=158"></script>
+<script src="williams-builder.js?v=158"></script>
+<script src="ongoing-jobs.js?v=158"></script>
+<script src="boiler-spares.js?v=158"></script>
 <script>
 (function(){
  const role=(document.cookie.match(/(?:^|; )acf_role=([^;]+)/)||[])[1]||'admin';
@@ -290,7 +263,6 @@
 
  // v1.43 gas rate calculator and guide
  document.querySelectorAll('[data-gas-tab]').forEach(b=>b.addEventListener('click',()=>{document.querySelectorAll('[data-gas-tab]').forEach(x=>x.classList.toggle('active',x===b));document.querySelectorAll('#page-gasrate .tool-panel').forEach(x=>x.classList.toggle('active',x.id==='gas-tab-'+b.dataset.gasTab))}));
- q('#gasMeterType')?.addEventListener('change',()=>{const imp=q('#gasMeterType').value==='imperial';q('#gasStart').step=imp?'0.01':'0.001';q('#gasEnd').step=imp?'0.01':'0.001';q('#gasStart').placeholder=imp?'e.g. 12345.00':'e.g. 1234.567';q('#gasEnd').placeholder=imp?'e.g. 12346.00':'e.g. 1234.603';});
  q('#gasCalc')?.addEventListener('click',()=>{const a=parseFloat(q('#gasStart').value),b=parseFloat(q('#gasEnd').value),sec=parseFloat(q('#gasSeconds').value),cv=parseFloat(q('#gasCV').value),cf=parseFloat(q('#gasCF').value),type=q('#gasMeterType').value,res=q('#gasResult');if(![a,b,sec,cv,cf].every(Number.isFinite)||b<=a||sec<=0){res.innerHTML='<strong>Check the readings and timed period.</strong>';return}let vol=b-a;if(type==='imperial')vol*=0.028316846592;const m3h=vol*3600/sec;const kw=m3h*cv*cf/3.6;res.innerHTML='<div>Gas rate</div><strong>'+m3h.toFixed(3)+' m³/hr</strong><div style="margin-top:8px">Gross input</div><strong>'+kw.toFixed(2)+' kW</strong><div class="meta" style="margin-top:8px">Measured volume: '+(b-a).toFixed(type==='metric'?3:2)+' '+(type==='metric'?'m³':'ft³')+' in '+sec.toFixed(1)+' seconds</div>'});
  let timerStart=0,timerRAF=0,timerElapsed=0;function drawTimer(){const ms=timerElapsed+(timerStart?performance.now()-timerStart:0),s=ms/1000,m=Math.floor(s/60),r=s-m*60;q('#gasTimerReadout').textContent=String(m).padStart(2,'0')+':'+r.toFixed(1).padStart(4,'0');if(timerStart)timerRAF=requestAnimationFrame(drawTimer)}q('#gasTimerStart')?.addEventListener('click',()=>{if(timerStart)return;timerStart=performance.now();drawTimer()});q('#gasTimerStop')?.addEventListener('click',()=>{if(!timerStart)return;timerElapsed+=performance.now()-timerStart;timerStart=0;cancelAnimationFrame(timerRAF);drawTimer();q('#gasSeconds').value=(timerElapsed/1000).toFixed(1)});q('#gasTimerReset')?.addEventListener('click',()=>{timerStart=0;timerElapsed=0;cancelAnimationFrame(timerRAF);drawTimer()});
  // v1.43: Main boilers use the Baxi flue/accessory system. Capture Baxi accessory option sets when seen and merge them into Main.
@@ -319,7 +291,7 @@
  function fillOptionalPowerflushRads(){const s=$('#optionalPowerflushRads');if(!s||s.options.length)return;for(let i=1;i<=30;i++){const o=document.createElement('option');o.value=i;o.textContent=i;s.appendChild(o)}}
  function powerflushMode(){const mode=$('#powerflushQuoteMode')?.value||'none',req=$('#powerflushRequiredFields'),opt=$('#powerflushOptionalFields'),pf=$('#powerflush');if(req)req.style.display=mode==='required'?'':'none';if(opt)opt.style.display=mode==='optional'?'':'none';if(mode==='required'){if(pf&&pf.value==='0'){pf.value='1';pf.dispatchEvent(new Event('change',{bubbles:true}))}}else if(pf&&pf.value!=='0'){pf.value='0';pf.dispatchEvent(new Event('change',{bubbles:true}))}setTimeout(updateQuote,50)}
  function reason(){return {upgrade:'Due to the age of the existing boiler, we have provided the following options for replacement. Replacing the boiler now would provide improved reliability, a new manufacturer warranty and reduce the likelihood of increasingly costly repairs to the existing appliance.',failed:'Following our inspection of the existing boiler, replacement is recommended. Please find below our quotation and available boiler options.',repair:'Due to the repairs required to the existing boiler, we have also provided replacement options for consideration, allowing the cost of repair to be weighed against installing a new boiler with a new manufacturer warranty.',none:''}[$('#quoteReason')?.value||'upgrade']||''}
- function accessoryLines(){const out=[];document.querySelectorAll('#accessorySlots select').forEach(sel=>{if(!sel.value||/^0(?:\.0+)?$/.test(sel.value))return;let t=stripPartCode(stripPrice(sel.options?.[sel.selectedIndex]?.text||''));if(!t||/none|no additional/i.test(t))return;if(/plume/i.test(t))out.push('Supply and fit plume management kit.');else if(/vertical.*flue|vertical.*terminal/i.test(t))out.push('Supply and fit new vertical flue terminal.');else if(/horizontal.*flue|standard.*flue/i.test(t))out.push('Supply and fit new horizontal flue.');else if(/flue/i.test(t))out.push('Supply and fit '+t.replace(/^[A-Za-z-]+\s+/,'')+'.');else out.push('Supply and fit '+t+'.')});return [...new Set(out)]}
+ function accessoryLines(){const out=[];document.querySelectorAll('#accessorySlots select').forEach(sel=>{if(!sel.value||/^0(?:\.0+)?$/.test(sel.value))return;let t=stripPrice(sel.options?.[sel.selectedIndex]?.text||'');if(!t||/none|no additional/i.test(t))return;if(/plume/i.test(t))out.push('Supply and fit plume management kit.');else if(/vertical.*flue|vertical.*terminal/i.test(t))out.push('Supply and fit new vertical flue terminal.');else if(/horizontal.*flue|standard.*flue/i.test(t))out.push('Supply and fit new horizontal flue.');else if(/flue/i.test(t))out.push('Supply and fit '+t.replace(/^[A-Za-z-]+\s+/,'')+'.');else out.push('Supply and fit '+t+'.')});return [...new Set(out)]}
  function heatLines(){const out=[];document.querySelectorAll('#heatOnlyExtras input:checked,#heatOnlyExtras select').forEach(e=>{if(e.tagName==='SELECT'&&(!e.value||e.value==='0'))return;let label=e.closest('label')?.innerText||e.parentElement?.innerText||'';label=stripPrice(label).replace(/\s+/g,' ').trim();if(!label)return;if(/pump/i.test(label))out.push('Supply and fit new central heating pump.');else if(/2.?port/i.test(label))out.push('Supply and fit new 2-port motorised valve.');else if(/3.?port/i.test(label))out.push('Supply and fit new 3-port motorised valve.');else if(/programmer/i.test(label))out.push('Supply and fit new dual-channel programmer and digital room thermostat.');});return [...new Set(out)]}
  function currentBoilerLine(){let b=stripPrice(txt('#boilerModel'));if(!b)return '';let w=stripPrice(txt('#warranty'));if(w&&!/warranty/i.test(w))w+=' warranty';let price=$('#exvat')?.textContent||'';return b+' – Supply and installation: '+price+' + VAT'+(w?' – '+w:'')}
  function savedBoilerLines(){try{const rows=JSON.parse(localStorage.getItem('acf_saved_quotes_v37')||localStorage.getItem('acf_saved_quotes_v36')||'[]'),a=($('#quoteAddress')?.value||'').trim().toLowerCase();if(!a)return [];return rows.filter(r=>(r.address||'').trim().toLowerCase()===a).map(r=>{let b=stripPrice(r.values?.boilerModel?.text||r.option||'Boiler option'),w=stripPrice(r.values?.warranty?.text||'');if(w&&!/warranty/i.test(w))w+=' warranty';return b+' – Supply and installation: '+(r.total?.exvat||'')+' + VAT'+(w?' – '+w:'')})}catch(e){return []}}
@@ -353,19 +325,13 @@
 })();
 </script>
 <script>
-// v1.56 enhancements: full written quote saving, TRV & Lockshield labour, thermostat choices.
+// v1.58 enhancements: full written quote saving, TRV & Lockshield labour, thermostat choices.
 (function(){
  const $=s=>document.querySelector(s), esc=x=>String(x||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
  const FKEY='acf_full_written_quotes_v156';
  function fullStore(){try{return JSON.parse(localStorage.getItem(FKEY)||'[]')}catch(e){return[]}}
  function setFull(v){localStorage.setItem(FKEY,JSON.stringify(v))}
- function addThermostats(){
-   const sel=$('#thermostat'); if(!sel)return;
-   // Correct existing Honeywell model names; retain the app's current Williams prices where already loaded.
-   [...sel.options].forEach(o=>{if(/Honeywell.*T3R|T3R.*Honeywell/i.test(o.textContent))o.textContent=o.textContent.replace(/Honeywell.*T3R[^—-]*/i,'Honeywell T3R Wireless'); if(/Honeywell.*T3\b(?!R)|T3\b(?!R).*Honeywell/i.test(o.textContent))o.textContent=o.textContent.replace(/Honeywell.*T3[^—-]*/i,'Honeywell T3 Wired')});
-   const add=(text,val)=>{if(![...sel.options].some(o=>o.textContent.toLowerCase().includes(text.toLowerCase()))){const o=document.createElement('option');o.value=val;o.textContent=text;sel.appendChild(o)}};
-   // v1.57 thermostat choices are now held in data.js so pricing and quote totals stay in sync.
- }
+
  function trvLabour45(){
    // Existing required-TRV calculation includes £25 fitting per valve. Add £20 to material option values => £45 labour total.
    const sel=$('#trvType'); if(!sel||sel.dataset.v156)return; sel.dataset.v156='1';
@@ -387,7 +353,7 @@
    const d=e.target.closest('[data-full-del]');if(d){const a=fullStore();a.splice(+d.dataset.fullDel,1);setFull(a);renderFull()}
    const l=e.target.closest('[data-full-load]');if(l){const r=fullStore()[+l.dataset.fullLoad];if(!r)return;$('#quoteAddress').value=r.address; const pre=$('#fullQuotePreview');if(pre)pre.textContent=r.text;document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));$('#page-quote')?.classList.add('active-page');window.scrollTo(0,0)}
  });
- window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{addThermostats();trvLabour45();renderFull()},500));
+ window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{trvLabour45();renderFull()},500));
 })();
 </script>
 </body>

@@ -1,0 +1,7 @@
+ACF On the Go v1.58
+- Warranty selection now controls magnetic filter choices.
+- Worcester extended guarantees only show qualifying Worcester System Filters (Micro/Mini excluded from extended choices).
+- Vaillant 10-year options only show Vaillant Boiler Protection Kit / Advance Filter choices.
+- Worcester 8000+ 8/10/12-year and 4000/CDi/Ri 7/8/10-year choices updated.
+- Thermostat dropdown expanded using Williams catalogue prices, with Hive retained as a separate option.
+- Built from the live GitHub master supplied by Adam; existing logo/icons retained.
