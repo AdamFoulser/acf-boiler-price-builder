@@ -1,0 +1,10 @@
+ACF On the Go v1.62
+- Built from user-supplied v1.61 ZIP.
+- Moved Save this boiler option to after the final builder step.
+- Heat-only extras only display when Heat Only boiler type is selected.
+- Added explicit Imperial Calculate button; both metric and imperial results show m³/h and kW.
+- Worcester guarantee/filter restriction logic retained and verified against current manufacturer guidance.
+- Vaillant guarantee choices expanded to standard / Advance / qualifying protection-kit options by model family.
+- Guarantee selections requiring manufacturer filters restrict the magnetic-filter dropdown to qualifying manufacturer filters.
+- TRV and Lockshield labour fixed at £45 per set.
+- Existing v1.61 functionality retained.

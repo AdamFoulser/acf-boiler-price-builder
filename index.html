@@ -9,12 +9,12 @@
   <meta name="apple-mobile-web-app-title" content="ACF On the Go"/>
   <title>ACF On the Go</title>
   <link rel="manifest" href="manifest.webmanifest"/>
-  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=161"/>
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=162"/>
   <link rel="stylesheet" href="styles.css?v=33"/>
 
   <style>
-    /* v1.61 ACF On the Go */
-    /* v1.61: current ACF On the Go build */
+    /* v1.62 ACF On the Go */
+    /* v1.62: current ACF On the Go build */
     .topbar .brand{align-items:center!important}.topbar .brand-logo{max-height:48px!important;width:auto!important}.topbar .brand-copy .title{font-size:20px!important;font-weight:900!important;line-height:1.05!important}.topbar .brand-copy .subtitle{font-size:11px!important;margin-top:3px!important}.home-tools{margin-top:4px!important;gap:10px!important}.home-tool{padding:12px 8px!important;min-height:104px!important}.home-icon{margin-bottom:4px!important}
 
     .bottom-nav{display:grid!important;grid-template-columns:repeat(5,minmax(0,1fr))!important;width:100%!important;box-sizing:border-box!important;padding-bottom:max(8px,env(safe-area-inset-bottom))!important;}
@@ -31,7 +31,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
       <div class="title">On the Go</div>
-      <div class="subtitle">ACF engineer tools · v1.61</div>
+      <div class="subtitle">ACF engineer tools · v1.62</div>
     </div>
   </div>
 </header>
@@ -116,16 +116,18 @@
 </section>
 
 <section id="page-quote" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
-  <section class="card"><h2>Property / Quote</h2><label>Property address<textarea id="quoteAddress" rows="2" placeholder="Enter property address"></textarea></label><label>Existing boiler photo<input id="quotePhoto" type="file" accept="image/*" capture="environment"></label><img id="quotePhotoPreview" class="warranty-preview" alt="" hidden><label>Option name<input id="quoteOptionName" type="text" placeholder="e.g. Vaillant option"></label><button id="saveQuoteOption" type="button" class="primary">Save this boiler option</button><div id="quoteSaveStatus" class="meta"></div></section>
+  <section class="card"><h2>Property / Quote</h2><label>Property address<textarea id="quoteAddress" rows="2" placeholder="Enter property address"></textarea></label><label>Existing boiler photo<input id="quotePhoto" type="file" accept="image/*" capture="environment"></label><img id="quotePhotoPreview" class="warranty-preview" alt="" hidden><label>Option name<input id="quoteOptionName" type="text" placeholder="e.g. Vaillant option"></label></section>
   <div class="grid">
     <section class="card"><h2>Step 1. Boiler</h2><label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label><label>Manufacturer<select id="manufacturer"></select></label><label>Boiler model<select id="boilerModel"></select></label><label>Warranty<select id="warranty"></select></label><div id="warrantyRule" class="warranty-rule"></div><label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label><div id="boilerMeta" class="meta"></div></section>
 
     <section class="card"><div class="section-title-row"><h2>Step 2. Flues & Accessories</h2><div class="using-label">Williams pricing</div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
     <section class="card"><div class="section-title-row"><h2>Step 3. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div><label>Labour<select id="labour"></select></label><label>Pipework / materials<select id="materials"></select></label><label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div><label>Limescale reducer<select id="limescale"></select></label><label>Shock arrestor<select id="shockArrestor"><option value="0">None</option><option value="20">Shock arrestor — £20.00</option></select></label><label>Flue terminal guard<select id="terminalGuard"><option value="0">None</option><option value="20">Flue terminal guard — £20.00</option></select></label><label>Roofer Required<select id="roofer"><option value="0">No</option><option value="180">Yes — £180.00 + VAT</option></select></label><label>Condensate pump<select id="condensatePump"><option value="0">None</option><option value="100">Condensate pump — £100.00 + VAT</option></select></label><label>Magnetic filter<select id="filter"></select></label><div id="filterCompare"></div></section>
     <section class="card"><h2>Step 4. TRV and Lockshield & Powerflush</h2><label>TRV and Lockshield quote status<select id="trvQuoteMode"><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option><option value="none">Not required</option></select></label><div id="optionalTrvFields" style="display:none"><label>Optional TRV and Lockshield quantity<select id="optionalTrvQty"></select></label><label>Optional TRV and Lockshield brand / type<select id="optionalTrvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="optionalTrvPrice" class="meta"></div></div><div id="requiredTrvFields"><label>Number of TRV and Lockshield sets<select id="trvQty"></select></label><label>TRV and Lockshield brand / type<select id="trvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="trvBreakdown" class="meta"></div></div><label>Full powerflush quote status<select id="powerflushQuoteMode"><option value="none">Not required</option><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option></select></label><div id="powerflushRequiredFields" style="display:none"><label>Full powerflush<select id="powerflush"><option value="0">None</option><option value="1">Full heating system powerflush</option></select></label><label id="powerflushRadLabel" style="display:none">Number of radiators<select id="powerflushRads"></select></label><div id="powerflushBreakdown" class="meta" style="display:none"></div></div><div id="powerflushOptionalFields" style="display:none"><label>Number of radiators for optional powerflush<select id="optionalPowerflushRads"></select></label><label>Optional powerflush price + VAT<input id="optionalPowerflushPrice" type="number" inputmode="decimal" min="0" step="10" placeholder="Enter optional price"></label><p class="hint">Shown separately as an optional extra and not included in the main boiler price. A full powerflush would usually cost £750 + VAT.</p></div></section>
-    <section class="card" id="heatOnlyCard"><h2>Step 5. Heat-only extras</h2><div id="heatOnlyExtras"></div><p class="hint">Use these only where required on heat-only boiler changes.</p></section>
+    <section class="card" id="heatOnlyCard" style="display:none"><h2>Step 5. Heat-only extras</h2><div id="heatOnlyExtras"></div><p class="hint">Use these only where required on heat-only boiler changes.</p></section>
     <section class="card"><h2>Step 6. Letting Agent Commission</h2><label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label></section>
   </div>
+
+  <section class="card" id="saveBoilerOptionCard"><h2>Save Boiler Option</h2><p class="hint">Finished this boiler option? Save it to add it to the quote stack.</p><button id="saveQuoteOption" type="button" class="primary">Save this boiler option</button><div id="quoteSaveStatus" class="meta"></div></section>
 
   <section class="card" id="quoteWriterCard"><div class="section-title-row"><h2>Customer Quote Write-Up</h2><span class="using-label">Commusoft / Email</span></div>
     <label>Reason for quotation<select id="quoteReason"><option value="upgrade">Recommended upgrade — age / future reliability</option><option value="failed">Boiler requires replacement</option><option value="repair">Repair or replace option</option><option value="none">No opening paragraph</option></select></label>
@@ -147,7 +149,7 @@
       <label>End reading<input id="gasEnd" type="number" inputmode="decimal" step="0.001" placeholder="e.g. 1234.603"></label>
       <label>Timed period (seconds)<input id="gasSeconds" type="number" inputmode="numeric" min="1" step="1" value="120"></label>
       <details><summary>Advanced calculation settings</summary><label>Calorific value (MJ/m³)<input id="gasCV" type="number" inputmode="decimal" step="0.1" value="39.2"></label><label>Correction factor<input id="gasCF" type="number" inputmode="decimal" step="0.00001" value="1.02264"></label></details>
-      <button id="gasCalc" type="button" class="primary">Calculate gas rate</button><div id="gasResult" class="gas-result" aria-live="polite"><strong>Enter readings above.</strong></div>
+      <button id="gasCalc" type="button" class="primary">Calculate gas rate</button><button id="gasCalcImperial" type="button" class="primary" style="display:none">Calculate imperial gas rate</button><div id="gasResult" class="gas-result" aria-live="polite"><strong>Enter readings above.</strong></div>
     </section>
     <section class="card"><h2>Direct Timer</h2><div id="gasTimerReadout" class="timer-readout">00:00.0</div><div style="display:flex;gap:8px;flex-wrap:wrap"><button id="gasTimerStart" type="button" class="primary">Start</button><button id="gasTimerStop" type="button" class="secondary-action">Stop</button><button id="gasTimerReset" type="button" class="small-action">Reset</button></div><p class="hint">Start as the meter passes your chosen reference point, stop at the end reading, then calculate.</p></section>
   </div>
@@ -166,7 +168,7 @@
 <section id="page-info" class="app-page"></section>
 </main>
 
-<script src="data.js?v=161"></script>
+<script src="data.js?v=162"></script>
 <script>
 // v1.58 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
 // Clone Baxi accessories as Baxi Main BEFORE app.js initialises so the existing
@@ -186,11 +188,11 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="app.js?v=161"></script>
-<script src="williams-catalogue.js?v=161"></script>
-<script src="williams-builder.js?v=161"></script>
-<script src="ongoing-jobs.js?v=161"></script>
-<script src="boiler-spares.js?v=161"></script>
+<script src="app.js?v=162"></script>
+<script src="williams-catalogue.js?v=162"></script>
+<script src="williams-builder.js?v=162"></script>
+<script src="ongoing-jobs.js?v=162"></script>
+<script src="boiler-spares.js?v=162"></script>
 <script>
 (function(){
  const role=(document.cookie.match(/(?:^|; )acf_role=([^;]+)/)||[])[1]||'admin';
@@ -325,18 +327,13 @@
 })();
 </script>
 <script>
-// v1.61 enhancements: full written quote saving, TRV & Lockshield labour, thermostat choices.
+// v1.62 enhancements: full written quote saving, TRV & Lockshield labour, thermostat choices.
 (function(){
  const $=s=>document.querySelector(s), esc=x=>String(x||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]));
  const FKEY='acf_full_written_quotes_v156';
  function fullStore(){try{return JSON.parse(localStorage.getItem(FKEY)||'[]')}catch(e){return[]}}
  function setFull(v){localStorage.setItem(FKEY,JSON.stringify(v))}
 
- function trvLabour45(){
-   // Existing required-TRV calculation includes £25 fitting per valve. Add £20 to material option values => £45 labour total.
-   const sel=$('#trvType'); if(!sel||sel.dataset.v156)return; sel.dataset.v156='1';
-   [...sel.options].forEach(o=>{const v=Number(o.value);if(v>0)o.value=String(v+20)});
- }
  $('#saveFullQuote')?.addEventListener('click',()=>{
    const address=($('#quoteAddress')?.value||'').trim(), text=($('#fullQuotePreview')?.textContent||'').trim(), status=$('#fullQuoteSaveStatus');
    if(!address){if(status)status.textContent='Enter the property address first.';return} if(!text){if(status)status.textContent='Build the quote first.';return}
@@ -353,7 +350,31 @@
    const d=e.target.closest('[data-full-del]');if(d){const a=fullStore();a.splice(+d.dataset.fullDel,1);setFull(a);renderFull()}
    const l=e.target.closest('[data-full-load]');if(l){const r=fullStore()[+l.dataset.fullLoad];if(!r)return;$('#quoteAddress').value=r.address; const pre=$('#fullQuotePreview');if(pre)pre.textContent=r.text;document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));$('#page-quote')?.classList.add('active-page');window.scrollTo(0,0)}
  });
- window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{trvLabour45();renderFull()},500));
+ window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{renderFull()},500));
+})();
+</script>
+
+<script>
+// v1.62 UI fixes: explicit imperial calculate action and heat-only-only extras visibility.
+(function(){
+  const meter=document.getElementById('gasMeterType');
+  const metricBtn=document.getElementById('gasCalc');
+  const imperialBtn=document.getElementById('gasCalcImperial');
+  function syncGasButtons(){
+    const imperial=meter && meter.value==='imperial';
+    if(metricBtn) metricBtn.style.display=imperial?'none':'block';
+    if(imperialBtn) imperialBtn.style.display=imperial?'block':'none';
+  }
+  meter?.addEventListener('change',syncGasButtons);
+  imperialBtn?.addEventListener('click',()=>metricBtn?.click());
+  function syncHeatOnly(){
+    const card=document.getElementById('heatOnlyCard');
+    const type=document.getElementById('boilerType')?.value;
+    if(card) card.style.display=type==='Heat Only'?'block':'none';
+  }
+  document.getElementById('boilerType')?.addEventListener('change',syncHeatOnly);
+  document.getElementById('boilerModel')?.addEventListener('change',syncHeatOnly);
+  window.addEventListener('DOMContentLoaded',()=>{syncGasButtons();syncHeatOnly();});
 })();
 </script>
 </body>

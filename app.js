@@ -361,7 +361,7 @@ function buildHeat() {
 const wolseleyBoilerOffers = [];
 const wolseleyItemOffers = [];
 
-const warrantySourcesChecked = '4 Sep 2026';
+const warrantySourcesChecked = '6 Sep 2026';
 
 function warrantyOptionsForBoiler(b){
   const m=String(b?.model||'');
@@ -398,15 +398,18 @@ function warrantyOptionsForBoiler(b){
   if(make==='Vaillant'){
     if(/ecoTEC Plus/i.test(m)) return [
       {years:5,label:'5 years — standard',restriction:'5-year out-of-the-box guarantee.',filterRule:'any'},
-      {years:10,label:'10 years — with Vaillant Boiler Protection Kit',restriction:'10-year guarantee requires a qualifying Vaillant Boiler Protection Kit and eligible installer registration.',filterRule:'vaillant'}
+      {years:7,label:'7 years — Vaillant Advance',restriction:'Free 7-year guarantee when registered through Vaillant Advance.',filterRule:'any'},
+      {years:10,label:'10 years — Advance + Vaillant Boiler Protection Kit',restriction:'10-year guarantee requires a qualifying Vaillant Boiler Protection Kit and registration through Vaillant Advance.',filterRule:'vaillant'}
     ];
     if(/ecoFIT Pure/i.test(m)) return [
       {years:2,label:'2 years — standard',restriction:'2-year out-of-the-box guarantee.',filterRule:'any'},
-      {years:10,label:'10 years — with Vaillant Protection Kit',restriction:'10-year guarantee requires a qualifying Vaillant Boiler Protection Kit / Advance Boiler Protection Kit and eligible installer registration.',filterRule:'vaillant'}
+      {years:7,label:'7 years — Vaillant Advance',restriction:'Free 7-year guarantee when registered through Vaillant Advance.',filterRule:'any'},
+      {years:10,label:'10 years — Advance + Vaillant Boiler Protection Kit',restriction:'10-year guarantee requires a Vaillant Boiler Protection Kit or Advance Boiler Protection Kit and registration through Vaillant Advance.',filterRule:'vaillant'}
     ];
     if(/ecoTEC Pro/i.test(m)) return [
       {years:2,label:'2 years — standard',restriction:'2-year out-of-the-box guarantee.',filterRule:'any'},
-      {years:7,label:'7 years — eligible installer registration',restriction:'7-year guarantee available through the Vaillant installer rewards scheme. Check current registration eligibility.',filterRule:'any'}
+      {years:7,label:'7 years — Vaillant Advance',restriction:'Free 7-year guarantee when registered through Vaillant Advance.',filterRule:'any'},
+      {years:10,label:'10 years — paid upgrade',restriction:'Vaillant currently offers a 10-year upgrade on ecoTEC pro for £150 + VAT. Registration terms apply.',filterRule:'any'}
     ];
   }
   if(make==='Ideal'){
@@ -579,12 +582,12 @@ function calc() {
   const trvQty=Number(val('trvQty')||0);
   const trvUnit=Number(val('trvType')||0);
   const trvParts=trvQty*trvUnit;
-  const trvLabour=trvQty*30;
+  const trvLabour=trvQty*45;
   const trvTotal=trvParts+trvLabour;
   const powerflushOn=val('powerflush')==='1';
   const powerflushRads=Number(val('powerflushRads')||0);
   const powerflushTotal=powerflushOn ? 450 + Math.max(0,powerflushRads-8)*30 : 0;
-  if(el('trvBreakdown')) el('trvBreakdown').textContent=trvQty ? `${trvQty} TRV${trvQty===1?'':'s'}: ${gbp(trvParts)} parts + ${gbp(trvLabour)} labour = ${gbp(trvTotal)} ex VAT` : 'No TRVs selected';
+  if(el('trvBreakdown')) el('trvBreakdown').textContent=trvQty ? `${trvQty} TRV and Lockshield set${trvQty===1?'':'s'}: ${gbp(trvParts)} parts + ${gbp(trvLabour)} labour = ${gbp(trvTotal)} ex VAT` : 'No TRVs selected';
   if(el('powerflushRadLabel')) el('powerflushRadLabel').style.display=powerflushOn?'block':'none';
   if(el('powerflushBreakdown')) { el('powerflushBreakdown').style.display=powerflushOn?'block':'none'; el('powerflushBreakdown').textContent=powerflushOn ? `Powerflush: ${gbp(powerflushTotal)} ex VAT${powerflushRads>8?` (${powerflushRads-8} additional radiator${powerflushRads-8===1?'':'s'})`: ' — includes up to 8 radiators'}` : ''; }
   const filter=filterPrice(val('filter'));
