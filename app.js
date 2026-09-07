@@ -361,7 +361,7 @@ function buildHeat() {
 const wolseleyBoilerOffers = [];
 const wolseleyItemOffers = [];
 
-const warrantySourcesChecked = '6 Sep 2026';
+const warrantySourcesChecked = '7 Sep 2026';
 
 function warrantyOptionsForBoiler(b){
   const m=String(b?.model||'');
@@ -377,6 +377,13 @@ function warrantyOptionsForBoiler(b){
     if(/Eco Compact/i.test(m)) return [{years:5,label:'5 years',restriction:'Main Eco Compact: 5-year warranty, subject to registration and annual servicing.',filterRule:'any'}];
   }
   if(make==='Worcester Bosch'){
+    // Worcester Greenstar Ri heat-only range: always expose the selectable guarantee options.
+    // Kept explicit so Ri models cannot fall through to the generic/unknown warranty rule.
+    if(/Worcester\s+(?:12|15|18|21|24)Ri\s+Heat Only/i.test(m) || /Worcester\s+(?:27|30)Ri Compact\s+Heat Only/i.test(m)) return [
+      {years:7,label:'7 years — standard',restriction:'Standard Worcester guarantee.',filterRule:'any'},
+      {years:8,label:'8 years — with Greenstar System Filter',restriction:'8-year guarantee requires a qualifying Worcester Greenstar System Filter.',filterRule:'worcester'},
+      {years:10,label:'10 years — Greenstar System Filter + eligible loyalty terms',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter plus the applicable Worcester loyalty/WAI/WAP terms. System Filter Micro does not qualify.',filterRule:'worcester'}
+    ];
     if(/8000\+/i.test(m)) return [
       {years:8,label:'8 years — standard',restriction:'Standard Worcester guarantee. Any compatible system filter can be selected.',filterRule:'any'},
       {years:10,label:'10 years — with Greenstar System Filter',restriction:'10-year guarantee requires a qualifying Worcester Greenstar System Filter. The System Filter Micro does not qualify.',filterRule:'worcester'},

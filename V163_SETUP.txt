@@ -1,0 +1,6 @@
+ACF On the Go v1.63
+
+- Optional Full Powerflush now defaults to £450 + VAT and is always written into the Customer Quote when Optional Extra is selected.
+- Worcester Bosch Greenstar Ri and Ri Compact heat-only models explicitly show 7 / 8 / 10-year guarantee options, with qualifying Worcester filter restrictions on extended choices.
+- Quote Summary / price breakdown moved above the Customer Quote Write-Up.
+- Built from v1.62 with all existing functionality retained.
