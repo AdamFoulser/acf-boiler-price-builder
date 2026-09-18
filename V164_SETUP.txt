@@ -1,0 +1,5 @@
+ACF On the Go v1.64
+- Rebuilt Gas Rate Calculator around Baxi Toolbelt workflow
+- Metric: initial reading + integrated timer + end reading
+- Imperial: integrated timer for 1 ft³ test
+- Both return m³/h and gross kW
