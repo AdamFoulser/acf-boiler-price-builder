@@ -121,3 +121,41 @@ textarea,input[type="text"],input[type="date"],input[type="file"]{width:100%;mar
 /* v31 warranty workflow tabs */
 .warranty-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:0 0 12px}.warranty-tab{border:1px solid #cfdbe7;background:#fff;color:var(--navy);border-radius:11px;padding:10px 5px;font-family:inherit;font-size:12px;font-weight:800}.warranty-tab.active{background:var(--navy);color:#fff;border-color:var(--navy)}.warranty-tab-panel{display:none}.warranty-tab-panel.active{display:block}.warranty-record-head{display:flex;align-items:flex-start;gap:10px}.warranty-check{margin:0;padding-top:2px}.warranty-check input{width:23px;height:23px;margin:0;accent-color:#1769d2}.warranty-address{flex:1;min-width:0}.registered-record{opacity:.8}
 .accQtyWrap{display:flex;align-items:center;gap:6px;font-size:.85rem;font-weight:700}.accQty{width:72px!important;min-width:72px}.heat-extra-row label{display:grid;grid-template-columns:1fr;gap:6px;width:100%}.heatMode{width:100%}
+
+
+/* v1.67 compact ACF home dashboard */
+body{background:#f4f8fc}
+.topbar{background:#fff;border-bottom:1px solid #e2eaf2;box-shadow:0 3px 14px rgba(25,55,86,.07)}
+.topbar .brand{max-width:1000px;margin:0 auto;padding:10px 14px;display:flex!important;align-items:center!important;justify-content:flex-start!important;gap:14px}
+.topbar .brand-logo{width:82px!important;height:82px!important;max-height:none!important;object-fit:contain!important;border-radius:0!important;flex:0 0 auto}
+.topbar .brand-copy{border-left:1px solid #c9d7e5;padding-left:16px;text-align:left}
+.topbar .brand-copy .title{font-size:25px!important;font-weight:900!important;color:var(--navy)!important;line-height:1.05!important}
+.topbar .brand-copy .subtitle{font-size:12px!important;color:var(--muted)!important;margin-top:5px!important}
+#page-home{padding-top:8px}
+#page-home .home-tools{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:12px!important}
+#page-home .home-tool{min-height:132px!important;padding:14px 8px!important;border:1px solid #dce7f1!important;border-radius:20px!important;background:linear-gradient(180deg,#fbfdff 0%,#f0f6fc 100%)!important;box-shadow:none!important;gap:7px!important}
+#page-home .home-icon{font-size:31px!important;margin:0!important;color:#0b4595}
+#page-home .home-radiator{width:39px;height:31px}
+#page-home .home-tool strong{font-size:15px!important;line-height:1.18!important;color:#0b3d73!important;text-align:center}
+#page-home .home-tool small{display:none!important}
+.home-tagline{margin:14px 0 4px;padding:14px 10px;border-radius:16px;background:linear-gradient(180deg,#fbfdff,#eef5fc);text-align:center;color:#0b3d73;font-size:16px;font-weight:700}
+@media(max-width:600px){
+  .shell{padding:10px 12px!important}
+  .topbar .brand{padding:10px 14px!important;gap:11px!important}
+  .topbar .brand-logo{width:72px!important;height:72px!important}
+  .topbar .brand-copy{padding-left:12px!important}
+  .topbar .brand-copy .title{font-size:23px!important}
+  .topbar .brand-copy .subtitle{font-size:11px!important}
+  #page-home .home-tools{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:9px!important}
+  #page-home .home-tool{min-height:120px!important;padding:12px 5px!important;border-radius:17px!important}
+  #page-home .home-icon{font-size:29px!important}
+  #page-home .home-tool strong{font-size:14px!important}
+  .home-tagline{font-size:15px;margin-top:12px}
+}
+@media(max-width:370px){
+  #page-home .home-tools{gap:7px!important}
+  #page-home .home-tool{min-height:112px!important;padding:10px 4px!important}
+  #page-home .home-tool strong{font-size:13px!important}
+  .topbar .brand-logo{width:64px!important;height:64px!important}
+  .topbar .brand-copy .title{font-size:21px!important}
+}
