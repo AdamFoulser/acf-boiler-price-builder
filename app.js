@@ -319,6 +319,7 @@ function refreshAccessories() {
   document.querySelectorAll('.accSel').forEach(s => {
     fill(s, opts, x => ({text:x.description, value:x.description}));
     s.onchange = calc;
+    const q=s.closest('.accessory')?.querySelector('.accQty'); if(q) q.onchange=calc;
   });
 }
 
@@ -341,7 +342,7 @@ function buildAccessories() {
   for (let i=0; i<7; i++) {
     const d = document.createElement('div');
     d.className = 'accessory';
-    d.innerHTML = '<select class="accSel"></select><div class="price accPrice">£0.00</div>';
+    d.innerHTML = '<select class="accSel"></select><label class="accQtyWrap">Qty <select class="accQty">'+Array.from({length:10},(_,n)=>`<option value="${n+1}">${n+1}</option>`).join('')+'</select></label><div class="price accPrice">£0.00</div>';
     box.appendChild(d);
   }
 }
@@ -351,11 +352,11 @@ function buildHeat() {
   box.innerHTML = '';
   D.settings.heatOnlyExtras.forEach(x => {
     const d = document.createElement('div');
-    d.className = 'checkrow';
-    d.innerHTML = `<label><input type="checkbox" class="heatCheck" data-price="${x.price}"/>${x.name}</label><strong>${gbp(x.price)}</strong>`;
+    d.className = 'checkrow heat-extra-row';
+    d.innerHTML = `<label>${x.name}<select class="heatMode" data-name="${x.name}" data-price="${x.price}"><option value="none">Not required</option><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option></select></label><strong>${gbp(x.price)}</strong>`;
     box.appendChild(d);
   });
-  document.querySelectorAll('.heatCheck').forEach(x => x.onchange = calc);
+  document.querySelectorAll('.heatMode').forEach(x => x.onchange = calc);
 }
 
 const wolseleyBoilerOffers = [];
@@ -576,7 +577,8 @@ function calc() {
   const priceEls=document.querySelectorAll('.accPrice');
   document.querySelectorAll('.accSel').forEach((s,i)=>{
     const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===s.value);
-    const p=a?Number(a.price||0):0;
+    const qty=Number(s.closest('.accessory')?.querySelector('.accQty')?.value||1);
+    const p=a?Number(a.price||0)*qty:0;
     accessoriesTotal+=p;
     priceEls[i].textContent=gbp(p);
     priceEls[i].classList.remove('unavailable');
@@ -602,7 +604,7 @@ function calc() {
   if(el('filterCompare')) el('filterCompare').textContent=val('filter')==='None'?'':`Williams: ${gbp(filter)}`;
 
   let heatExtras=0;
-  if(isHeatOnly) document.querySelectorAll('.heatCheck:checked').forEach(x=>heatExtras+=Number(x.dataset.price||0));
+  if(isHeatOnly) document.querySelectorAll('.heatMode').forEach(x=>{if(x.value==='required') heatExtras+=Number(x.dataset.price||0)});
   const terminalGuard=Number(val('terminalGuard')||0);
   const roofer=Number(val('roofer')||0);
   const extras=Number(val('labour'))+Number(val('materials'))+thermostat+limescale+shockArrestor+terminalGuard+roofer+filter+trvTotal+powerflushTotal+heatExtras;
@@ -687,7 +689,8 @@ function resetFreshQuote() {
   el('powerflushRads').value = '8';
   el('commission').value = '0';
   document.querySelectorAll('.accSel').forEach(s => s.selectedIndex = 0);
-  document.querySelectorAll('.heatCheck').forEach(c => c.checked = false);
+  document.querySelectorAll('.heatMode').forEach(c => c.value = 'none');
+  document.querySelectorAll('.accQty').forEach(q => q.value='1');
   updateWarrantyOptions();
   refreshFilterOptions();
   if (el('filter')) el('filter').selectedIndex = 0;

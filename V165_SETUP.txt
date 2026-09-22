@@ -1,0 +1,5 @@
+ACF On the Go v1.65
+- Flues & Accessories: quantity selector (1–10) for every accessory; pricing multiplies by quantity.
+- Customer quote: accessory quantity is written into wording; accessory part/product numbers stripped from customer-facing wording.
+- Heat-only extras: each item can be Not required, Required, or Optional extra. Required items are included in main total; optional items are shown separately and excluded from main total.
+- Branding: simplified ACF Services Ltd logo/icon assets applied.
