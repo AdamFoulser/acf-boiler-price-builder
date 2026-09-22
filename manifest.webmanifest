@@ -1,9 +1,12 @@
 {
   "name": "ACF On the Go",
   "short_name": "ACF On the Go",
-  "start_url": "/",
+  "start_url": "./?v=166",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0b2f5b",
-  "icons": [{"src":"apple-touch-icon.png?v=162","sizes":"512x512","type":"image/png","purpose":"any maskable"}]
+  "icons": [
+    {"src":"icon-192.png?v=166","sizes":"192x192","type":"image/png","purpose":"any"},
+    {"src":"icon-512.png?v=166","sizes":"512x512","type":"image/png","purpose":"any"}
+  ]
 }
