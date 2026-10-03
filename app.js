@@ -570,8 +570,10 @@ function calc() {
   updateWarrantyRule();
 
   el('boilerMeta').innerHTML = `<b>${b.type}</b>${b.output ? ' · '+b.output+'kW' : ''}<br>Part code: ${b.partCode || '—'}<br>Williams ${val('priceBasis')} price: <b>${gbp(boilerPrice)}</b>`;
-  const isHeatOnly=normalizeBoilerType(b.type)==='Heat Only';
-  el('heatOnlyCard').style.display=isHeatOnly?'block':'none';
+  const boilerType=normalizeBoilerType(b.type);
+  const isHeatOnly=boilerType==='Heat Only';
+  const hasSystemExtras=isHeatOnly||boilerType==='System';
+  el('heatOnlyCard').style.display=hasSystemExtras?'block':'none';
 
   let accessoriesTotal=0;
   const priceEls=document.querySelectorAll('.accPrice');
@@ -604,7 +606,7 @@ function calc() {
   if(el('filterCompare')) el('filterCompare').textContent=val('filter')==='None'?'':`Williams: ${gbp(filter)}`;
 
   let heatExtras=0;
-  if(isHeatOnly) document.querySelectorAll('.heatMode').forEach(x=>{if(x.value==='required') heatExtras+=Number(x.dataset.price||0)});
+  if(hasSystemExtras) document.querySelectorAll('.heatMode').forEach(x=>{if(x.value==='required') heatExtras+=Number(x.dataset.price||0)});
   const terminalGuard=Number(val('terminalGuard')||0);
   const roofer=Number(val('roofer')||0);
   const extras=Number(val('labour'))+Number(val('materials'))+thermostat+limescale+shockArrestor+terminalGuard+roofer+filter+trvTotal+powerflushTotal+heatExtras;
