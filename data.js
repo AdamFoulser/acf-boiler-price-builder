@@ -3035,22 +3035,14 @@ window.ACF_DATA = {
       }
     ],
     "heatOnlyExtras": [
-      {
-        "name": "Central Heating Pump",
-        "price": 150
-      },
-      {
-        "name": "2-Port Motorised Valve",
-        "price": 150
-      },
-      {
-        "name": "3-Port Motorised Valve",
-        "price": 150
-      },
-      {
-        "name": "Dual-Channel Programmer",
-        "price": 100
-      }
+      {"name": "Central Heating Pump", "price": 150},
+      {"name": "22mm 3-Port Motorised Valve", "price": 150},
+      {"name": "22mm 2-Port Motorised Valve", "price": 120},
+      {"name": "28mm 2-Port Motorised Valve", "price": 150},
+      {"name": "Dual Programmer", "price": 120},
+      {"name": "Mechanical Room Thermostat", "price": 45},
+      {"name": "Cylinder Thermostat", "price": 55},
+      {"name": "Honeywell Smart T6R", "price": 250}
     ]
   }
 };

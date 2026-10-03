@@ -308,7 +308,7 @@
    return t;
  }
  function accessoryLines(){const out=[];document.querySelectorAll('#accessorySlots .accessory').forEach(row=>{const sel=row.querySelector('.accSel');if(!sel?.value||/^0(?:\.0+)?$/.test(sel.value))return;const qty=Number(row.querySelector('.accQty')?.value||1);let t=cleanAccessoryName(sel.options?.[sel.selectedIndex]?.text||'');if(!t||/none|no additional/i.test(t))return;t=t.replace(/^[A-Za-z-]+\s+(?=(?:\d+m|flue|plume|vertical|horizontal|telescopic|support|bracket|elbow|bend))/i,'');let item;if(/plume/i.test(t))item='plume management kit';else if(/vertical.*flue|vertical.*terminal/i.test(t))item='vertical flue terminal';else if(/horizontal.*flue|standard.*flue/i.test(t))item='horizontal flue';else item=t;out.push('Supply and fit '+(qty>1?qty+' × ':'')+item+'.')});return out}
- function heatLines(mode){const out=[];document.querySelectorAll('#heatOnlyExtras .heatMode').forEach(e=>{if(e.value!==mode)return;const label=e.dataset.name||'';let text='';if(/pump/i.test(label))text='Supply and fit new central heating pump.';else if(/2.?port/i.test(label))text='Supply and fit new 2-port motorised valve.';else if(/3.?port/i.test(label))text='Supply and fit new 3-port motorised valve.';else if(/programmer/i.test(label))text='Supply and fit new dual-channel programmer and digital room thermostat.';if(text)out.push(text)});return out}
+ function heatLines(mode){const out=[];document.querySelectorAll('#heatOnlyExtras .heatMode').forEach(e=>{if(e.value!==mode)return;const label=e.dataset.name||'';let text='';if(/pump/i.test(label))text='Supply and fit new central heating pump.';else if(/22mm 3.?port/i.test(label))text='Supply and fit new 22mm 3-port motorised valve.';else if(/22mm 2.?port/i.test(label))text='Supply and fit new 22mm 2-port motorised valve.';else if(/28mm 2.?port/i.test(label))text='Supply and fit new 28mm 2-port motorised valve.';else if(/dual programmer/i.test(label))text='Supply and fit new dual programmer.';else if(/mechanical room thermostat/i.test(label))text='Supply and fit new mechanical room thermostat.';else if(/cylinder thermostat/i.test(label))text='Supply and fit new cylinder thermostat.';else if(/T6R/i.test(label))text='Supply and fit new Honeywell Smart T6R thermostat.';if(text)out.push(text)});return out}
  function currentBoilerLine(){let b=stripPrice(txt('#boilerModel'));if(!b)return '';let w=stripPrice(txt('#warranty'));if(w&&!/warranty/i.test(w))w+=' warranty';let price=$('#exvat')?.textContent||'';return b+' – Supply and installation: '+price+' + VAT'+(w?' – '+w:'')}
  function savedBoilerLines(){try{const rows=JSON.parse(localStorage.getItem('acf_saved_quotes_v37')||localStorage.getItem('acf_saved_quotes_v36')||'[]'),a=($('#quoteAddress')?.value||'').trim().toLowerCase();if(!a)return [];return rows.filter(r=>(r.address||'').trim().toLowerCase()===a).map(r=>{let b=stripPrice(r.values?.boilerModel?.text||r.option||'Boiler option'),w=stripPrice(r.values?.warranty?.text||'');if(w&&!/warranty/i.test(w))w+=' warranty';return b+' – Supply and installation: '+(r.total?.exvat||'')+' + VAT'+(w?' – '+w:'')})}catch(e){return []}}
  function buildQuote(){
@@ -371,7 +371,7 @@
 </script>
 
 <script>
-// v1.68 UI fixes: explicit imperial calculate action and system/heat-only extras visibility.
+// v1.69 UI fixes: explicit imperial calculate action and system/heat-only extras visibility.
 (function(){
   const meter=document.getElementById('gasMeterType');
   const metricBtn=document.getElementById('gasCalc');
