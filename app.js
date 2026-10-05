@@ -348,6 +348,10 @@ function buildAccessories() {
 }
 
 function buildHeat() {
+  try {
+    const savedExtraPrices = JSON.parse(localStorage.getItem('acf_extra_prices_v170') || '{}');
+    D.settings.heatOnlyExtras.forEach(x => { if (savedExtraPrices[x.name] != null) x.price = Number(savedExtraPrices[x.name]); });
+  } catch (_) {}
   const box = el('heatOnlyExtras');
   box.innerHTML = '';
   D.settings.heatOnlyExtras.forEach(x => {

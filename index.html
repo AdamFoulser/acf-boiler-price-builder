@@ -10,7 +10,7 @@
   <title>ACF On the Go</title>
   <link rel="manifest" href="manifest.webmanifest"/>
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=167"/>
-  <link rel="stylesheet" href="styles.css?v=167"/>
+  <link rel="stylesheet" href="styles.css?v=170"/>
 
   <style>
     /* v1.64 ACF On the Go */
@@ -31,7 +31,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
       <div class="title">ACF On the Go</div>
-      <div class="subtitle">ACF engineer tools · v1.68</div>
+      <div class="subtitle">ACF engineer tools · v1.70</div>
     </div>
   </div>
 </header>
@@ -47,8 +47,13 @@
       <button type="button" class="home-tool" data-open-page="ongoing"><span class="home-icon">📋</span><strong>Ongoing Jobs</strong><small>Track repeat visits, labour & materials</small></button>
       <button type="button" class="home-tool" data-open-page="gasrate"><span class="home-icon">⏱️</span><strong>Gas Rate Calculator</strong><small>Metric, imperial & smart meter guide</small></button>
       <button type="button" class="home-tool" data-open-page="spares"><span class="home-icon">🔧</span><strong>Boiler Spares</strong><small>Service parts, part numbers & prices</small></button>
+      <button type="button" class="home-tool" data-open-page="settings"><span class="home-icon">⚙️</span><strong>Settings</strong><small>Change optional extra prices</small></button>
   </div>
   <div class="home-tagline">Quoting. Jobs. On the Go.</div>
+</section>
+
+<section id="page-settings" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
+  <section class="card"><div class="section-title-row"><h2>Settings — Extra Prices</h2><span class="using-label">Ex VAT</span></div><p class="supplier-help">Change the prices used for System / Heat Only required and optional extras. Prices are saved on this device and used immediately in new quotes.</p><div id="extraPriceSettings"></div><button id="saveExtraPrices" type="button" class="primary">Save Prices</button> <button id="resetExtraPrices" type="button" class="small-action">Reset to Defaults</button><div id="extraPriceStatus" class="meta" style="margin-top:10px"></div></section>
 </section>
 
 <section id="page-ongoing" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
@@ -170,7 +175,7 @@
 <section id="page-info" class="app-page"></section>
 </main>
 
-<script src="data.js?v=162"></script>
+<script src="data.js?v=170"></script>
 <script>
 // v1.58 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
 // Clone Baxi accessories as Baxi Main BEFORE app.js initialises so the existing
@@ -190,7 +195,7 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="app.js?v=162"></script>
+<script src="app.js?v=170"></script>
 <script src="williams-catalogue.js?v=162"></script>
 <script src="williams-builder.js?v=162"></script>
 <script src="ongoing-jobs.js?v=162"></script>
@@ -391,6 +396,43 @@
   document.getElementById('boilerType')?.addEventListener('change',syncHeatOnly);
   document.getElementById('boilerModel')?.addEventListener('change',syncHeatOnly);
   window.addEventListener('DOMContentLoaded',()=>{syncGasButtons();syncHeatOnly();});
+})();
+</script>
+<script>
+// v1.70: editable System / Heat Only extra prices, stored on this device.
+(function(){
+  const KEY='acf_extra_prices_v170';
+  const defaults={
+    'Central Heating Pump':150,
+    '22mm 3-Port Motorised Valve':150,
+    '22mm 2-Port Motorised Valve':120,
+    '28mm 2-Port Motorised Valve':150,
+    'Dual Programmer':120,
+    'Mechanical Room Thermostat':45,
+    'Cylinder Thermostat':55,
+    'Honeywell Smart T6R':250
+  };
+  function saved(){try{return Object.assign({},defaults,JSON.parse(localStorage.getItem(KEY)||'{}'))}catch(e){return {...defaults}}}
+  function apply(){
+    const prices=saved();
+    if(window.ACF_DATA?.settings?.heatOnlyExtras){window.ACF_DATA.settings.heatOnlyExtras.forEach(x=>{if(prices[x.name]!=null)x.price=Number(prices[x.name])})}
+    if(window.DATA?.settings?.heatOnlyExtras){window.DATA.settings.heatOnlyExtras.forEach(x=>{if(prices[x.name]!=null)x.price=Number(prices[x.name])})}
+    document.querySelectorAll('#heatOnlyExtras .heatMode').forEach(sel=>{if(prices[sel.dataset.name]!=null){sel.dataset.price=prices[sel.dataset.name];const strong=sel.closest('.heat-extra-row')?.querySelector('strong');if(strong)strong.textContent='£'+Number(prices[sel.dataset.name]).toFixed(2)}});
+    if(typeof window.calc==='function')window.calc();
+    document.dispatchEvent(new Event('change',{bubbles:true}));
+  }
+  function render(){
+    const host=document.getElementById('extraPriceSettings');if(!host)return;const prices=saved();
+    host.innerHTML=Object.keys(defaults).map((name,i)=>'<label>'+name+' (£ + VAT)<input class="extra-price-input" type="number" inputmode="decimal" min="0" step="1" data-extra-name="'+name.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'" value="'+Number(prices[name]).toFixed(2)+'"></label>').join('');
+  }
+  document.getElementById('saveExtraPrices')?.addEventListener('click',()=>{
+    const p={};document.querySelectorAll('.extra-price-input').forEach(x=>p[x.dataset.extraName]=Math.max(0,Number(x.value)||0));localStorage.setItem(KEY,JSON.stringify(p));apply();
+    const st=document.getElementById('extraPriceStatus');if(st)st.textContent='Prices saved ✓ They will now be used in boiler quotes on this device.';
+  });
+  document.getElementById('resetExtraPrices')?.addEventListener('click',()=>{localStorage.removeItem(KEY);render();apply();const st=document.getElementById('extraPriceStatus');if(st)st.textContent='Default prices restored.'});
+  // app.js builds the extras after data.js; re-apply saved prices after startup and whenever Settings opens.
+  window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{apply();render()},250));
+  document.addEventListener('click',e=>{if(e.target.closest('[data-open-page="settings"]'))setTimeout(render,20)});
 })();
 </script>
 </body>
