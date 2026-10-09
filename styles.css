@@ -176,3 +176,22 @@ body{background:#f4f8fc}
 
 /* v1.74 boiler age checker */
 .age-card label{display:block;margin-top:12px;font-weight:700}.age-card label input,.age-card label select{display:block;width:100%;box-sizing:border-box;margin-top:7px}.age-card .meta{font-size:.87rem;color:#5c7082;margin-top:7px}.age-card .secondary-action{margin-top:8px}.age-result{margin-top:16px;padding:15px;background:#eef4fa;border:1px solid #c9d9e8;border-radius:12px}.age-result h3{margin:4px 0 7px}.age-result p{margin:6px 0}.age-result button{margin-top:10px;width:100%}
+
+/* v1.75: compact mobile quote workflow */
+#page-quote .wizard-jobs{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+#page-quote .wizard-jobs button{font-size:14px;padding:12px 10px;min-height:78px}
+#page-quote .wizard-jobs button small{font-size:11px;line-height:1.3}
+#page-quote #quoteWizard{padding:12px;margin-bottom:10px}
+#page-quote .wizard-steps{margin:6px 0 10px}
+#page-quote .wizard-steps button{padding:8px 1px;font-size:11px}
+#page-quote .quote-stage-card{margin:0 0 9px;padding:12px}
+#page-quote .quote-stage-card label{margin-bottom:8px}
+#page-quote .quote-stage-card select,#page-quote .quote-stage-card input{min-height:42px}
+#page-quote .quote-accordion-head{display:flex;width:100%;justify-content:space-between;align-items:center;background:transparent;color:#142c46;border:0;padding:6px 0;text-align:left;font:inherit;font-size:15px;font-weight:800;cursor:pointer}
+#page-quote .quote-chevron{font-size:23px;line-height:1;transition:transform .15s}
+#page-quote .quote-expanded .quote-chevron{transform:rotate(180deg)}
+#page-quote .quote-accordion-content{display:none;padding-top:8px}
+#page-quote .quote-expanded .quote-accordion-content{display:block}
+#page-quote .quote-stage-card:first-child h2{font-size:17px}
+#page-quote{padding-bottom:112px}
+@media(max-width:370px){#page-quote .wizard-jobs button{font-size:12px}}

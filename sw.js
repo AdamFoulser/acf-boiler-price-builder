@@ -1,4 +1,4 @@
-const CACHE='acf-on-the-go-v174';
+const CACHE='acf-on-the-go-v175';
 const ASSETS=['./','./index.html','./styles.css?v=174','./app.js?v=174','./data.js?v=174','./age-checker.js?v=174','./manifest.webmanifest','./acf-boiler-pricing-logo.png','./apple-touch-icon.png','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install',event=>{
