@@ -173,3 +173,6 @@ body{background:#f4f8fc}
 #page-quote .wizard-buttons button{min-height:44px;padding:9px 12px;width:auto}
 #page-quote .wizard-buttons .primary{flex:0 0 auto}
 @media(max-width:380px){#page-quote .wizard-bottom strong{font-size:17px}#page-quote .wizard-buttons button{padding:8px 9px;font-size:13px}}
+
+/* v1.74 boiler age checker */
+.age-card label{display:block;margin-top:12px;font-weight:700}.age-card label input,.age-card label select{display:block;width:100%;box-sizing:border-box;margin-top:7px}.age-card .meta{font-size:.87rem;color:#5c7082;margin-top:7px}.age-card .secondary-action{margin-top:8px}.age-result{margin-top:16px;padding:15px;background:#eef4fa;border:1px solid #c9d9e8;border-radius:12px}.age-result h3{margin:4px 0 7px}.age-result p{margin:6px 0}.age-result button{margin-top:10px;width:100%}
