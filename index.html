@@ -443,7 +443,7 @@
 })();
 </script>
 <script>
-// v1.72 mobile quote wizard: presentation only; original pricing and saving stay authoritative.
+// v1.73 mobile quote wizard: presentation only; original pricing and saving stay authoritative.
 (function(){
  const q=s=>document.querySelector(s);const all=s=>[...document.querySelectorAll(s)];
  const grid=q('#quoteWizardGrid');if(!grid)return;
@@ -471,9 +471,10 @@
   sync();
  }));
  q('#wizardConversionLabour').addEventListener('change',e=>{q('#labour').value=e.target.value;q('#labour').dispatchEvent(new Event('change',{bubbles:true}))});
- all('[data-wstep]').forEach(b=>b.addEventListener('click',()=>{step=Number(b.dataset.wstep);sync()}));
- q('#wizardBack').addEventListener('click',()=>{step=Math.max(0,step-1);sync();q('#quoteWizard').scrollIntoView({block:'start'})});
- q('#wizardNext').addEventListener('click',()=>{step=step===3?0:step+1;sync();q('#quoteWizard').scrollIntoView({block:'start'})});
+ function goToStep(n){step=n;sync();requestAnimationFrame(()=>{const top=q('#quoteWizard').getBoundingClientRect().top+window.scrollY-12;window.scrollTo({top:Math.max(0,top),behavior:'instant'});});}
+ all('[data-wstep]').forEach(b=>b.addEventListener('click',()=>goToStep(Number(b.dataset.wstep))));
+ q('#wizardBack').addEventListener('click',()=>goToStep(Math.max(0,step-1)));
+ q('#wizardNext').addEventListener('click',()=>goToStep(step===3?0:step+1));
  q('#page-quote').addEventListener('change',()=>setTimeout(updatePrice,80));
  q('#page-quote').addEventListener('click',()=>setTimeout(updatePrice,120));
  // A loaded saved quote opens the review step, retaining all saved values.
