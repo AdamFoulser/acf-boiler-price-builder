@@ -10,7 +10,7 @@
   <title>ACF On the Go</title>
   <link rel="manifest" href="manifest.webmanifest"/>
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=167"/>
-  <link rel="stylesheet" href="styles.css?v=175"/>
+  <link rel="stylesheet" href="styles.css?v=173"/>
 
   <style>
     /* v1.64 ACF On the Go */
@@ -31,7 +31,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
       <div class="title">ACF On the Go</div>
-      <div class="subtitle">ACF engineer tools · v1.75</div>
+      <div class="subtitle">ACF engineer tools · v1.73.1</div>
     </div>
   </div>
 </header>
@@ -41,7 +41,6 @@
   <div class="home-tools">
     <button type="button" class="home-tool" data-open-page="quote"><span class="home-icon">🔥</span><strong>Boilers</strong><small>Build a complete boiler price</small></button>
     <button type="button" class="home-tool" data-open-page="boilers"><span class="home-icon"><svg class="home-radiator" viewBox="0 0 28 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="20" height="13" rx="1.5"/><path d="M8 5v11M12 5v11M16 5v11M20 5v11M2 7h2M24 7h2M7 17v2M21 17v2"/></g></svg></span><strong>Radiators</strong><small>Calculate room heat requirement</small></button>
-    <button type="button" class="home-tool" data-open-page="age"><span class="home-icon">📅</span><strong>Boiler Age Checker</strong><small>Identify manufacture date from serial number</small></button>
     <button type="button" class="home-tool" data-open-page="warranty"><span class="home-icon">📷</span><strong>Warranty</strong><small>Save boiler registration details</small></button>
       <button type="button" class="home-tool" data-open-page="saved"><span class="home-icon">📁</span><strong>Saved Quotes</strong><small>Properties, boiler options & photos</small></button>
       <button type="button" class="home-tool" data-open-page="general"><span class="home-icon">🧰</span><strong>General Job Price Builder</strong><small>Build any job from Williams catalogue items</small></button>
@@ -52,20 +51,6 @@
   </div>
   <div class="home-tagline">Quoting. Jobs. On the Go.</div>
 </section>
-
-<section id="page-age" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
-  <section class="card age-card"><h2>📅 Boiler Age Checker</h2><p class="supplier-help">Enter a date code or scan the appliance data plate. Confirm the serial number before using the result.</p>
-  <label>Manufacturer / range<select id="ageBrand"><option value="worcester">Worcester Bosch</option><option value="baxi">Baxi (post-2003)</option><option value="vaillant">Vaillant</option><option value="ideal-logic">Ideal Logic</option><option value="ideal-classic">Ideal Classic</option><option value="ideal-mini">Ideal Mini</option></select></label>
-  <label>Entry method<select id="ageMode"><option value="code">Enter date code (quickest)</option><option value="full">Enter full serial number</option></select></label>
-  <label id="ageCodeLabel">3-digit FD code<input id="ageSerial" type="text" autocomplete="off" autocapitalize="characters" placeholder="e.g. 684" /></label>
-  <div id="ageHelp" class="meta">Worcester: enter the 3-digit FD code. Example 684 = April 2006.</div>
-  <label style="margin-top:12px">Photograph boiler data plate<input id="agePhoto" type="file" accept="image/*" capture="environment"></label>
-  <img id="agePreview" class="warranty-preview" alt="Boiler data plate photo" hidden>
-  <button id="ageReadPhoto" type="button" class="secondary-action">📷 Read serial number from photo</button><div id="ageOcrStatus" class="meta" aria-live="polite"></div>
-  <button id="ageCheck" type="button" class="primary" style="width:100%;margin-top:14px">Identify Boiler Age →</button>
-  <div id="ageResult" class="age-result" hidden aria-live="polite"></div>
-  <p class="supplier-help" style="margin-top:14px">Manufacture date is not the installation date. Worcester reference chart supplied covers January 1997–April 2022; newer Worcester codes require confirmation.</p>
-  </section></section>
 
 <section id="page-settings" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
   <section class="card"><div class="section-title-row"><h2>Settings — Extra Prices</h2><span class="using-label">Ex VAT</span></div><p class="supplier-help">Change the prices used for System / Heat Only required and optional extras. Prices are saved on this device and used immediately in new quotes.</p><div id="extraPriceSettings"></div><button id="saveExtraPrices" type="button" class="primary">Save Prices</button> <button id="resetExtraPrices" type="button" class="small-action">Reset to Defaults</button><div id="extraPriceStatus" class="meta" style="margin-top:10px"></div></section>
@@ -137,7 +122,7 @@
 </section>
 
 <section id="page-quote" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
-  <section class="card" id="quotePropertyCard"><h2>Property / Quote</h2><label>Property address<textarea id="quoteAddress" rows="2" placeholder="Enter property address"></textarea></label><label>Existing boiler photo<input id="quotePhoto" type="file" accept="image/*" capture="environment"></label><img id="quotePhotoPreview" class="warranty-preview" alt="" hidden><label>Option name<input id="quoteOptionName" type="text" placeholder="e.g. Vaillant option"></label></section>
+  <section class="card"><h2>Property / Quote</h2><label>Property address<textarea id="quoteAddress" rows="2" placeholder="Enter property address"></textarea></label><label>Existing boiler photo<input id="quotePhoto" type="file" accept="image/*" capture="environment"></label><img id="quotePhotoPreview" class="warranty-preview" alt="" hidden><label>Option name<input id="quoteOptionName" type="text" placeholder="e.g. Vaillant option"></label></section>
   <section class="card" id="quoteWizard" style="border:2px solid #eab308">
     <div class="section-title-row"><h2>Quick Boiler Quote</h2><span class="using-label" id="wizardProgress">1 of 4</span></div>
     <div id="wizardSteps" class="wizard-steps"><button type="button" data-wstep="0">1 Job</button><button type="button" data-wstep="1">2 Boiler</button><button type="button" data-wstep="2">3 Extras</button><button type="button" data-wstep="3">4 Review</button></div>
@@ -196,7 +181,7 @@
 <section id="page-info" class="app-page"></section>
 </main>
 
-<script src="data.js?v=175"></script>
+<script src="data.js?v=173"></script>
 <script>
 // v1.58 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
 // Clone Baxi accessories as Baxi Main BEFORE app.js initialises so the existing
@@ -216,7 +201,7 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="app.js?v=175"></script>
+<script src="app.js?v=173"></script>
 <script src="williams-catalogue.js?v=162"></script>
 <script src="williams-builder.js?v=162"></script>
 <script src="ongoing-jobs.js?v=162"></script>
@@ -458,67 +443,51 @@
 })();
 </script>
 <script>
-// v1.75 compact quote wizard: existing calculation, field IDs and save handlers retained.
+// v1.73 mobile quote wizard: presentation only; original pricing and saving stay authoritative.
 (function(){
- const q=s=>document.querySelector(s), all=s=>[...document.querySelectorAll(s)];
+ const q=s=>document.querySelector(s);const all=s=>[...document.querySelectorAll(s)];
  const grid=q('#quoteWizardGrid');if(!grid)return;
- const cards=[...grid.children];let step=0,job='';
- const names=['Boiler selection','Flues & accessories','Controls, filters & installation','TRVs & powerflush','System / heat-only extras','Letting agent commission'];
- cards.forEach((card,i)=>{
-   card.classList.add('quote-stage-card');
-   const h=card.querySelector('h2');if(!h)return;
-   h.textContent=names[i]||h.textContent;
-   if(i>0){
-     const head=document.createElement('button');head.type='button';head.className='quote-accordion-head';
-     head.setAttribute('aria-expanded','false');head.innerHTML='<span>'+names[i]+'</span><span class="quote-chevron">⌄</span>';
-     h.style.display='none';card.insertBefore(head,h);
-     const content=document.createElement('div');content.className='quote-accordion-content';
-     while(head.nextSibling)content.appendChild(head.nextSibling);
-     card.appendChild(content);
-     head.addEventListener('click',()=>{const expanded=card.classList.toggle('quote-expanded');head.setAttribute('aria-expanded',String(expanded));});
-   }
- });
- // Main selection always open; accessories are available on demand without a long page.
+ const cards=[...grid.children];const stages=[[0],[1,2,3,4,5],[0,1,2,3,4,5],[]];
+ let step=0,job='';
  function sync(){
-   cards.forEach((c,i)=>{
-     const visible=step===1?i===0:step===2?i>0:false;
-     // Heat-only options remain conditional on the actual selected boiler type.
-     const isHeat=i===4 && q('#boilerType')?.value==='Combi';
-     c.style.display=visible&&!isHeat?'':'none';
-   });
-   q('#quotePropertyCard').style.display=step===0?'':'none';
-   q('#wizardJob').style.display=step===0?'block':'none';
-   q('#saveBoilerOptionCard').style.display=step===3?'block':'none';
-   q('#quoteWriterCard').style.display=step===3?'block':'none';
-   const summary=q('#page-quote .summary');if(summary)summary.style.display=step===3?'block':'none';
-   q('#wizardProgress').textContent=(step+1)+' of 4';
-   all('[data-wstep]').forEach((b,i)=>b.classList.toggle('wizard-active',i===step));
-   q('#wizardBack').style.display=step===0?'none':'inline-block';
-   q('#wizardNext').textContent=step===3?'New quote':'Continue →';
-   q('#wizardConversion').style.display=job==='conversion'&&step===0?'block':'none';
-   all('[data-job]').forEach(b=>b.classList.toggle('wizard-selected',b.dataset.job===job));
-   updatePrice();
+  cards.forEach((c,i)=>{c.style.display=step===0||step===3?'none':step===1?(i===0?'':'none'):(i===0?'none':'')});
+  q('#wizardJob').style.display=step===0?'block':'none';
+  q('#saveBoilerOptionCard').style.display=step===3?'block':'none';
+  q('#quoteWriterCard').style.display=step===3?'block':'none';
+  const summary=q('#page-quote .summary');if(summary)summary.style.display=step===3?'block':'none';
+  q('#wizardProgress').textContent=(step+1)+' of 4';
+  all('[data-wstep]').forEach((b,i)=>b.classList.toggle('wizard-active',i===step));
+  q('#wizardBack').style.display=step===0?'none':'inline-block';
+  q('#wizardNext').textContent=step===3?'Start another option':'Continue →';
+  q('#wizardConversion').style.display=job==='conversion'&&step===0?'block':'none';
+  all('[data-job]').forEach(b=>b.classList.toggle('wizard-selected',b.dataset.job===job));
+  updatePrice();
  }
  function updatePrice(){q('#wizardLivePrice').textContent=q('#exvat')?.textContent||'£0.00'}
  all('[data-job]').forEach(b=>b.addEventListener('click',()=>{
-   job=b.dataset.job;
-   const t=q('#boilerType');t.value=job==='system'?'System':job==='heat'?'Heat Only':'Combi';t.dispatchEvent(new Event('change',{bubbles:true}));
-   if(job==='conversion'){q('#labour').value='1500';q('#labour').dispatchEvent(new Event('change',{bubbles:true}))}
-   sync();
+  job=b.dataset.job;
+  const t=q('#boilerType');t.value=job==='system'?'System':job==='heat'?'Heat Only':'Combi';t.dispatchEvent(new Event('change',{bubbles:true}));
+  if(job==='conversion'){q('#labour').value='1500';q('#labour').dispatchEvent(new Event('change',{bubbles:true}))}
+  sync();
  }));
  q('#wizardConversionLabour').addEventListener('change',e=>{q('#labour').value=e.target.value;q('#labour').dispatchEvent(new Event('change',{bubbles:true}))});
- function goToStep(n){step=n;sync();requestAnimationFrame(()=>{const top=q('#quoteWizard').getBoundingClientRect().top+window.scrollY-10;window.scrollTo({top:Math.max(0,top),behavior:'instant'});});}
+ function goToStep(n){step=n;sync();requestAnimationFrame(()=>{const top=q('#quoteWizard').getBoundingClientRect().top+window.scrollY-12;window.scrollTo({top:Math.max(0,top),behavior:'instant'});});}
  all('[data-wstep]').forEach(b=>b.addEventListener('click',()=>goToStep(Number(b.dataset.wstep))));
  q('#wizardBack').addEventListener('click',()=>goToStep(Math.max(0,step-1)));
  q('#wizardNext').addEventListener('click',()=>goToStep(step===3?0:step+1));
- q('#page-quote').addEventListener('change',()=>{setTimeout(updatePrice,80);if(step===2)sync()});
+ // After a successful save, return to the first step ready for another boiler option.
+ q('#saveQuoteOption')?.addEventListener('click',()=>{
+  const status=q('#quoteSaveStatus')?.textContent||'';
+  if(!status.startsWith('Boiler option saved to '))return;
+  q('#quoteOptionName').value='';
+  goToStep(0);
+ });
+ q('#page-quote').addEventListener('change',()=>setTimeout(updatePrice,80));
  q('#page-quote').addEventListener('click',()=>setTimeout(updatePrice,120));
+ // A loaded saved quote opens the review step, retaining all saved values.
  document.addEventListener('click',e=>{if(e.target.closest('[data-load]')){step=3;setTimeout(sync,120)}});
- // Useful default: most-used controls open, other extras tucked away.
- cards[2]?.classList.add('quote-expanded');cards[2]?.querySelector('.quote-accordion-head')?.setAttribute('aria-expanded','true');
  sync();
 })();
 </script>
-<script src="age-checker.js?v=175"></script>
 </body>
 </html>
