@@ -10,7 +10,7 @@
   <title>ACF On the Go</title>
   <link rel="manifest" href="manifest.webmanifest"/>
   <link rel="apple-touch-icon" href="apple-touch-icon.png?v=167"/>
-  <link rel="stylesheet" href="styles.css?v=170"/>
+  <link rel="stylesheet" href="styles.css?v=172"/>
 
   <style>
     /* v1.64 ACF On the Go */
@@ -31,7 +31,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
       <div class="title">ACF On the Go</div>
-      <div class="subtitle">ACF engineer tools · v1.70</div>
+      <div class="subtitle">ACF engineer tools · v1.72</div>
     </div>
   </div>
 </header>
@@ -123,12 +123,18 @@
 
 <section id="page-quote" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
   <section class="card"><h2>Property / Quote</h2><label>Property address<textarea id="quoteAddress" rows="2" placeholder="Enter property address"></textarea></label><label>Existing boiler photo<input id="quotePhoto" type="file" accept="image/*" capture="environment"></label><img id="quotePhotoPreview" class="warranty-preview" alt="" hidden><label>Option name<input id="quoteOptionName" type="text" placeholder="e.g. Vaillant option"></label></section>
-  <div class="grid">
+  <section class="card" id="quoteWizard" style="border:2px solid #eab308">
+    <div class="section-title-row"><h2>Quick Boiler Quote</h2><span class="using-label" id="wizardProgress">1 of 4</span></div>
+    <div id="wizardSteps" class="wizard-steps"><button type="button" data-wstep="0">1 Job</button><button type="button" data-wstep="1">2 Boiler</button><button type="button" data-wstep="2">3 Extras</button><button type="button" data-wstep="3">4 Review</button></div>
+    <div id="wizardJob"><p class="hint">Choose your installation. All existing pricing and detailed selections remain available.</p><div class="wizard-jobs"><button type="button" data-job="combi">Combi Boiler<small>Standard replacement</small></button><button type="button" data-job="system">System Boiler<small>Standard replacement</small></button><button type="button" data-job="heat">Heat-Only Boiler<small>Standard replacement</small></button><button type="button" data-job="conversion">System Conversion<small>Conversion labour starts at £1,500</small></button></div><div id="wizardConversion" style="display:none"><label>Conversion labour (ex VAT)<select id="wizardConversionLabour"><option value="1500">£1,500 — Base</option><option value="1600">£1,600</option><option value="1700">£1,700</option><option value="1800">£1,800</option><option value="1900">£1,900</option><option value="2000">£2,000 — Maximum</option></select></label></div></div>
+    <div class="wizard-bottom"><div><small>Live customer price ex VAT</small><strong id="wizardLivePrice">£0.00</strong></div><div class="wizard-buttons"><button type="button" id="wizardBack" class="small-action">Back</button><button type="button" id="wizardNext" class="primary">Continue →</button></div></div>
+  </section>
+  <div class="grid" id="quoteWizardGrid">
     <section class="card"><h2>Step 1. Boiler</h2><label>Boiler Type<select id="boilerType"><option>Combi</option><option>System</option><option>Heat Only</option></select></label><label>Manufacturer<select id="manufacturer"></select></label><label>Boiler model<select id="boilerModel"></select></label><label>Warranty<select id="warranty"></select></label><div id="warrantyRule" class="warranty-rule"></div><label>Price basis<select id="priceBasis"><option>Standard</option><option>Flexi-Pack</option></select></label><div id="boilerMeta" class="meta"></div></section>
 
     <section class="card"><div class="section-title-row"><h2>Step 2. Flues & Accessories</h2><div class="using-label">Williams pricing</div></div><div id="accessorySlots"></div><div id="accessoryMatchNote" class="match-note"></div></section>
     <section class="card"><div class="section-title-row"><h2>Step 3. Controls, Filters & Installation</h2><div class="using-label">Williams pricing</div></div><label>Labour<select id="labour"></select></label><label>Pipework / materials<select id="materials"></select></label><label>Thermostat<select id="thermostat"></select></label><div id="thermostatCompare"></div><label>Limescale reducer<select id="limescale"></select></label><label>Shock arrestor<select id="shockArrestor"><option value="0">None</option><option value="20">Shock arrestor — £20.00</option></select></label><label>Flue terminal guard<select id="terminalGuard"><option value="0">None</option><option value="20">Flue terminal guard — £20.00</option></select></label><label>Roofer Required<select id="roofer"><option value="0">No</option><option value="180">Yes — £180.00 + VAT</option></select></label><label>Condensate pump<select id="condensatePump"><option value="0">None</option><option value="100">Condensate pump — £100.00 + VAT</option></select></label><label>Magnetic filter<select id="filter"></select></label><div id="filterCompare"></div></section>
-    <section class="card"><h2>Step 4. TRV and Lockshield & Powerflush</h2><label>TRV and Lockshield quote status<select id="trvQuoteMode"><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option><option value="none">Not required</option></select></label><div id="optionalTrvFields" style="display:none"><label>Optional TRV and Lockshield quantity<select id="optionalTrvQty"></select></label><label>Optional TRV and Lockshield brand / type<select id="optionalTrvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="optionalTrvPrice" class="meta"></div></div><div id="requiredTrvFields"><label>Number of TRV and Lockshield sets<select id="trvQty"></select></label><label>TRV and Lockshield brand / type<select id="trvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="trvBreakdown" class="meta"></div></div><label>Full powerflush quote status<select id="powerflushQuoteMode"><option value="none">Not required</option><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option></select></label><div id="powerflushRequiredFields" style="display:none"><label>Full powerflush<select id="powerflush"><option value="0">None</option><option value="1">Full heating system powerflush</option></select></label><label id="powerflushRadLabel" style="display:none">Number of radiators<select id="powerflushRads"></select></label><div id="powerflushBreakdown" class="meta" style="display:none"></div></div><div id="powerflushOptionalFields" style="display:none"><label>Number of radiators for optional powerflush<select id="optionalPowerflushRads"></select></label><label>Optional powerflush price + VAT<input id="optionalPowerflushPrice" type="number" inputmode="decimal" min="0" step="10" value="450" placeholder="Enter optional price"></label><p class="hint">Shown separately as an optional extra and not included in the main boiler price. Default optional price: £450 + VAT.</p></div></section>
+    <section class="card"><h2>Step 4. TRV and Lockshield & Powerflush</h2><label>TRV and Lockshield quote status<select id="trvQuoteMode"><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option><option value="none">Not required</option></select></label><div id="optionalTrvFields" style="display:none"><label>Optional TRV and Lockshield quantity<select id="optionalTrvQty"></select></label><label>Optional TRV and Lockshield brand / type<select id="optionalTrvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="optionalTrvPrice" class="meta"></div></div><div id="requiredTrvFields"><label>Number of TRV and Lockshield sets<select id="trvQty"></select></label><label>TRV and Lockshield brand / type<select id="trvType"><option value="0">None</option><option value="12.99">Inta i-Therm — £12.99 each</option><option value="14.99">Drayton RT212 — £14.99 each</option><option value="7.99">Trade Basic — £7.99 each</option></select></label><div id="trvBreakdown" class="meta"></div></div><label>Full powerflush quote status<select id="powerflushQuoteMode"><option value="none">Not required</option><option value="required">Required — include in main quote</option><option value="optional">Optional extra — show separately</option></select></label><div id="powerflushRequiredFields" style="display:none"><label>Full powerflush<select id="powerflush"><option value="0">None</option><option value="1">Full heating system powerflush</option></select></label><label id="powerflushRadLabel" style="display:none">Number of radiators<select id="powerflushRads"></select></label><div id="powerflushBreakdown" class="meta" style="display:none"></div></div><div id="powerflushOptionalFields" style="display:none"><label>Number of radiators for optional powerflush<select id="optionalPowerflushRads"></select></label><label>Optional powerflush price + VAT<input id="optionalPowerflushPrice" type="number" inputmode="decimal" min="0" step="10" value="450" placeholder="Enter optional price"></label><p class="hint">Shown separately as an optional extra and not included in the main boiler price. £450 + VAT up to 8 radiators, then £35 + VAT per additional radiator. You can override the price.</p></div></section>
     <section class="card" id="heatOnlyCard" style="display:none"><h2>Step 5. System / heat-only extras</h2><div id="heatOnlyExtras"></div><p class="hint">Set each item as required, optional, or not required for system and heat-only boiler changes.</p></section>
     <section class="card"><h2>Step 6. Letting Agent Commission</h2><label>Commission<select id="commission"><option value="0">0% — Private customer</option><option value="0.1">10% — Letting agent</option></select></label></section>
   </div>
@@ -175,7 +181,7 @@
 <section id="page-info" class="app-page"></section>
 </main>
 
-<script src="data.js?v=170"></script>
+<script src="data.js?v=172"></script>
 <script>
 // v1.58 — Main Eco Compact uses the Baxi Multifit flue/accessory range.
 // Clone Baxi accessories as Baxi Main BEFORE app.js initialises so the existing
@@ -195,7 +201,7 @@
 </script>
 
 <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-<script src="app.js?v=170"></script>
+<script src="app.js?v=172"></script>
 <script src="williams-catalogue.js?v=162"></script>
 <script src="williams-builder.js?v=162"></script>
 <script src="ongoing-jobs.js?v=162"></script>
@@ -212,7 +218,7 @@
    document.querySelectorAll('option').forEach(o=>{ if(/£\s*\d/.test(o.textContent)) o.textContent=o.textContent.replace(/\s*[—-]\s*£[\d,.]+(?:\s*each)?/gi,''); });
  }
  let photo=''; const pi=q('#quotePhoto'); if(pi) pi.addEventListener('change',()=>{const f=pi.files&&pi.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{photo=r.result;const im=q('#quotePhotoPreview');im.src=photo;im.hidden=false};r.readAsDataURL(f)});
- function getStore(){try{return JSON.parse(localStorage.getItem('acf_saved_quotes_v37')||localStorage.getItem('acf_saved_quotes_v36')||'[]')}catch(e){return[]}}
+ function getStore(){try{const v=JSON.parse(localStorage.getItem('acf_saved_quotes_v37')||localStorage.getItem('acf_saved_quotes_v36')||'[]');return Array.isArray(v)?v:[]}catch(e){return[]}}
  function setStore(v){localStorage.setItem('acf_saved_quotes_v37',JSON.stringify(v))}
  function cleanText(t){return String(t||'').replace(/\s*[—-]\s*£[\d,.]+(?:\s*each)?/gi,'').trim()}
  function snapshot(){
@@ -249,13 +255,13 @@
    rows.forEach((r,i)=>{const key=(r.address||'No address').trim().toLowerCase(); if(!map.has(key)){const g={address:r.address||'No address',photo:r.photo||'',rows:[]};map.set(key,g);groups.push(g)} const g=map.get(key);if(!g.photo&&r.photo)g.photo=r.photo;g.rows.push({r,i})});
    el.innerHTML=groups.map((g,gi)=>`<div class="warranty-record property-record"><strong style="font-size:1.15em">${esc(g.address)}</strong>${g.photo?`<img class="warranty-preview" src="${g.photo}" alt="Existing boiler">`:''}<div class="meta" style="margin:8px 0">${g.rows.length} boiler option${g.rows.length===1?'':'s'} saved</div><button type="button" class="primary" style="margin:4px 0 10px" data-copy-group="${gi}">Copy All Options</button>${g.rows.map(({r,i},n)=>{const items=selectedItems(r);return `<div style="padding:12px 0;border-top:1px solid #dbe4ec"><strong>${esc(r.option||('Option '+(n+1)))} — ${esc(cleanText(r.values?.boilerModel?.text||''))}</strong><div style="font-size:1.08em;font-weight:800;margin:6px 0">${esc(r.total?.incvat||'')}</div>${items.length?`<ul style="margin:6px 0 10px;padding-left:20px">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<div class="meta">No extras selected</div>'}<button type="button" class="small-action" data-copy="${i}">Copy quote line</button> <button type="button" class="small-action" data-load="${i}">Edit</button> <button type="button" class="small-action" data-del="${i}">Delete</button></div>`}).join('')}</div>`).join('');
  }
- q('#saveQuoteOption')?.addEventListener('click',()=>{const address=q('#quoteAddress').value.trim();if(!address){q('#quoteSaveStatus').textContent='Enter the property address first.';return}const rows=getStore();const same=rows.filter(r=>(r.address||'').trim().toLowerCase()===address.toLowerCase()).length;const opt=q('#quoteOptionName').value.trim()||('Option '+(same+1));rows.unshift({id:Date.now(),address,option:opt,photo,values:snapshot(),total:moneyText(),user,created:new Date().toISOString()});try{setStore(rows);q('#quoteSaveStatus').textContent='Boiler option saved to '+address+'.';render()}catch(e){q('#quoteSaveStatus').textContent='Could not save — photo may be too large.'}});
+ q('#saveQuoteOption')?.addEventListener('click',()=>{const address=q('#quoteAddress').value.trim();if(!address){q('#quoteSaveStatus').textContent='Enter the property address first.';return}const rows=getStore();const same=rows.filter(r=>(r.address||'').trim().toLowerCase()===address.toLowerCase()).length;const opt=q('#quoteOptionName').value.trim()||('Option '+(same+1));rows.unshift({id:Date.now(),address,option:opt,photo:(same===0?photo:''),values:snapshot(),total:moneyText(),user,created:new Date().toISOString()});try{setStore(rows);q('#quoteSaveStatus').textContent='Boiler option saved to '+address+'.';render()}catch(e){q('#quoteSaveStatus').textContent='Could not save — photo may be too large.'}});
  document.addEventListener('click',async e=>{
    const open=e.target.closest('[data-open-page]');if(open){const page=open.dataset.openPage;document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-'+page)?.classList.add('active-page');document.querySelectorAll('.bottom-nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===page));if(page==='saved')render()}
    const cg=e.target.closest('[data-copy-group]');if(cg){const rows=getStore(),groups=[],map=new Map();rows.forEach((r,i)=>{const key=(r.address||'No address').trim().toLowerCase();if(!map.has(key)){const g={address:r.address||'No address',rows:[]};map.set(key,g);groups.push(g)}map.get(key).rows.push({r,i})});const g=groups[+cg.dataset.copyGroup];if(!g)return;const text=groupCopy(g);try{await navigator.clipboard.writeText(text);const old=cg.textContent;cg.textContent='All Options Copied ✓';setTimeout(()=>cg.textContent=old,1600)}catch(_){prompt('Copy all quote options:',text)}}
    const c=e.target.closest('[data-copy]');if(c){const r=getStore()[+c.dataset.copy];if(!r)return;try{await navigator.clipboard.writeText(quoteCopy(r));const old=c.textContent;c.textContent='Copied ✓';setTimeout(()=>c.textContent=old,1400)}catch(_){prompt('Copy this quote text:',quoteCopy(r))}}
    const d=e.target.closest('[data-del]');if(d){const rows=getStore();rows.splice(+d.dataset.del,1);setStore(rows);render()}
-   const l=e.target.closest('[data-load]');if(l){const r=getStore()[+l.dataset.load];if(!r)return;q('#quoteAddress').value=r.address||'';q('#quoteOptionName').value=r.option||'';Object.entries(r.values||{}).forEach(([id,v])=>{if(id==='accessories')return;const x=q('#'+id);if(x){x.value=v.value;x.dispatchEvent(new Event('change',{bubbles:true}))}});document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-quote').classList.add('active-page');window.scrollTo(0,0)}
+   const l=e.target.closest('[data-load]');if(l){const r=getStore()[+l.dataset.load];if(!r)return;q('#quoteAddress').value=r.address||'';q('#quoteOptionName').value='';q('#quoteSaveStatus').textContent='Loaded '+(r.option||'option')+'. Saving will add a new option, leaving the original intact.';Object.entries(r.values||{}).forEach(([id,v])=>{if(id==='accessories')return;const x=q('#'+id);if(x){x.value=v.value;x.dispatchEvent(new Event('change',{bubbles:true}))}});document.querySelectorAll('.app-page').forEach(x=>x.classList.remove('active-page'));q('#page-quote').classList.add('active-page');window.scrollTo(0,0)}
  });
  // v37: restore Baxi vertical-flue visibility. Williams lists the 5118576 vertical terminal;
  // roof flashings already exist in the Williams accessory data. Add the terminal to Baxi flue dropdowns if missing.
@@ -305,6 +311,7 @@
  }
  function optionalTrvTotal(){const q=Number($('#optionalTrvQty')?.value||0), unit=Number($('#optionalTrvType')?.value||0);return q&&unit?q*(unit+45):0}
  function updateOptionalPrice(){const e=$('#optionalTrvPrice'),v=optionalTrvTotal();if(e)e.textContent=v?'Optional extra price: £'+Math.ceil(v/10)*10+'.00 + VAT (includes fitting)':'Select quantity and TRV type.'}
+ function automaticPowerflushPrice(){const n=Number($('#optionalPowerflushRads')?.value||8);const p=$('#optionalPowerflushPrice');if(p)p.value=String(450+Math.max(0,n-8)*35)}
  function fillOptionalPowerflushRads(){const s=$('#optionalPowerflushRads');if(!s||s.options.length)return;for(let i=1;i<=30;i++){const o=document.createElement('option');o.value=i;o.textContent=i;s.appendChild(o)}}
  function powerflushMode(){const mode=$('#powerflushQuoteMode')?.value||'none',req=$('#powerflushRequiredFields'),opt=$('#powerflushOptionalFields'),pf=$('#powerflush');if(req)req.style.display=mode==='required'?'':'none';if(opt)opt.style.display=mode==='optional'?'':'none';if(mode==='required'){if(pf&&pf.value==='0'){pf.value='1';pf.dispatchEvent(new Event('change',{bubbles:true}))}}else if(pf&&pf.value!=='0'){pf.value='0';pf.dispatchEvent(new Event('change',{bubbles:true}))}setTimeout(updateQuote,50)}
  function reason(){return {upgrade:'Due to the age of the existing boiler, we have provided the following options for replacement. Replacing the boiler now would provide improved reliability, improved efficiency and more economical operation, together with a new manufacturer warranty, while reducing the likelihood of increasingly costly repairs to the existing appliance.',failed:'Following our inspection of the existing boiler, replacement is recommended. Please find below our quotation and available boiler options.',repair:'Due to the repairs required to the existing boiler, we have also provided replacement options for consideration, allowing the cost of repair to be weighed against installing a new boiler with a new manufacturer warranty.',none:''}[$('#quoteReason')?.value||'upgrade']||''}
@@ -340,7 +347,7 @@
    return lines.join('\n').replace(/\n{2,}/g,'\n').trim();
  }
  function updateQuote(){const e=$('#fullQuotePreview');if(e)e.textContent=buildQuote()}
- fillOptionalQty();fillOptionalPowerflushRads(); $('#trvQuoteMode')?.addEventListener('change',trvMode);$('#powerflushQuoteMode')?.addEventListener('change',powerflushMode);['#optionalTrvQty','#optionalTrvType','#optionalPowerflushRads','#optionalPowerflushPrice','#quoteReason','#quoteAddress'].forEach(id=>$(id)?.addEventListener('change',()=>{updateOptionalPrice();updateQuote()}));
+ fillOptionalQty();fillOptionalPowerflushRads(); $('#trvQuoteMode')?.addEventListener('change',trvMode);$('#powerflushQuoteMode')?.addEventListener('change',powerflushMode);automaticPowerflushPrice();$('#optionalPowerflushRads')?.addEventListener('change',automaticPowerflushPrice);['#optionalTrvQty','#optionalTrvType','#optionalPowerflushRads','#optionalPowerflushPrice','#quoteReason','#quoteAddress'].forEach(id=>$(id)?.addEventListener('change',()=>{updateOptionalPrice();updateQuote()}));
  document.addEventListener('change',e=>{if(e.target.closest('#page-quote'))setTimeout(updateQuote,60)});document.addEventListener('click',e=>{if(e.target.closest('#page-quote'))setTimeout(updateQuote,80)});
  async function copyTextRobust(t){let ta=null;try{ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.top='0';ta.style.left='0';ta.style.width='1px';ta.style.height='1px';ta.style.opacity='0.01';ta.style.fontSize='16px';document.body.appendChild(ta);ta.focus();ta.setSelectionRange(0,t.length);const ok=document.execCommand('copy');ta.remove();ta=null;if(ok)return true}catch(e){if(ta)ta.remove()}try{if(navigator.clipboard&&window.isSecureContext){await navigator.clipboard.writeText(t);return true}}catch(e){}return false}
  $('#copyFullQuote')?.addEventListener('click',async()=>{const t=buildQuote(),b=$('#copyFullQuote'),old=b.textContent;const ok=await copyTextRobust(t);if(ok){b.textContent='Full Quote Copied ✓';setTimeout(()=>b.textContent=old,1800)}else{const pre=$('#fullQuotePreview');if(pre){const range=document.createRange();range.selectNodeContents(pre);const sel=window.getSelection();sel.removeAllRanges();sel.addRange(range)}b.textContent='Quote selected — tap Copy';setTimeout(()=>b.textContent=old,2500)}});
@@ -399,7 +406,7 @@
 })();
 </script>
 <script>
-// v1.70: editable System / Heat Only extra prices, stored on this device.
+// v1.72: editable System / Heat Only extra prices, stored on this device.
 (function(){
   const KEY='acf_extra_prices_v170';
   const defaults={
@@ -433,6 +440,45 @@
   // app.js builds the extras after data.js; re-apply saved prices after startup and whenever Settings opens.
   window.addEventListener('DOMContentLoaded',()=>setTimeout(()=>{apply();render()},250));
   document.addEventListener('click',e=>{if(e.target.closest('[data-open-page="settings"]'))setTimeout(render,20)});
+})();
+</script>
+<script>
+// v1.72 mobile quote wizard: presentation only; original pricing and saving stay authoritative.
+(function(){
+ const q=s=>document.querySelector(s);const all=s=>[...document.querySelectorAll(s)];
+ const grid=q('#quoteWizardGrid');if(!grid)return;
+ const cards=[...grid.children];const stages=[[0],[1,2,3,4,5],[0,1,2,3,4,5],[]];
+ let step=0,job='';
+ function sync(){
+  cards.forEach((c,i)=>{c.style.display=step===0||step===3?'none':step===1?(i===0?'':'none'):(i===0?'none':'')});
+  q('#wizardJob').style.display=step===0?'block':'none';
+  q('#saveBoilerOptionCard').style.display=step===3?'block':'none';
+  q('#quoteWriterCard').style.display=step===3?'block':'none';
+  const summary=q('#page-quote .summary');if(summary)summary.style.display=step===3?'block':'none';
+  q('#wizardProgress').textContent=(step+1)+' of 4';
+  all('[data-wstep]').forEach((b,i)=>b.classList.toggle('wizard-active',i===step));
+  q('#wizardBack').style.display=step===0?'none':'inline-block';
+  q('#wizardNext').textContent=step===3?'Start another option':'Continue →';
+  q('#wizardConversion').style.display=job==='conversion'&&step===0?'block':'none';
+  all('[data-job]').forEach(b=>b.classList.toggle('wizard-selected',b.dataset.job===job));
+  updatePrice();
+ }
+ function updatePrice(){q('#wizardLivePrice').textContent=q('#exvat')?.textContent||'£0.00'}
+ all('[data-job]').forEach(b=>b.addEventListener('click',()=>{
+  job=b.dataset.job;
+  const t=q('#boilerType');t.value=job==='system'?'System':job==='heat'?'Heat Only':'Combi';t.dispatchEvent(new Event('change',{bubbles:true}));
+  if(job==='conversion'){q('#labour').value='1500';q('#labour').dispatchEvent(new Event('change',{bubbles:true}))}
+  sync();
+ }));
+ q('#wizardConversionLabour').addEventListener('change',e=>{q('#labour').value=e.target.value;q('#labour').dispatchEvent(new Event('change',{bubbles:true}))});
+ all('[data-wstep]').forEach(b=>b.addEventListener('click',()=>{step=Number(b.dataset.wstep);sync()}));
+ q('#wizardBack').addEventListener('click',()=>{step=Math.max(0,step-1);sync();q('#quoteWizard').scrollIntoView({block:'start'})});
+ q('#wizardNext').addEventListener('click',()=>{step=step===3?0:step+1;sync();q('#quoteWizard').scrollIntoView({block:'start'})});
+ q('#page-quote').addEventListener('change',()=>setTimeout(updatePrice,80));
+ q('#page-quote').addEventListener('click',()=>setTimeout(updatePrice,120));
+ // A loaded saved quote opens the review step, retaining all saved values.
+ document.addEventListener('click',e=>{if(e.target.closest('[data-load]')){step=3;setTimeout(sync,120)}});
+ sync();
 })();
 </script>
 </body>

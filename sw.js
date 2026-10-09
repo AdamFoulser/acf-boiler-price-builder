@@ -1,5 +1,5 @@
-const CACHE='acf-on-the-go-v170';
-const ASSETS=['./','./index.html','./styles.css?v=170','./app.js?v=170','./data.js?v=170','./manifest.webmanifest','./acf-boiler-pricing-logo.png','./apple-touch-icon.png','./icon-192.png','./icon-512.png'];
+const CACHE='acf-on-the-go-v172';
+const ASSETS=['./','./index.html','./styles.css?v=172','./app.js?v=172','./data.js?v=172','./manifest.webmanifest','./acf-boiler-pricing-logo.png','./apple-touch-icon.png','./icon-192.png','./icon-512.png'];
 
 self.addEventListener('install',event=>{
   self.skipWaiting();

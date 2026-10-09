@@ -516,6 +516,8 @@ function selectedWilliamsBasket(){
   document.querySelectorAll('.accSel').forEach(s=>{
     if(!s.value || s.value==='None') return;
     const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===s.value);
+    // Some legacy vertical-flue entries use a numeric option value instead of a description.
+    const fallbackPrice = !a && s.value && Number.isFinite(Number(s.value)) ? Number(s.value) : 0;
     if(a) items.push({kind:'accessory',manufacturer:b.manufacturer,name:a.description,williams:Number(a.price||0)});
   });
   const t=val('thermostat');
@@ -583,8 +585,10 @@ function calc() {
   const priceEls=document.querySelectorAll('.accPrice');
   document.querySelectorAll('.accSel').forEach((s,i)=>{
     const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===s.value);
+    // Some legacy vertical-flue entries use a numeric option value instead of a description.
+    const fallbackPrice = !a && s.value && Number.isFinite(Number(s.value)) ? Number(s.value) : 0;
     const qty=Number(s.closest('.accessory')?.querySelector('.accQty')?.value||1);
-    const p=a?Number(a.price||0)*qty:0;
+    const p=(a?Number(a.price||0):fallbackPrice)*qty;
     accessoriesTotal+=p;
     priceEls[i].textContent=gbp(p);
     priceEls[i].classList.remove('unavailable');
@@ -601,7 +605,7 @@ function calc() {
   const trvTotal=trvParts+trvLabour;
   const powerflushOn=val('powerflush')==='1';
   const powerflushRads=Number(val('powerflushRads')||0);
-  const powerflushTotal=powerflushOn ? 450 + Math.max(0,powerflushRads-8)*30 : 0;
+  const powerflushTotal=powerflushOn ? 450 + Math.max(0,powerflushRads-8)*35 : 0;
   if(el('trvBreakdown')) el('trvBreakdown').textContent=trvQty ? `${trvQty} TRV and Lockshield set${trvQty===1?'':'s'}: ${gbp(trvParts)} parts + ${gbp(trvLabour)} labour = ${gbp(trvTotal)} ex VAT` : 'No TRVs selected';
   if(el('powerflushRadLabel')) el('powerflushRadLabel').style.display=powerflushOn?'block':'none';
   if(el('powerflushBreakdown')) { el('powerflushBreakdown').style.display=powerflushOn?'block':'none'; el('powerflushBreakdown').textContent=powerflushOn ? `Powerflush: ${gbp(powerflushTotal)} ex VAT${powerflushRads>8?` (${powerflushRads-8} additional radiator${powerflushRads-8===1?'':'s'})`: ' — includes up to 8 radiators'}` : ''; }
