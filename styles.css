@@ -159,17 +159,3 @@ body{background:#f4f8fc}
   .topbar .brand-logo{width:64px!important;height:64px!important}
   .topbar .brand-copy .title{font-size:21px!important}
 }
-
-/* v1.72 quote wizard */
-.wizard-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:12px 0 18px}.wizard-steps button{border:0;border-bottom:4px solid #d9e0e7;background:transparent;padding:10px 2px;font-size:12px;color:#51606e}.wizard-steps button.wizard-active{border-color:#eab308;color:#111;font-weight:800}.wizard-jobs{display:grid;gap:9px}.wizard-jobs button{text-align:left;background:#fff;border:1px solid #d7dfe6;border-radius:12px;padding:15px;font-weight:700;font-size:16px;color:#172535}.wizard-jobs button small{display:block;font-weight:400;font-size:12px;color:#687887;margin-top:4px}.wizard-jobs button.wizard-selected{border:2px solid #eab308;background:#fffdf2}.wizard-bottom{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:20px;padding-top:14px;border-top:1px solid #dbe3ea}.wizard-bottom small{display:block;color:#677789}.wizard-bottom strong{display:block;font-size:23px}.wizard-buttons{display:flex;gap:7px}.wizard-buttons button{width:auto;margin:0}@media(max-width:480px){.wizard-bottom{align-items:stretch}.wizard-buttons{width:100%}.wizard-buttons .primary{flex:1}}
-
-/* v1.73: persistent quote navigation on iPhone */
-#page-quote{padding-bottom:calc(116px + env(safe-area-inset-bottom, 0px))}
-#page-quote .wizard-bottom{position:fixed;bottom:0;left:0;right:0;z-index:9999;margin:0;padding:10px max(12px, env(safe-area-inset-right, 12px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 12px));background:#fff;box-shadow:0 -4px 18px rgba(0,0,0,.14);border-top:1px solid #dbe3ea;display:flex;flex-wrap:nowrap;align-items:center;gap:10px}
-#page-quote .wizard-bottom>div:first-child{min-width:0;flex:1}
-#page-quote .wizard-bottom strong{font-size:20px}
-#page-quote .wizard-bottom small{font-size:10px}
-#page-quote .wizard-buttons{width:auto;flex:0 0 auto;display:flex;gap:6px}
-#page-quote .wizard-buttons button{min-height:44px;padding:9px 12px;width:auto}
-#page-quote .wizard-buttons .primary{flex:0 0 auto}
-@media(max-width:380px){#page-quote .wizard-bottom strong{font-size:17px}#page-quote .wizard-buttons button{padding:8px 9px;font-size:13px}}
