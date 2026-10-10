@@ -174,3 +174,16 @@ body{background:#f4f8fc}
 #quoteAccessoriesCard .accPrice{padding:0!important;font-size:12px!important;line-height:1.2!important;text-align:right!important;overflow-wrap:anywhere!important}
 #quoteAccessoriesCard #accessoryMatchNote{margin-top:5px!important;font-size:11px!important}
 @media(max-width:370px){#quoteAccessoriesCard{padding:10px!important}#quoteAccessoriesCard .accessory{grid-template-columns:minmax(0,1fr) 63px 62px!important;gap:3px!important}#quoteAccessoriesCard .accQtyWrap{gap:2px!important}#quoteAccessoriesCard .accQty{width:39px!important;min-width:39px!important}#quoteAccessoriesCard .accPrice{font-size:11px!important}}
+
+/* v1.78 compact quote steps; Step 2 unchanged */
+#page-quote .compact-quote-step{padding:12px 13px!important}
+#page-quote .compact-quote-step h2{font-size:16px!important;margin:0 0 7px!important;line-height:1.25}
+#page-quote .compact-quote-step .section-title-row{margin:0 0 7px!important;gap:6px!important}
+#page-quote .compact-quote-step .section-title-row h2{margin:0!important}
+#page-quote .compact-quote-step label{font-size:12px!important;line-height:1.25!important;margin:6px 0!important}
+#page-quote .compact-quote-step select,#page-quote .compact-quote-step input[type="number"]{min-height:39px!important;padding:8px 9px!important;margin-top:3px!important;font-size:16px!important;border-radius:8px!important}
+#page-quote .compact-quote-step .meta{margin-top:6px!important;padding:7px 9px!important;line-height:1.4!important;font-size:12px!important}
+#page-quote .compact-quote-step .hint{margin:5px 0!important;font-size:11px!important;line-height:1.4!important}
+#page-quote .compact-quote-step #thermostatCompare,#page-quote .compact-quote-step #filterCompare{margin:2px 0 4px!important;font-size:11px!important}
+#page-quote .compact-quote-step .heat-extra-row{margin:5px 0!important;padding:6px 0!important}
+#page-quote .compact-quote-step .heat-extra-row label{margin:3px 0!important}
