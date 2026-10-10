@@ -159,3 +159,18 @@ body{background:#f4f8fc}
   .topbar .brand-logo{width:64px!important;height:64px!important}
   .topbar .brand-copy .title{font-size:21px!important}
 }
+
+/* v1.77: Step 2 only — compact accessory rows; all seven slots and pricing untouched */
+#quoteAccessoriesCard{padding:12px 13px!important}
+#quoteAccessoriesCard .section-title-row{margin-bottom:6px!important;gap:6px!important;align-items:center!important}
+#quoteAccessoriesCard .section-title-row h2{font-size:16px!important;margin:0!important}
+#quoteAccessoriesCard .using-label{font-size:10px!important;padding:0!important}
+#quoteAccessoriesCard #accessorySlots{display:grid;gap:4px}
+#quoteAccessoriesCard .accessory{display:grid!important;grid-template-columns:minmax(0,1fr) 69px 74px!important;gap:5px!important;align-items:center!important;margin:0!important;min-height:43px;padding:3px 0;border-bottom:1px solid #eef2f6}
+#quoteAccessoriesCard .accessory:last-child{border-bottom:0}
+#quoteAccessoriesCard .accSel{min-width:0!important;width:100%!important;margin:0!important;padding:9px 5px!important;min-height:39px!important;border-radius:8px!important;font-size:14px!important}
+#quoteAccessoriesCard .accQtyWrap{margin:0!important;gap:3px!important;font-size:11px!important;white-space:nowrap!important;display:flex!important;align-items:center!important}
+#quoteAccessoriesCard .accQty{width:42px!important;min-width:42px!important;min-height:39px!important;padding:6px 1px!important;margin:0!important;font-size:14px!important;border-radius:8px!important}
+#quoteAccessoriesCard .accPrice{padding:0!important;font-size:12px!important;line-height:1.2!important;text-align:right!important;overflow-wrap:anywhere!important}
+#quoteAccessoriesCard #accessoryMatchNote{margin-top:5px!important;font-size:11px!important}
+@media(max-width:370px){#quoteAccessoriesCard{padding:10px!important}#quoteAccessoriesCard .accessory{grid-template-columns:minmax(0,1fr) 63px 62px!important;gap:3px!important}#quoteAccessoriesCard .accQtyWrap{gap:2px!important}#quoteAccessoriesCard .accQty{width:39px!important;min-width:39px!important}#quoteAccessoriesCard .accPrice{font-size:11px!important}}
