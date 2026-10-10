@@ -187,3 +187,6 @@ body{background:#f4f8fc}
 #page-quote .compact-quote-step #thermostatCompare,#page-quote .compact-quote-step #filterCompare{margin:2px 0 4px!important;font-size:11px!important}
 #page-quote .compact-quote-step .heat-extra-row{margin:5px 0!important;padding:6px 0!important}
 #page-quote .compact-quote-step .heat-extra-row label{margin:3px 0!important}
+
+/* v1.79: keep compact Step 2 while showing calculated accessory prices */
+#quoteAccessoriesCard .accPrice{font-variant-numeric:tabular-nums!important;font-weight:800!important}

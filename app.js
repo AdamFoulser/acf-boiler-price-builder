@@ -317,7 +317,7 @@ function refreshAccessories() {
   const brand = val('manufacturer');
   const opts = [{description:'None',price:0}, ...D.accessories.filter(x => x.manufacturer === brand)];
   document.querySelectorAll('.accSel').forEach(s => {
-    fill(s, opts, x => ({text:x.description, value:x.description}));
+    fill(s, opts, x => ({text:x.description==='None' ? 'None' : `${x.description} — ${gbp(Number(x.price||0))}`, value:x.description}));
     s.onchange = calc;
     const q=s.closest('.accessory')?.querySelector('.accQty'); if(q) q.onchange=calc;
   });
@@ -518,7 +518,7 @@ function selectedWilliamsBasket(){
     const a=D.accessories.find(x=>x.manufacturer===b.manufacturer && x.description===s.value);
     // Some legacy vertical-flue entries use a numeric option value instead of a description.
     const fallbackPrice = !a && s.value && Number.isFinite(Number(s.value)) ? Number(s.value) : 0;
-    if(a) items.push({kind:'accessory',manufacturer:b.manufacturer,name:a.description,williams:Number(a.price||0)});
+    if(a || fallbackPrice){const qty=Number(s.closest('.accessory')?.querySelector('.accQty')?.value||1);items.push({kind:'accessory',manufacturer:b.manufacturer,name:a?.description||s.options[s.selectedIndex]?.text||'Flue accessory',williams:(a?Number(a.price||0):fallbackPrice)*qty});}
   });
   const t=val('thermostat');
   if(t && t!=='None'){
@@ -570,7 +570,17 @@ function updateSupplierComparison(){
 
 function calc() {
   const b=currentBoiler();
-  if(!b) return;
+  if(!b) {
+    document.querySelectorAll('.accSel').forEach(s=>{
+      const brand=val('manufacturer');
+      const a=D.accessories.find(x=>x.manufacturer===brand && x.description===s.value);
+      const fallback=!a && Number.isFinite(Number(s.value)) ? Number(s.value) : 0;
+      const qty=Number(s.closest('.accessory')?.querySelector('.accQty')?.value||1);
+      const price=s.closest('.accessory')?.querySelector('.accPrice');
+      if(price) price.textContent=gbp((a?Number(a.price||0):fallback)*qty);
+    });
+    return;
+  }
   const boilerPrice=williamsPrice(b);
   if(el('williamsBoilerBasis')) el('williamsBoilerBasis').textContent=gbp(boilerPrice);
   updateWarrantyRule();
