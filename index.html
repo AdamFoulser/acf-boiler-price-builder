@@ -31,7 +31,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
       <div class="title">ACF On the Go</div>
-      <div class="subtitle">ACF engineer tools · v1.79</div>
+      <div class="subtitle">ACF engineer tools · v1.80</div>
     </div>
   </div>
 </header>
@@ -40,6 +40,7 @@
 <section id="page-home" class="app-page active-page">
   <div class="home-tools">
     <button type="button" class="home-tool" data-open-page="quote"><span class="home-icon">🔥</span><strong>Boilers</strong><small>Build a complete boiler price</small></button>
+    <button type="button" class="home-tool" data-open-page="cylinders"><span class="home-icon">🚿</span><strong>Hot Water Cylinders</strong><small>Vented &amp; unvented quotations</small></button>
     <button type="button" class="home-tool" data-open-page="boilers"><span class="home-icon"><svg class="home-radiator" viewBox="0 0 28 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="20" height="13" rx="1.5"/><path d="M8 5v11M12 5v11M16 5v11M20 5v11M2 7h2M24 7h2M7 17v2M21 17v2"/></g></svg></span><strong>Radiators</strong><small>Calculate room heat requirement</small></button>
     <button type="button" class="home-tool" data-open-page="warranty"><span class="home-icon">📷</span><strong>Warranty</strong><small>Save boiler registration details</small></button>
       <button type="button" class="home-tool" data-open-page="saved"><span class="home-icon">📁</span><strong>Saved Quotes</strong><small>Properties, boiler options & photos</small></button>
@@ -52,6 +53,15 @@
   <div class="home-tagline">Quoting. Jobs. On the Go.</div>
 </section>
 
+<section id="page-cylinders" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
+<section class="card"><h2>Hot Water Cylinder Quotation</h2><p class="supplier-help">Choose the cylinder type, configuration and size. Williams Issue 179 prices are ex VAT; check product specifications and included kits before ordering.</p>
+<label>1. Cylinder type<select id="cyType"><option value="">Select type</option><option value="unvented">Unvented</option><option value="vented">Vented</option></select></label>
+<label>2. Configuration<select id="cyConfig" disabled><option value="">Select configuration</option><option value="indirect">Indirect</option><option value="direct">Direct</option></select></label>
+<label>3. Capacity<select id="cyCapacity" disabled><option value="">Select capacity</option></select></label>
+<label>4. Cylinder model<select id="cyModel" disabled><option value="">Select model</option></select></label><div id="cyProductInfo" class="meta"></div></section>
+<section class="card"><h2>Installation allowances</h2><label>Pipework &amp; fittings<select id="cyMaterials"></select></label><label>Labour<select id="cyLabour"></select></label>
+<div id="cyIndirectExtras" hidden><h3>Optional heating extras</h3><p class="supplier-help">Uses the same adjustable prices as the Heat Only boiler extras.</p><label>Central heating pump<select id="cyPump"><option value="0">Not required</option><option value="1">Add pump</option></select></label><label>22mm two-port valve<select id="cyTwoPort"><option value="0">Not required</option><option value="1">Add valve</option></select></label><label>22mm three-port valve<select id="cyThreePort"><option value="0">Not required</option><option value="1">Add valve</option></select></label><label>28mm two-port valve<select id="cy28Port"><option value="0">Not required</option><option value="1">Add valve</option></select></label></div>
+<div id="cyKitNote" class="meta"></div><div class="section-title-row"><h3>Estimated quotation</h3><strong id="cyTotal">—</strong></div><div id="cyBreakdown" class="meta"></div><label>Customer description<textarea id="cyQuote" rows="7" readonly></textarea></label><button id="cyCopy" type="button" class="primary">Copy cylinder quotation</button><div id="cyStatus" class="meta"></div></section></section>
 <section id="page-settings" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
   <section class="card"><div class="section-title-row"><h2>Settings — Extra Prices</h2><span class="using-label">Ex VAT</span></div><p class="supplier-help">Change the prices used for System / Heat Only required and optional extras. Prices are saved on this device and used immediately in new quotes.</p><div id="extraPriceSettings"></div><button id="saveExtraPrices" type="button" class="primary">Save Prices</button> <button id="resetExtraPrices" type="button" class="small-action">Reset to Defaults</button><div id="extraPriceStatus" class="meta" style="margin-top:10px"></div></section>
 </section>
@@ -200,6 +210,8 @@
 <script src="williams-builder.js?v=162"></script>
 <script src="ongoing-jobs.js?v=162"></script>
 <script src="boiler-spares.js?v=162"></script>
+<script src="cylinders.js?v=180"></script>
+
 <script>
 (function(){
  const role=(document.cookie.match(/(?:^|; )acf_role=([^;]+)/)||[])[1]||'admin';
@@ -240,14 +252,16 @@
    const warranty=warrantyText(r);
    return boiler+' – Supply and installation: '+price+' + VAT'+(warranty?' – '+warranty:'');
  }
- function groupCopy(g){ return g.rows.map(({r})=>quoteCopy(r)).join('\n'); }
+ function warrantyYears(r){const w=r.values?.warranty||{};const t=String(w.text||'');const m=t.match(/(\d+)\s*years?/i);return m?Number(m[1]):0;}
+ function sortWarranty(rows){return [...rows].sort((a,b)=>warrantyYears(b.r)-warrantyYears(a.r));}
+ function groupCopy(g){ return sortWarranty(g.rows).map(({r})=>quoteCopy(r)).join('\n'); }
  function esc(x){return String(x||'').replace(/[&<>\"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;'}[c]))}
  function render(){
    const el=q('#savedQuotesList'); if(!el)return; const rows=getStore();
    if(!rows.length){el.innerHTML='<div class="meta">No saved quotes yet.</div>';return}
    const groups=[]; const map=new Map();
    rows.forEach((r,i)=>{const key=(r.address||'No address').trim().toLowerCase(); if(!map.has(key)){const g={address:r.address||'No address',photo:r.photo||'',rows:[]};map.set(key,g);groups.push(g)} const g=map.get(key);if(!g.photo&&r.photo)g.photo=r.photo;g.rows.push({r,i})});
-   el.innerHTML=groups.map((g,gi)=>`<div class="warranty-record property-record"><strong style="font-size:1.15em">${esc(g.address)}</strong>${g.photo?`<img class="warranty-preview" src="${g.photo}" alt="Existing boiler">`:''}<div class="meta" style="margin:8px 0">${g.rows.length} boiler option${g.rows.length===1?'':'s'} saved</div><button type="button" class="primary" style="margin:4px 0 10px" data-copy-group="${gi}">Copy All Options</button>${g.rows.map(({r,i},n)=>{const items=selectedItems(r);return `<div style="padding:12px 0;border-top:1px solid #dbe4ec"><strong>${esc(r.option||('Option '+(n+1)))} — ${esc(cleanText(r.values?.boilerModel?.text||''))}</strong><div style="font-size:1.08em;font-weight:800;margin:6px 0">${esc(r.total?.incvat||'')}</div>${items.length?`<ul style="margin:6px 0 10px;padding-left:20px">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<div class="meta">No extras selected</div>'}<button type="button" class="small-action" data-copy="${i}">Copy quote line</button> <button type="button" class="small-action" data-load="${i}">Edit</button> <button type="button" class="small-action" data-del="${i}">Delete</button></div>`}).join('')}</div>`).join('');
+   el.innerHTML=groups.map((g,gi)=>`<div class="warranty-record property-record"><strong style="font-size:1.15em">${esc(g.address)}</strong>${g.photo?`<img class="warranty-preview" src="${g.photo}" alt="Existing boiler">`:''}<div class="meta" style="margin:8px 0">${g.rows.length} boiler option${g.rows.length===1?'':'s'} saved</div><button type="button" class="primary" style="margin:4px 0 10px" data-copy-group="${gi}">Copy All Options</button>${sortWarranty(g.rows).map(({r,i},n)=>{const items=selectedItems(r);return `<div style="padding:12px 0;border-top:1px solid #dbe4ec"><strong>${esc(r.option||('Option '+(n+1)))} — ${esc(cleanText(r.values?.boilerModel?.text||''))}</strong><div style="font-size:1.08em;font-weight:800;margin:6px 0">${esc(r.total?.incvat||'')}</div>${items.length?`<ul style="margin:6px 0 10px;padding-left:20px">${items.map(x=>`<li>${esc(x)}</li>`).join('')}</ul>`:'<div class="meta">No extras selected</div>'}<button type="button" class="small-action" data-copy="${i}">Copy quote line</button> <button type="button" class="small-action" data-load="${i}">Edit</button> <button type="button" class="small-action" data-del="${i}">Delete</button></div>`}).join('')}</div>`).join('');
  }
  q('#chooseAnotherBoilerOption')?.addEventListener('click',()=>{q('#quoteOptionName').value='';q('#quoteSaveStatus').textContent='Choose your next boiler option below.';q('#chooseAnotherBoilerOption').style.display='none';q('#page-quote .grid')?.scrollIntoView({behavior:'smooth',block:'start'});});
  q('#saveQuoteOption')?.addEventListener('click',()=>{const address=q('#quoteAddress').value.trim();if(!address){q('#quoteSaveStatus').textContent='Enter the property address first.';return}const rows=getStore();const same=rows.filter(r=>(r.address||'').trim().toLowerCase()===address.toLowerCase()).length;const opt=q('#quoteOptionName').value.trim()||('Option '+(same+1));rows.unshift({id:Date.now(),address,option:opt,photo:(same===0?photo:''),values:snapshot(),total:moneyText(),user,created:new Date().toISOString()});try{setStore(rows);q('#quoteSaveStatus').textContent='Boiler option saved to '+address+'.';q('#chooseAnotherBoilerOption').style.display='block';render();}catch(e){q('#quoteSaveStatus').textContent='Could not save — photo may be too large.'}});
@@ -314,7 +328,8 @@
    t=stripPrice(t).replace(/\b(?:part|code|product)\s*(?:no\.?|number|code)?\s*[:#-]?\s*[A-Z0-9-]{5,}\b/gi,'').replace(/\b\d{7,}\b/g,'').replace(/\s{2,}/g,' ').trim();
    return t;
  }
- function accessoryLines(){const out=[];document.querySelectorAll('#accessorySlots .accessory').forEach(row=>{const sel=row.querySelector('.accSel');if(!sel?.value||/^0(?:\.0+)?$/.test(sel.value))return;const qty=Number(row.querySelector('.accQty')?.value||1);let t=cleanAccessoryName(sel.options?.[sel.selectedIndex]?.text||'');if(!t||/none|no additional/i.test(t))return;t=t.replace(/^[A-Za-z-]+\s+(?=(?:\d+m|flue|plume|vertical|horizontal|telescopic|support|bracket|elbow|bend))/i,'');let item;if(/plume/i.test(t))item='plume management kit';else if(/vertical.*flue|vertical.*terminal/i.test(t))item='vertical flue terminal';else if(/horizontal.*flue|standard.*flue/i.test(t))item='horizontal flue';else item=t;out.push('Supply and fit '+(qty>1?qty+' × ':'')+item+'.')});return out}
+ function stripPartNumbers(t){return String(t||'').replace(/\b(?:part\s*(?:no\.?|number)\s*[:#-]?\s*)?[A-Z]*\d[A-Z0-9./-]{5,}\b/gi,'').replace(/\s{2,}/g,' ').trim();}
+ function accessoryLines(){const out=[];document.querySelectorAll('#accessorySlots .accessory').forEach(row=>{const sel=row.querySelector('.accSel');if(!sel?.value||/^0(?:\.0+)?$/.test(sel.value))return;const qty=Number(row.querySelector('.accQty')?.value||1);let t=cleanAccessoryName(sel.options?.[sel.selectedIndex]?.text||'');if(!t||/none|no additional/i.test(t))return;t=stripPartNumbers(t);t=t.replace(/^[A-Za-z-]+\s+(?=(?:\d+m|flue|plume|vertical|horizontal|telescopic|support|bracket|elbow|bend))/i,'');let item;if(/plume/i.test(t))item='plume management kit';else if(/vertical.*flue|vertical.*terminal/i.test(t))item='vertical flue terminal';else if(/horizontal.*flue|standard.*flue/i.test(t))item='horizontal flue';else item=t;out.push('Supply and fit '+(qty>1?qty+' × ':'')+item+'.')});return out}
  function heatLines(mode){const out=[];document.querySelectorAll('#heatOnlyExtras .heatMode').forEach(e=>{if(e.value!==mode)return;const label=e.dataset.name||'';let text='';if(/pump/i.test(label))text='Supply and fit new central heating pump.';else if(/22mm 3.?port/i.test(label))text='Supply and fit new 22mm 3-port motorised valve.';else if(/22mm 2.?port/i.test(label))text='Supply and fit new 22mm 2-port motorised valve.';else if(/28mm 2.?port/i.test(label))text='Supply and fit new 28mm 2-port motorised valve.';else if(/dual programmer/i.test(label))text='Supply and fit new dual programmer.';else if(/mechanical room thermostat/i.test(label))text='Supply and fit new mechanical room thermostat.';else if(/cylinder thermostat/i.test(label))text='Supply and fit new cylinder thermostat.';else if(/T6R/i.test(label))text='Supply and fit new Honeywell Smart T6R thermostat.';if(text)out.push(text)});return out}
  function currentBoilerLine(){let b=stripPrice(txt('#boilerModel'));if(!b)return '';let w=stripPrice(txt('#warranty'));if(w&&!/warranty/i.test(w))w+=' warranty';let price=$('#exvat')?.textContent||'';return b+' – Supply and installation: '+price+' + VAT'+(w?' – '+w:'')}
  function savedBoilerLines(){try{const rows=JSON.parse(localStorage.getItem('acf_saved_quotes_v37')||localStorage.getItem('acf_saved_quotes_v36')||'[]'),a=($('#quoteAddress')?.value||'').trim().toLowerCase();if(!a)return [];return rows.filter(r=>(r.address||'').trim().toLowerCase()===a).map(r=>{let b=stripPrice(r.values?.boilerModel?.text||r.option||'Boiler option'),w=stripPrice(r.values?.warranty?.text||'');if(w&&!/warranty/i.test(w))w+=' warranty';return b+' – Supply and installation: '+(r.total?.exvat||'')+' + VAT'+(w?' – '+w:'')})}catch(e){return []}}
