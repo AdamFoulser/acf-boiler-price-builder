@@ -50,7 +50,20 @@
  $('cyTotal').textContent=item?money(total)+' + VAT':'Select a cylinder';$('cyProductInfo').textContent=item?rangeName(item)+' '+item.code+' · '+money(item.price)+' ex VAT':'';
  $('cyKitNote').textContent=$('cyType').value==='unvented'?'Unvented cylinder kits may include an expansion vessel and inlet control group. Verify the exact model kit contents; do not automatically add these accessories.':'';
  $('cyBreakdown').textContent=item?`Cylinder ${money(item.price)} · Materials ${money(materials)} · Labour ${money(labour)}${extras.map(x=>' · '+x.label+' '+money(x.price)).join('')}`:'';
- $('cyQuote').value=item?`Supply and fit ${item.description}.\nInclude associated pipework and fittings${indirect&&extras.length?', '+extras.map(x=>x.label.toLowerCase()).join(', '):''}.\nRemove and dispose of existing cylinder where applicable. Test and commission on completion.\n\nEstimate: ${money(total)} + VAT.\nSubject to survey and confirmation of cylinder specification and included accessories.`:'';
+ const type=$('cyType').value,config=$('cyConfig').value,capacity=$('cyCapacity').value;
+ const cylinderDesc=`${type} ${config} ${capacity}L hot water cylinder`;
+ const lines=[
+  'Drain down hot water system and disconnect, remove and dispose of existing hot water cylinder.',
+  `Supply and fit new ${cylinderDesc}${item?' ('+rangeName(item)+')':''}.`,
+  ...(type==='unvented'?['Supply and fit associated expansion vessel, pressure reducing valve, safety discharge valves and discharge pipework, where required and not already included with the selected cylinder package.']:[]),
+  ...extras.map(x=>`Supply and fit ${x.label.toLowerCase()}.`),
+  'Supply and fit associated hot and cold water pipework and fittings as required.',
+  'Refill and vent hot water system. Test, commission and leave working.',
+  ...(type==='unvented'?['Complete unvented cylinder safety checks and commissioning in accordance with manufacturer instructions and applicable Building Regulations.']:[]),
+  '',`Estimate: ${money(total)} + VAT.`,
+  'Subject to survey and confirmation of selected cylinder specification and included accessories.'
+ ];
+ $('cyQuote').value=item?lines.join('\n'):'';
  }
  $('cyType').addEventListener('change',()=>{choices($('cyConfig'),$('cyType').value?['indirect','direct'].map(x=>({value:x,label:x[0].toUpperCase()+x.slice(1)})):[],'Select configuration');$('cyConfig').dispatchEvent(new Event('change'))});
  $('cyConfig').addEventListener('change',()=>{choices($('cyOrientation'),$('cyConfig').value?['vertical','horizontal'].map(x=>({value:x,label:x==='vertical'?'Vertical / upright':'Horizontal'})):[],'Select orientation');$('cyOrientation').dispatchEvent(new Event('change'))});
