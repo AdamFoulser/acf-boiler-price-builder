@@ -31,7 +31,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
       <div class="title">ACF On the Go</div>
-      <div class="subtitle">ACF engineer tools · v1.80</div>
+      <div class="subtitle">ACF engineer tools · v1.86</div>
     </div>
   </div>
 </header>
@@ -40,13 +40,15 @@
 <section id="page-home" class="app-page active-page">
   <div class="home-tools">
     <button type="button" class="home-tool" data-open-page="quote"><span class="home-icon">🔥</span><strong>Boilers</strong><small>Build a complete boiler price</small></button>
+    <button type="button" class="home-tool" data-open-page="catalogue"><span class="home-icon">📖</span><strong>Williams Catalogue</strong><small>Pricebusters 179 · 218 pages</small></button>
     <button type="button" class="home-tool" data-open-page="cylinders"><span class="home-icon">🚿</span><strong>Hot Water Cylinders</strong><small>Vented &amp; unvented quotations</small></button>
     <button type="button" class="home-tool" data-open-page="boilers"><span class="home-icon"><svg class="home-radiator" viewBox="0 0 28 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="20" height="13" rx="1.5"/><path d="M8 5v11M12 5v11M16 5v11M20 5v11M2 7h2M24 7h2M7 17v2M21 17v2"/></g></svg></span><strong>Radiators</strong><small>Calculate room heat requirement</small></button>
     <button type="button" class="home-tool" data-open-page="warranty"><span class="home-icon">📷</span><strong>Warranty</strong><small>Save boiler registration details</small></button>
       <button type="button" class="home-tool" data-open-page="saved"><span class="home-icon">📁</span><strong>Saved Quotes</strong><small>Properties, boiler options & photos</small></button>
       <button type="button" class="home-tool" data-open-page="general"><span class="home-icon">🧰</span><strong>General Job Price Builder</strong><small>Build any job from Williams catalogue items</small></button>
       <button type="button" class="home-tool" data-open-page="ongoing"><span class="home-icon">📋</span><strong>Ongoing Jobs</strong><small>Track repeat visits, labour & materials</small></button>
-      <button type="button" class="home-tool" data-open-page="gasrate"><span class="home-icon">⏱️</span><strong>Gas Rate Calculator</strong><small>Metric, imperial & smart meter guide</small></button>
+      <button type="button" class="home-tool" data-open-page="igem"><span class="home-icon">📐</span><strong>IGEM UP/1B Calculator</strong><small>Installation volume, pressure drop &amp; purge</small></button>
+    <button type="button" class="home-tool" data-open-page="gasrate"><span class="home-icon">⏱️</span><strong>Gas Rate Calculator</strong><small>Metric, imperial & smart meter guide</small></button>
       <button type="button" class="home-tool" data-open-page="spares"><span class="home-icon">🔧</span><strong>Boiler Spares</strong><small>Service parts, part numbers & prices</small></button>
       <button type="button" class="home-tool" data-open-page="settings"><span class="home-icon">⚙️</span><strong>Settings</strong><small>Change optional extra prices</small></button>
   </div>
@@ -158,6 +160,28 @@
 <section id="page-warranty" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><div class="warranty-tabs"><button type="button" class="warranty-tab active" data-warranty-tab="new">New Registration</button><button type="button" class="warranty-tab" data-warranty-tab="pending">To Register</button><button type="button" class="warranty-tab" data-warranty-tab="archive">Registered</button></div><div id="warranty-tab-new" class="warranty-tab-panel active"><section class="card warranty-card"><h2>Boiler Warranty Registration</h2><p class="supplier-help">Save the details now and register the warranty later. Photos stay with this record on this device.</p><label>Property address<textarea id="warAddress" rows="3" placeholder="Enter installation address"></textarea></label><label>Date fitted<input id="warDate" type="date"></label><label>Boiler manufacturer<input id="warManufacturer" type="text" placeholder="e.g. Vaillant"></label><label>Boiler serial number<div class="serial-row"><input id="warSerial" type="text" placeholder="Take photo or enter serial"><button id="copySerial" type="button" class="small-action">Copy</button></div></label><label>Boiler serial number photo<input id="warBoilerPhoto" type="file" accept="image/*" capture="environment"></label><img id="warBoilerPreview" class="warranty-preview" alt="" hidden><button id="readSerial" type="button" class="secondary-action">Read serial number from photo</button><div id="ocrStatus" class="meta" style="display:none"></div><label>Filter photo<input id="warFilterPhoto" type="file" accept="image/*" capture="environment"></label><img id="warFilterPreview" class="warranty-preview" alt="" hidden><label>Notes<textarea id="warNotes" rows="2" placeholder="Optional"></textarea></label><button id="saveWarranty" class="primary" type="button">Save warranty record</button></section></div><div id="warranty-tab-pending" class="warranty-tab-panel"><section class="card"><div class="section-title-row"><h2>To Register</h2><span class="using-label">Tick when completed</span></div><div id="warrantyList" class="warranty-list"><div class="meta">No warranties waiting to be registered.</div></div></section></div><div id="warranty-tab-archive" class="warranty-tab-panel"><section class="card"><div class="section-title-row"><h2>Registered</h2><span class="using-label">Kept for 30 days</span></div><div id="warrantyArchive" class="warranty-list"><div class="meta">No recently registered warranties.</div></div></section></div></section>
 <section id="page-saved" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><section class="card"><div class="section-title-row"><h2>Saved Quotes</h2><span class="using-label">Saved on this device</span></div><div id="savedQuotesList" class="warranty-list"><div class="meta">No saved quotes yet.</div></div></section></section>
 
+<section id="page-igem" class="app-page">
+<button type="button" class="page-home-back" data-open-page="home">← Home</button>
+<section class="card">
+<h2>ACF IGEM/UP/1B Edition 4 Calculator</h2>
+<p>Installation volume, purge volume and tightness-test assessment worksheet.</p>
+<p class="supplier-help"><strong>Engineer verification required.</strong> This calculator is a supporting worksheet, not a substitute for IGEM/UP/1B Edition 4, appropriate testing procedures or competence. Do not use the calculated result alone to declare an installation safe.</p>
+<div class="field"><label for="igFuel">Fuel gas</label><select id="igFuel"><option value="ng">Natural gas</option><option value="lpg">LPG</option><option value="air">LPG/Air</option></select></div>
+<div class="field"><label for="igMeter">Meter internal volume (litres)</label><select id="igMeter"><option value="8">U6 / G4 – 8 L</option><option value="2.4">E6 – 2.4 L</option><option value="25">U16 / G10 – 25 L</option><option value="0">No meter included – 0 L</option><option value="custom">Other – enter measured value</option></select><input id="igMeterOther" type="number" min="0" step="any" placeholder="Actual meter volume in litres" hidden></div>
+<h3>Pipe runs</h3><p class="supplier-help">Enter the pipe's internal volume per metre from a verified pipe data table and its measured length. Do not use nominal diameter as internal diameter.</p>
+<div id="igRuns"></div><button type="button" id="igAddRun" class="secondary">+ Add pipe run</button>
+<div class="field"><label for="igFittings">Fittings allowance</label><select id="igFittings"><option value="10">10% of pipe volume</option><option value="actual">Measured / calculated fittings volume</option></select><input id="igFittingsActual" type="number" min="0" step="any" placeholder="Fittings volume in litres" hidden></div>
+<h3>Tightness test details</h3>
+<div class="field"><label for="igContext">Test arrangement</label><select id="igContext"><option value="existing">Existing appliances connected</option><option value="pipe">Pipework only / new appliances</option><option value="cannot">Existing appliances cannot be isolated</option></select></div>
+<div class="field"><label for="igDrop">Observed pressure loss (mbar)</label><input id="igDrop" type="number" min="0" step="0.01" placeholder="Enter observed pressure loss"></div>
+<div class="field"><label for="igSmell">Smell of gas?</label><select id="igSmell"><option value="no">No</option><option value="yes">Yes</option></select></div>
+<div class="field"><label for="igPipeProven">Where movement observed: pipework separately tested with no perceptible movement?</label><select id="igPipeProven"><option value="unknown">Not yet confirmed</option><option value="yes">Yes, confirmed</option><option value="no">No</option></select></div>
+<button type="button" id="igCalculate" class="primary">Calculate volumes and assessment</button>
+<div id="igResult" role="status" aria-live="polite" style="margin-top:14px"></div>
+<button type="button" id="igCopy" class="secondary" disabled>Copy results for Commusoft</button>
+<p class="supplier-help">Scope: IV not exceeding 0.035 m³; verify meter capacity, pressure, pipework size and the remaining conditions in the current standard. Purge volume is 1.5 × IV. A calculated permissible loss is not permission to accept a pipework leak.</p>
+</section></section>
+
 <section id="page-gasrate" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button>
   <div class="tool-tabs"><button type="button" class="tool-tab active" data-gas-tab="calc">Calculator</button><button type="button" class="tool-tab" data-gas-tab="guide">Smart Meter Guide</button></div>
   <div id="gas-tab-calc" class="tool-panel active">
@@ -184,6 +208,32 @@
   </section></div>
 </section>
 <section id="page-spares" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><section class="card"><h2>Boiler Service Parts / Spares</h2><p class="supplier-help">Search by manufacturer, boiler model, spare description or manufacturer part number.</p><div class="spares-search"><input id="sparesSearch" type="search" placeholder="Search boiler or part number"><div id="sparesResults" class="meta">Verified Williams and City Plumbing boiler spares. Search manufacturer, part description or manufacturer part number.</div></div></section></section>
+
+<section id="page-catalogue" class="app-page">
+<button type="button" class="page-home-back" data-open-page="home">← Home</button>
+<section class="card" style="padding:12px">
+<h2 style="margin:4px 0 4px">Williams Pricebusters · Issue 179</h2>
+<p class="supplier-help" style="margin:0 0 10px">September 2026 · 218 pages · catalogue prices exclude VAT</p>
+<div class="acf-book-shortcuts" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
+<button type="button" data-catalog-page="7">Boilers</button><button type="button" data-catalog-page="47">Heat pump cylinders</button><button type="button" data-catalog-page="58">Cylinders</button><button type="button" data-catalog-page="72">Pumps</button><button type="button" data-catalog-page="75">Controls</button><button type="button" data-catalog-page="82">Radiators</button>
+</div>
+<div class="acf-book-controls" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:space-between;margin-bottom:10px">
+<button id="acfBookPrev" type="button" aria-label="Previous page">← Previous</button>
+<label style="display:flex;align-items:center;gap:5px;font-weight:700">Page <input id="acfBookPage" type="number" min="1" max="218" value="1" inputmode="numeric" style="width:65px;padding:8px;border:1px solid #ccd7e5;border-radius:8px"> / 218</label>
+<button id="acfBookNext" type="button" aria-label="Next page">Next →</button>
+</div>
+<div id="acfBookMessage" role="status" style="font-size:12px;color:#60758a;margin-bottom:6px">Open the catalogue to start reading.</div>
+<div id="acfBookSurface" style="background:#e9edf2;min-height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:pan-y;border-radius:9px">
+<canvas id="acfBookCanvas" style="display:none;max-width:100%;height:auto"></canvas>
+<div id="acfBookPlaceholder" style="padding:36px;text-align:center"><div style="font-size:36px">📖</div><button id="acfBookLoad" type="button">Open catalogue</button></div>
+</div>
+<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center">
+<button type="button" id="acfBookZoomOut">− Zoom</button><button type="button" id="acfBookZoomIn">+ Zoom</button>
+<a href="williams-pricebusters-179.pdf" target="_blank" rel="noopener" style="font-weight:700">Open full PDF ↗</a>
+</div>
+<p class="supplier-help" style="font-size:12px;margin-top:8px">Swipe left/right to turn pages. The PDF is approximately 56 MB and may take time to load on mobile data.</p>
+</section></section>
+
 <section id="page-info" class="app-page"></section>
 </main>
 
@@ -454,5 +504,6 @@
   document.addEventListener('click',e=>{if(e.target.closest('[data-open-page="settings"]'))setTimeout(render,20)});
 })();
 </script>
-</body>
+<script src="catalogue-reader.js?v=184"></script>
+<script src="igem-calculator.js"></script></body>
 </html>

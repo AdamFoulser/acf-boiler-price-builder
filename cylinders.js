@@ -1,16 +1,22 @@
 (()=>{
  const $=id=>document.getElementById(id); if(!$('cyType'))return;
- const catalog=(window.WILLIAMS_CATALOGUE_ITEMS||[]).filter(x=>
-   x.section==='Heating - Cylinders' && Number(x.price)>0 &&
-   !/immersion heater|thermostat|coffin/i.test(x.description) &&
-   !/^(HCTIH|HCTS|HCPT)/i.test(x.code)
- );
+ const catalog=(window.WILLIAMS_CATALOGUE_ITEMS||[]).filter(x=>x.section==='Heating - Cylinders' && Number(x.price)>0 && !/immersion heater|thermostat|coffin/i.test(x.description) && !/^(HCTIH|HCTS|HCPT)/i.test(x.code));
  const isVented=x=>/^HCC(?:IBIND|DBDIR)/i.test(x.code);
  const configOf=x=>{
-   const d=x.description, c=x.code;
-   if(/indirect|\bind\b/i.test(d)||/^(HCUIN\d+I|HCPLTIN|HCUPROIN|HCUESIN|HCUFCIND|HCUFCNIN|HCSU\d+IC|HCCIBIND)/i.test(c))return 'indirect';
-   if(/direct|\bdir\b/i.test(d)||/^(HCUIN\d+D|HCPLTDR|HCUPRODR|HCUFCDIR|HCSU\d+DC|HCCDBDIR)/i.test(c))return 'direct';
-   return null;
+  const d=x.description,c=x.code;
+  if(/indirect|\bind\b/i.test(d)||/^(HCUIN\d+I|HCUINPPSR|HCPLTIN|HCUPROIN|HCUESIN|HCUFCIND|HCUFCNIN|HCSU\d+IC|HCCIBIND)/i.test(c))return 'indirect';
+  if(/direct|\bdir\b/i.test(d)||/^(HCUIN\d+D|HCPLTDR|HCUPRODR|HCUFCDIR|HCSU\d+DC|HCCDBDIR)/i.test(c))return 'direct';
+  return null;
+ };
+ const rangeName=x=>{
+  const c=x.code,d=x.description;
+  if(/^HCC/.test(c))return 'Gledhill';
+  if(/Flowcyl/i.test(d))return 'Flowcyl';
+  if(/Platinum/i.test(d))return 'Platinum';
+  if(/\bPro\b/i.test(d))return 'Pro';
+  if(/Smart/i.test(d))return 'Smart';
+  if(/ES Indirect/i.test(d))return 'ES';
+  return 'Williams catalogue';
  };
  const money=n=>'£'+Number(n).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
  const choices=(el,arr,placeholder)=>{el.innerHTML='';el.add(new Option(placeholder,''));arr.forEach(x=>el.add(new Option(x.label,x.value)));el.disabled=!arr.length;};
@@ -18,7 +24,7 @@
  for(let n=500;n<=1500;n+=50)$('cyLabour').add(new Option(money(n),n));
  const size=x=>{
    const d=x.description;
-   const m=d.match(/\b(\d{2,3})\s*(?:l(?:itres?)?|ltr|litres?)\b/i);
+   const m=d.match(/\b(\d{2,3})\s*(?:litres?|ltr|l)\b/i);
    return m?Number(m[1]):null;
  };
  const orientationOf=x=>/horizontal|\bhoriz\b/i.test(x.description)?'horizontal':'vertical';
@@ -33,7 +39,7 @@
  }
  let candidates=[];
  function updateSizes(){candidates=catalog.filter(matches);const sizes=[...new Set(candidates.map(x=>band(size(x))))].sort((a,b)=>parseInt(a)-parseInt(b));choices($('cyCapacity'),sizes.map(x=>({value:x,label:x})),'Select capacity');updateModels();}
- function updateModels(){const cap=$('cyCapacity').value;const models=candidates.filter(x=>band(size(x))===cap);choices($('cyModel'),models.map(x=>({value:x.code,label:x.description+' — '+money(x.price)})),'Select manufacturer / model');calculate();}
+ function updateModels(){const cap=$('cyCapacity').value;const models=candidates.filter(x=>band(size(x))===cap);choices($('cyModel'),models.sort((a,b)=>rangeName(a).localeCompare(rangeName(b))||size(a)-size(b)).map(x=>({value:x.code,label:rangeName(x)+' · '+x.description+' · '+x.code+' — '+money(x.price)})),models.length?'Select manufacturer / model ('+models.length+' available)':'No matching cylinders in Williams Issue 179');$('cyStatus').textContent=models.length?models.length+' matching cylinder model(s) found.':'No matching models for these filters. Try another capacity or profile.';calculate();}
  function extrasPrices(){let s={};try{s=JSON.parse(localStorage.getItem('acf_extra_prices_v170')||'{}')}catch(_){}return s;}
  function extraPrice(key,def){const s=extrasPrices();return Number(s[key]??def);}
  function calculate(){const item=candidates.find(x=>x.code===$('cyModel').value),materials=Number($('cyMaterials').value),labour=Number($('cyLabour').value),indirect=$('cyConfig').value==='indirect';$('cyIndirectExtras').hidden=!indirect;
