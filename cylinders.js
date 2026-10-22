@@ -4,19 +4,21 @@
  const isVented=x=>/^HCC(?:IBIND|DBDIR)/i.test(x.code);
  const configOf=x=>{
   const d=x.description,c=x.code;
-  if(/indirect|\bind\b/i.test(d)||/^(HCUIN\d+I|HCUINPPSR|HCPLTIN|HCUPROIN|HCUESIN|HCUFCIND|HCUFCNIN|HCSU\d+IC|HCCIBIND)/i.test(c))return 'indirect';
-  if(/direct|\bdir\b/i.test(d)||/^(HCUIN\d+D|HCPLTDR|HCUPRODR|HCUFCDIR|HCSU\d+DC|HCCDBDIR)/i.test(c))return 'direct';
+  if(/indirect|\bind\b/i.test(d)||/^HCUIN(?:\d+I|\d+ISL|PPSR)|^HC(?:PLTIN|UPROIN|UPLUIN|UESIN|UFCIND|UFCNIN|SU\d+IC|CIB|TIB|SE\w+IND)/i.test(c))return 'indirect';
+  if(/direct|\bdir\b/i.test(d)||/^HCUIN\d+D|^HC(?:PLTDR|UPRODR|UPLUDR|UESDR|UFCDIR|UFCNDI|SU\d+DC|CDB|TDB)/i.test(c))return 'direct';
   return null;
  };
  const rangeName=x=>{
   const c=x.code,d=x.description;
-  if(/^HCC/.test(c))return 'Gledhill';
-  if(/Flowcyl/i.test(d))return 'Flowcyl';
-  if(/Platinum/i.test(d))return 'Platinum';
-  if(/\bPro\b/i.test(d))return 'Pro';
-  if(/Smart/i.test(d))return 'Smart';
-  if(/ES Indirect/i.test(d))return 'ES';
-  return 'Williams catalogue';
+  if(/^HC(?:C|TIB|TDB|SE)/.test(c))return 'Gledhill';
+  if(/^HCUFC/.test(c))return 'Flowcyl';
+  if(/^HCSU/.test(c))return 'Cyclone';
+  if(/^HCPLT/.test(c))return 'Platinum';
+  if(/^HCUPRO/.test(c))return 'Pro';
+  if(/^HCUPLU/.test(c))return 'Stainless Lite Plus';
+  if(/^HCUES/.test(c))return 'ES';
+  if(/^HCUIN/.test(c))return 'Unvented range';
+  return 'Catalogue range';
  };
  const money=n=>'£'+Number(n).toLocaleString('en-GB',{minimumFractionDigits:2,maximumFractionDigits:2});
  const choices=(el,arr,placeholder)=>{el.innerHTML='';el.add(new Option(placeholder,''));arr.forEach(x=>el.add(new Option(x.label,x.value)));el.disabled=!arr.length;};
@@ -27,8 +29,8 @@
    const m=d.match(/\b(\d{2,3})\s*(?:litres?|ltr|l)\b/i);
    return m?Number(m[1]):null;
  };
- const orientationOf=x=>/horizontal|\bhoriz\b/i.test(x.description)?'horizontal':'vertical';
- const profileOf=x=>/slimline|\bslim\b|DCSL|ICSL|HCUFCNIN/i.test(x.description+' '+x.code)||/Gledhill 1500 x 300/i.test(x.description)?'slimline':'standard';
+ const orientationOf=x=>/horizontal|\bhoriz\b/i.test(x.description)||/^HCUPROIN\d+H$/i.test(x.code)?'horizontal':'vertical';
+ const profileOf=x=>/slimline|\bslim\b|DCSL|ICSL|HCUFCNIN|HCUFCNDI|HCUIN\d+[ID]SL|HCUPLU(?:IN|DR)\d+SL/i.test(x.description+' '+x.code)||/Gledhill 1500 x 300/i.test(x.description)?'slimline':'standard';
  const band=n=>n>=165&&n<=185?'165–185L':n+'L';
  function matches(x){
    const type=$('cyType').value,config=$('cyConfig').value;
@@ -45,7 +47,7 @@
  function calculate(){const item=candidates.find(x=>x.code===$('cyModel').value),materials=Number($('cyMaterials').value),labour=Number($('cyLabour').value),indirect=$('cyConfig').value==='indirect';$('cyIndirectExtras').hidden=!indirect;
  const extras=[['cyPump','Central Heating Pump',150],['cyTwoPort','22mm 2-Port Motorised Valve',120],['cyThreePort','22mm 3-Port Motorised Valve',150],['cy28Port','28mm 2-Port Motorised Valve',150]].filter(([id])=>indirect&&$(id).value==='1').map(([id,label,price])=>({label,price:extraPrice(label,price)}));
  const total=(item?Number(item.price):0)+materials+labour+extras.reduce((s,x)=>s+x.price,0);
- $('cyTotal').textContent=item?money(total)+' + VAT':'Select a cylinder';$('cyProductInfo').textContent=item?'Williams '+item.code+' · '+money(item.price)+' ex VAT':'';
+ $('cyTotal').textContent=item?money(total)+' + VAT':'Select a cylinder';$('cyProductInfo').textContent=item?rangeName(item)+' '+item.code+' · '+money(item.price)+' ex VAT':'';
  $('cyKitNote').textContent=$('cyType').value==='unvented'?'Unvented cylinder kits may include an expansion vessel and inlet control group. Verify the exact model kit contents; do not automatically add these accessories.':'';
  $('cyBreakdown').textContent=item?`Cylinder ${money(item.price)} · Materials ${money(materials)} · Labour ${money(labour)}${extras.map(x=>' · '+x.label+' '+money(x.price)).join('')}`:'';
  $('cyQuote').value=item?`Supply and fit ${item.description}.\nInclude associated pipework and fittings${indirect&&extras.length?', '+extras.map(x=>x.label.toLowerCase()).join(', '):''}.\nRemove and dispose of existing cylinder where applicable. Test and commission on completion.\n\nEstimate: ${money(total)} + VAT.\nSubject to survey and confirmation of cylinder specification and included accessories.`:'';
