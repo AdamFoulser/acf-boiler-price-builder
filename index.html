@@ -31,7 +31,7 @@
     <img class="brand-logo" src="acf-boiler-pricing-logo.png" alt="ACF"/>
     <div class="brand-copy">
       <div class="title">ACF On the Go</div>
-      <div class="subtitle">ACF engineer tools · v1.88</div>
+      <div class="subtitle">ACF engineer tools · v1.89</div>
     </div>
   </div>
 </header>
@@ -40,7 +40,6 @@
 <section id="page-home" class="app-page active-page">
   <div class="home-tools">
     <button type="button" class="home-tool" data-open-page="quote"><span class="home-icon">🔥</span><strong>Boilers</strong><small>Build a complete boiler price</small></button>
-    <button type="button" class="home-tool" data-open-page="catalogue"><span class="home-icon">📖</span><strong>Williams Catalogue</strong><small>Pricebusters 179 · 218 pages</small></button>
     <button type="button" class="home-tool" data-open-page="cylinders"><span class="home-icon">🚿</span><strong>Hot Water Cylinders</strong><small>Vented &amp; unvented quotations</small></button>
     <button type="button" class="home-tool" data-open-page="boilers"><span class="home-icon"><svg class="home-radiator" viewBox="0 0 28 22" aria-hidden="true"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="20" height="13" rx="1.5"/><path d="M8 5v11M12 5v11M16 5v11M20 5v11M2 7h2M24 7h2M7 17v2M21 17v2"/></g></svg></span><strong>Radiators</strong><small>Calculate room heat requirement</small></button>
     <button type="button" class="home-tool" data-open-page="warranty"><span class="home-icon">📷</span><strong>Warranty</strong><small>Save boiler registration details</small></button>
@@ -208,31 +207,6 @@
   </section></div>
 </section>
 <section id="page-spares" class="app-page"><button type="button" class="page-home-back" data-open-page="home">← Home</button><section class="card"><h2>Boiler Service Parts / Spares</h2><p class="supplier-help">Search by manufacturer, boiler model, spare description or manufacturer part number.</p><div class="spares-search"><input id="sparesSearch" type="search" placeholder="Search boiler or part number"><div id="sparesResults" class="meta">Verified Williams and City Plumbing boiler spares. Search manufacturer, part description or manufacturer part number.</div></div></section></section>
-
-<section id="page-catalogue" class="app-page">
-<button type="button" class="page-home-back" data-open-page="home">← Home</button>
-<section class="card" style="padding:12px">
-<h2 style="margin:4px 0 4px">Williams Pricebusters · Issue 179</h2>
-<p class="supplier-help" style="margin:0 0 10px">September 2026 · 218 pages · catalogue prices exclude VAT</p>
-<div class="acf-book-shortcuts" style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px">
-<button type="button" data-catalog-page="7">Boilers</button><button type="button" data-catalog-page="47">Heat pump cylinders</button><button type="button" data-catalog-page="58">Cylinders</button><button type="button" data-catalog-page="72">Pumps</button><button type="button" data-catalog-page="75">Controls</button><button type="button" data-catalog-page="82">Radiators</button>
-</div>
-<div class="acf-book-controls" style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:space-between;margin-bottom:10px">
-<button id="acfBookPrev" type="button" aria-label="Previous page">← Previous</button>
-<label style="display:flex;align-items:center;gap:5px;font-weight:700">Page <input id="acfBookPage" type="number" min="1" max="218" value="1" inputmode="numeric" style="width:65px;padding:8px;border:1px solid #ccd7e5;border-radius:8px"> / 218</label>
-<button id="acfBookNext" type="button" aria-label="Next page">Next →</button>
-</div>
-<div id="acfBookMessage" role="status" style="font-size:12px;color:#60758a;margin-bottom:6px">Open the catalogue to start reading.</div>
-<div id="acfBookSurface" style="background:#e9edf2;min-height:260px;display:flex;align-items:center;justify-content:center;overflow:hidden;touch-action:pan-y;border-radius:9px">
-<canvas id="acfBookCanvas" style="display:none;max-width:100%;height:auto"></canvas>
-<div id="acfBookPlaceholder" style="padding:36px;text-align:center"><div style="font-size:36px">📖</div><button id="acfBookLoad" type="button">Open catalogue</button></div>
-</div>
-<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;align-items:center">
-<button type="button" id="acfBookZoomOut">− Zoom</button><button type="button" id="acfBookZoomIn">+ Zoom</button>
-<a href="williams-pricebusters-179.pdf" target="_blank" rel="noopener" style="font-weight:700">Open full PDF ↗</a>
-</div>
-<p class="supplier-help" style="font-size:12px;margin-top:8px">Swipe left/right to turn pages. The PDF is approximately 56 MB and may take time to load on mobile data.</p>
-</section></section>
 
 <section id="page-info" class="app-page"></section>
 </main>
@@ -504,6 +478,6 @@
   document.addEventListener('click',e=>{if(e.target.closest('[data-open-page="settings"]'))setTimeout(render,20)});
 })();
 </script>
-<script src="catalogue-reader.js?v=184"></script>
+
 <script src="igem-calculator.js"></script></body>
 </html>
